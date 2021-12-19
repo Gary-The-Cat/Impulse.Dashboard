@@ -1,0 +1,29 @@
+﻿<Application x:Class="Impulse.Dashboard.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:bootstrapper="clr-namespace:Impulse.Dashboard.AppBootstrapper">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+
+                <!-- Entry point for the application, managed by Caliburn -->
+                <ResourceDictionary>
+                    <bootstrapper:Bootstrapper x:Key="Bootstrapper"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
+                
+                <!-- Collection of styles that can be applied using the {DynamicResource x} convention -->
+                <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Styles/TextBlockStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Styles/ButtonStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Styles/WindowStyles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Impulse.SharedFramework;component/Themes/DefaultColours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Impulse.SharedFramework;component/Themes/DefaultBrushes.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Theme/Theme.xaml" />
+                
+                <!-- Default Styles that get applied to all controls -->
+                <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Styles/DefaultStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

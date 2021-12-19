@@ -1,0 +1,28 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Impulse.SharedFramework;component/Themes/DefaultColours.xaml" />
+
+        <ResourceDictionary>
+            <!-- Title bar backgrounds -->
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor1" Color="{DynamicResource BackgroundColour}" />
+
+            <!-- Highlight on active tab / window, colour of undocked tab title bar -->
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor3" Color="{DynamicResource PrimaryAccentColour}" />
+
+            <!-- Hover over inactive tab -->
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor4" Color="{DynamicResource SecondaryAccentColour}" />
+
+            <!-- Inactive Tab -->
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor5" Color="{DynamicResource PrimaryAccentColour}"/>
+
+            <!-- Window Dividor Line -->
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor7" Color="{DynamicResource BackgroundColour80}" />
+
+            <!-- Can't work these two out -->
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor6" Color="{DynamicResource PrimaryAccentColour}"/>
+            <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor2" Color="{DynamicResource ForegroundColour}" />
+
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

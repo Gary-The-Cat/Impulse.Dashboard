@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <!-- Impulse Components -->
+  <?define Impulse.SharedFramework_TargetDir=$(var.Impulse.SharedFramework.TargetDir)?>
+  <?define Impulse.Shared_TargetDir=$(var.Impulse.Shared.TargetDir)?>
+  <?define Impulse.Viewer_TargetDir=$(var.Impulse.Viewer.TargetDir)?>
+  <?define Impulse.Renderer_TargetDir=$(var.Impulse.Renderer.TargetDir)?>
+  <?define Impulse.Dashboard_TargetDir=$(var.Impulse.Dashboard.TargetDir)?>
+  <?define Impulse.Mono.Viewer_TargetDir=$(var.Impulse.Mono.Viewer.TargetDir)?>
+  <?define Impulse.Cloud_TargetDir=$(var.Impulse.Cloud.TargetDir)?>
+  
+  <!-- Plugin Components -->
+  <!--<?define ResidentialDevelopment_TargetDir=$(var.ResidentialDevelopment.TargetDir)?>-->
+  <!--<?define Management_TargetDir=$(var.Management.TargetDir)?>-->
+  <?define SchedullingDemo_TargetDir=$(var.SchedullingDemo.TargetDir)?>
+  
+	<Product Id="B9A8BE2A-E422-494B-B6C3-9D0E1238165E" Name="Impulse Dashboard" Language="1033" Version="1.0.0.0" Manufacturer="TutorialsByGary" UpgradeCode="8c97e2aa-1256-4792-a6e2-c8167895badb">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <Icon Id="icon.ico" SourceFile="$(var.Impulse.Dashboard.TargetDir)Icon.ico" />
+    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="Impulse Dashboard" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="ApplicationShortcutDesktop" />
+			<ComponentGroupRef Id="pl_files" />
+			<ComponentGroupRef Id="ro_files" />
+			<ComponentGroupRef Id="ru_files" />
+			<ComponentGroupRef Id="sv_files" />
+			<ComponentGroupRef Id="zh_Hans_files" />
+			<ComponentGroupRef Id="zh_Hant_files" />
+			<ComponentGroupRef Id="pt_BR_files" />
+			<ComponentGroupRef Id="ko_files" />
+			<ComponentGroupRef Id="nl_BE_files" />
+			<ComponentGroupRef Id="ca_ES_files" />
+			<ComponentGroupRef Id="cs_CZ_files" />
+			<ComponentGroupRef Id="de_files" />
+			<ComponentGroupRef Id="es_files" />
+			<ComponentGroupRef Id="fr_files" />
+			<ComponentGroupRef Id="hu_files" />
+			<ComponentGroupRef Id="it_files" />
+			<ComponentGroupRef Id="ja_files" />
+		</Feature>
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+      
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Impulse Dashboard">
+          <Directory Id="ca_ES" Name="ca-ES" />
+          <Directory Id="cs_CZ" Name="cs-CZ" />
+          <Directory Id="de" Name="de" />
+          <Directory Id="es" Name="es" />
+          <Directory Id="nl_BE" Name="nl-BE" />
+          <Directory Id="pl" Name="pl" />
+          <Directory Id="pt_BR" Name="pt-BR" />
+          <Directory Id="ro" Name="ro" />
+          <Directory Id="zh_Hant" Name="zh-Hant" />
+          <Directory Id="zh_Hans" Name="zh-Hans" />
+          <Directory Id="sv" Name="sv" />
+          <Directory Id="ru" Name="ru" />
+          <Directory Id="fr" Name="fr" />
+          <Directory Id="hu" Name="hu" />
+          <Directory Id="it" Name="it" />
+          <Directory Id="ja" Name="ja" />
+          <Directory Id="ko" Name="ko" />
+        </Directory>
+      </Directory>
+      
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Tutorials By Gary" />
+      </Directory>
+      
+      <Directory Id="DesktopFolder" Name="Desktop" />
+      
+		</Directory>
+  </Fragment>
+
+  <Fragment>
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="Impulse Dashboard" Description="Impulse Dashboard Description" Target="[INSTALLFOLDER]Impulse.Dashboard.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\TutorialsByGary" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="ApplicationShortcutDesktop" Guid="cde1e030-eb64-49a5-b7b8-400b379c2d1a">
+        <Shortcut Id="ApplicationDesktopShortcut" Name="managelemt Tools" Description="Impulse Dashboard Description" Target="[INSTALLFOLDER]Impulse.Dashboard.exe" WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="RemoveDesktopFolder" Directory="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\TutorialsByGary" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+  </Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
+			<!-- <Component Id="ProductComponent"> -->
+				<!-- TODO: Insert files, registry keys, and other resources here. -->
+			<!-- </Component> -->
+			
+			<Component Id="Impulse.SharedFramework.dll" Guid="b46a8dab-5081-4745-ae33-4115cbcc20d8">
+			  <File Id="Impulse.SharedFramework.dll" Name="Impulse.SharedFramework.dll" Source="$(var.Impulse.SharedFramework_TargetDir)Impulse.SharedFramework.dll" />
+			</Component>
+			<Component Id="Impulse.Shared.dll" Guid="c8b80567-601e-43da-a13e-d118292ccdf9">
+			  <File Id="Impulse.Shared.dll" Name="Impulse.Shared.dll" Source="$(var.Impulse.Shared_TargetDir)Impulse.Shared.dll" />
+			</Component>
+			<Component Id="Impulse.Viewer.dll" Guid="1b48f0da-1453-423f-a3fa-62ac4aa79dad">
+			  <File Id="Impulse.Viewer.dll" Name="Impulse.Viewer.dll" Source="$(var.Impulse.Viewer_TargetDir)Impulse.Viewer.dll" />
+			</Component>
+			<Component Id="Impulse.Renderer.dll" Guid="11524cf6-9987-4240-a6ea-a5cb32e5046b">
+			  <File Id="Impulse.Renderer.dll" Name="Impulse.Renderer.dll" Source="$(var.Impulse.Renderer_TargetDir)Impulse.Renderer.dll" />
+			</Component>
+			<Component Id="Impulse.Dashboard.runtimeconfig.json" Guid="f3017b34-bcbe-428a-9e54-ea432feba2c4">
+			  <File Id="Impulse.Dashboard.runtimeconfig.json" Name="Impulse.Dashboard.runtimeconfig.json" Source="$(var.Impulse.Dashboard_TargetDir)Impulse.Dashboard.runtimeconfig.json" />
+			</Component>
+      <Component Id="Impulse.Dashboard.dll" Guid="ecadd087-9b5d-48cb-88bb-6f2a70b88cf7">
+        <File Id="Impulse.Dashboard.dll" Name="Impulse.Dashboard.dll" Source="$(var.Impulse.Dashboard_TargetDir)Impulse.Dashboard.dll" />
+      </Component>
+      <Component Id="Impulse.Dashboard.exe" Guid="81B84572-65C1-4B90-8788-06498D3D7A2C">
+        <File Id="Impulse.Dashboard.exe" Name="Impulse.Dashboard.exe" Source="$(var.Impulse.Dashboard_TargetDir)Impulse.Dashboard.exe" />
+      </Component>
+			<Component Id="System.Windows.Interactivity.dll" Guid="51e1d9a9-7c4e-46b7-8007-b14442e15ec7">
+			  <File Id="System.Windows.Interactivity.dll" Name="System.Windows.Interactivity.dll" Source="$(var.Impulse.Dashboard_TargetDir)System.Windows.Interactivity.dll" />
+			</Component>
+			<Component Id="Caliburn.Micro.Platform.Core.dll" Guid="42f998bb-6f73-486d-ae3e-048a584ffd61">
+			  <File Id="Caliburn.Micro.Platform.Core.dll" Name="Caliburn.Micro.Platform.Core.dll" Source="$(var.Impulse.Dashboard_TargetDir)Caliburn.Micro.Platform.Core.dll" />
+			</Component>
+			<Component Id="Microsoft.Xaml.Behaviors.dll" Guid="60e12d6f-220c-42f6-99bf-3f16d5af421c">
+			  <File Id="Microsoft.Xaml.Behaviors.dll" Name="Microsoft.Xaml.Behaviors.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Xaml.Behaviors.dll" />
+			</Component>
+			
+			
+			<Component Id="Microsoft.EntityFrameworkCore.dll" Guid="B5BC3661-9E65-4C4F-BF37-C3A99CA0C7A3">
+			  <File Id="Microsoft.EntityFrameworkCore.dll" Name="Microsoft.EntityFrameworkCore.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.EntityFrameworkCore.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.EntityFrameworkCore.Relational.dll" Guid="C7ABA73E-E4B9-47DB-8DFD-7D4CE6C03EBD">
+			  <File Id="Microsoft.EntityFrameworkCore.Relational.dll" Name="Microsoft.EntityFrameworkCore.Relational.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.EntityFrameworkCore.Relational.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.EntityFrameworkCore.Sqlite.dll" Guid="8107BF51-89EA-4406-A69E-8B1500F70B09">
+			  <File Id="Microsoft.EntityFrameworkCore.Sqlite.dll" Name="Microsoft.EntityFrameworkCore.Sqlite.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.EntityFrameworkCore.Sqlite.dll" />
+			</Component>
+			
+			<Component Id="CSharpFunctionalExtensions.dll" Guid="287F8743-AB80-4E32-8B0C-677E3BE1A0C2">
+			  <File Id="CSharpFunctionalExtensions.dll" Name="CSharpFunctionalExtensions.dll" Source="$(var.Impulse.Dashboard_TargetDir)CSharpFunctionalExtensions.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Caching.Abstractions.dll" Guid="10AB16DA-387A-4AE8-B60B-17584E932448">
+			  <File Id="Microsoft.Extensions.Caching.Abstractions.dll" Name="Microsoft.Extensions.Caching.Abstractions.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Caching.Abstractions.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Caching.Memory.dll" Guid="73BADF7A-4439-4E01-B6DD-727A72073454">
+			  <File Id="Microsoft.Extensions.Caching.Memory.dll" Name="Microsoft.Extensions.Caching.Memory.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Caching.Memory.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Configuration.Abstractions.dll" Guid="646A0BF9-487B-4A12-B1A1-8670FC246399">
+			  <File Id="Microsoft.Extensions.Configuration.Abstractions.dll" Name="Microsoft.Extensions.Configuration.Abstractions.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Configuration.Abstractions.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Guid="7681AB74-E9BD-4252-A7A0-94399648F4FF">
+			  <File Id="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.DependencyInjection.Abstractions.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.DependencyInjection.dll" Guid="15773C8F-A811-4881-9DC5-C5B8D13DC270">
+			  <File Id="Microsoft.Extensions.DependencyInjection.dll" Name="Microsoft.Extensions.DependencyInjection.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.DependencyInjection.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Logging.Abstractions.dll" Guid="1893F9E1-A1A9-4221-8F89-7BE901602375">
+			  <File Id="Microsoft.Extensions.Logging.Abstractions.dll" Name="Microsoft.Extensions.Logging.Abstractions.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Logging.Abstractions.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Logging.dll" Guid="ABBD0BD4-085B-48C2-8550-CDAF9C1AD2A8">
+			  <File Id="Microsoft.Extensions.Logging.dll" Name="Microsoft.Extensions.Logging.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Logging.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Options.dll" Guid="CBABCA0D-6CC2-4336-B7C4-27173B874785">
+			  <File Id="Microsoft.Extensions.Options.dll" Name="Microsoft.Extensions.Options.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Options.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Extensions.Primitives.dll" Guid="7EA5FF59-4420-4514-8552-3C46EFE3C06C">
+			  <File Id="Microsoft.Extensions.Primitives.dll" Name="Microsoft.Extensions.Primitives.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.Primitives.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.EntityFrameworkCore.Abstractions.dll" Guid="6EA5FF59-4420-4514-8552-3C46EFE3C06C">
+			  <File Id="Microsoft.EntityFrameworkCore.Abstractions.dll" Name="Microsoft.EntityFrameworkCore.Abstractions.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.EntityFrameworkCore.Abstractions.dll" />
+			</Component>
+			
+			<Component Id="Microsoft.Data.Sqlite.dll" Guid="5EA5FF59-4420-4514-8552-3C46EFE3C06C">
+			  <File Id="Microsoft.Data.Sqlite.dll" Name="Microsoft.Data.Sqlite.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Data.Sqlite.dll" />
+			</Component>		
+			
+			
+			<Component Id="MultiSelectTreeView.dll" Guid="860d6b72-3fc0-4448-8a0c-0c701796e540">
+			  <File Id="MultiSelectTreeView.dll" Name="MultiSelectTreeView.dll" Source="$(var.Impulse.Dashboard_TargetDir)MultiSelectTreeView.dll" />
+			</Component>
+			<Component Id="ReactiveUI.dll" Guid="9302faf8-c199-45fb-b7ca-d7b36631cd27">
+			  <File Id="ReactiveUI.dll" Name="ReactiveUI.dll" Source="$(var.Impulse.Dashboard_TargetDir)ReactiveUI.dll" />
+			</Component>
+			<Component Id="System.Reactive.dll" Guid="c8de8cbd-6c54-4fa4-a438-f6854c8ce981">
+			  <File Id="System.Reactive.dll" Name="System.Reactive.dll" Source="$(var.Impulse.Dashboard_TargetDir)System.Reactive.dll" />
+			</Component>
+			<Component Id="Splat.dll" Guid="d299b8d1-78e1-4c7a-b79e-83c2ec6e79fe">
+			  <File Id="Splat.dll" Name="Splat.dll" Source="$(var.Impulse.Dashboard_TargetDir)Splat.dll" />
+			</Component>
+			<Component Id="Veldrid.dll" Guid="728b068e-4734-4ab6-a5a8-2000879a2993">
+			  <File Id="Veldrid.dll" Name="Veldrid.dll" Source="$(var.Impulse.Dashboard_TargetDir)Veldrid.dll" />
+			</Component>
+			<Component Id="Veldrid.SPIRV.dll" Guid="fdf1b7ab-eead-4637-9610-ceaa2ddee8d7">
+			  <File Id="Veldrid.SPIRV.dll" Name="Veldrid.SPIRV.dll" Source="$(var.Impulse.Dashboard_TargetDir)Veldrid.SPIRV.dll" />
+			</Component>
+			<Component Id="Newtonsoft.Json.dll" Guid="e4abbb2a-3487-47d9-86fa-b1e7a0ce9052">
+			  <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="$(var.Impulse.Dashboard_TargetDir)Newtonsoft.Json.dll" />
+			</Component>
+			<Component Id="vk.dll" Guid="dff496b3-083c-4253-9f1c-9ea3f2b64305">
+			  <File Id="vk.dll" Name="vk.dll" Source="$(var.Impulse.Dashboard_TargetDir)vk.dll" />
+			</Component>
+			<Component Id="Veldrid.MetalBindings.dll" Guid="9b1b0367-1ad9-47cb-b527-eab34be1fe68">
+			  <File Id="Veldrid.MetalBindings.dll" Name="Veldrid.MetalBindings.dll" Source="$(var.Impulse.Dashboard_TargetDir)Veldrid.MetalBindings.dll" />
+			</Component>
+			<Component Id="Veldrid.OpenGLBindings.dll" Guid="50817347-a66b-41da-8246-a3124b3dde49">
+			  <File Id="Veldrid.OpenGLBindings.dll" Name="Veldrid.OpenGLBindings.dll" Source="$(var.Impulse.Dashboard_TargetDir)Veldrid.OpenGLBindings.dll" />
+			</Component>
+			<Component Id="NativeLibraryLoader.dll" Guid="eea6becc-f657-40cf-be6f-4da0179ca018">
+			  <File Id="NativeLibraryLoader.dll" Name="NativeLibraryLoader.dll" Source="$(var.Impulse.Dashboard_TargetDir)NativeLibraryLoader.dll" />
+			</Component>
+			<Component Id="Microsoft.Extensions.DependencyModel.dll" Guid="52e0b3f8-5a7e-4da2-b729-0f09f772851b">
+			  <File Id="Microsoft.Extensions.DependencyModel.dll" Name="Microsoft.Extensions.DependencyModel.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.Extensions.DependencyModel.dll" />
+			</Component>
+			<Component Id="Microsoft.DotNet.PlatformAbstractions.dll" Guid="c1a68552-5144-44e4-9c13-ab2f02820751">
+			  <File Id="Microsoft.DotNet.PlatformAbstractions.dll" Name="Microsoft.DotNet.PlatformAbstractions.dll" Source="$(var.Impulse.Dashboard_TargetDir)Microsoft.DotNet.PlatformAbstractions.dll" />
+			</Component>
+			<Component Id="SharpDX.Direct3D11.dll" Guid="5c02b52e-0310-4f71-be32-823c44c11638">
+			  <File Id="SharpDX.Direct3D11.dll" Name="SharpDX.Direct3D11.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.Direct3D11.dll" />
+			</Component>
+			<Component Id="SharpDX.dll" Guid="76d5f443-eff3-45fa-801a-e3ccec86e941">
+			  <File Id="SharpDX.dll" Name="SharpDX.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.dll" />
+			</Component>
+      <Component Id="DynamicData.dll" Guid="ebf76250-881d-4d83-a15c-881607be36e1">
+        <File Id="DynamicData.dll" Name="DynamicData.dll" Source="$(var.Impulse.Dashboard_TargetDir)DynamicData.dll" />
+      </Component>
+			<Component Id="SharpDX.DXGI.dll" Guid="2eb03ad7-4979-47b6-88de-f8a859fa571f">
+			  <File Id="SharpDX.DXGI.dll" Name="SharpDX.DXGI.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.DXGI.dll" />
+			</Component>
+			<Component Id="SharpDX.D3DCompiler.dll" Guid="b0a14c9d-163b-4891-b60b-beabb8f1b4d5">
+			  <File Id="SharpDX.D3DCompiler.dll" Name="SharpDX.D3DCompiler.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.D3DCompiler.dll" />
+			</Component>
+			<Component Id="AvalonDock.Themes.VS2013.dll" Guid="77dd99ac-88e4-48dd-a4c1-c00a2a86c664">
+			  <File Id="AvalonDock.Themes.VS2013.dll" Name="AvalonDock.Themes.VS2013.dll" Source="$(var.Impulse.Dashboard_TargetDir)AvalonDock.Themes.VS2013.dll" />
+			</Component>
+			<Component Id="AvalonDock.dll" Guid="0ac3368b-5285-4015-8e3e-07a670e06b76">
+			  <File Id="AvalonDock.dll" Name="AvalonDock.dll" Source="$(var.Impulse.Dashboard_TargetDir)AvalonDock.dll" />
+			</Component>
+			<Component Id="AvalonDock.Themes.Metro.dll" Guid="2ceb950d-e8a2-4626-863f-505dd828142a">
+			  <File Id="AvalonDock.Themes.Metro.dll" Name="AvalonDock.Themes.Metro.dll" Source="$(var.Impulse.Dashboard_TargetDir)AvalonDock.Themes.Metro.dll" />
+			</Component>
+			<Component Id="Caliburn.Micro.Platform.dll" Guid="6df1e400-f084-4415-87cb-b9f0c29df264">
+			  <File Id="Caliburn.Micro.Platform.dll" Name="Caliburn.Micro.Platform.dll" Source="$(var.Impulse.Dashboard_TargetDir)Caliburn.Micro.Platform.dll" />
+			</Component>
+			<Component Id="Fluent.dll" Guid="ec3bcac2-0526-48b1-aee1-b9efb214eff9">
+			  <File Id="Fluent.dll" Name="Fluent.dll" Source="$(var.Impulse.Dashboard_TargetDir)Fluent.dll" />
+			</Component>
+			<Component Id="Ninject.dll" Guid="596e62ff-38c0-4561-a07b-20bf2d89ff71">
+			  <File Id="Ninject.dll" Name="Ninject.dll" Source="$(var.Impulse.Dashboard_TargetDir)Ninject.dll" />
+			</Component>
+			<Component Id="ToastNotifications.dll" Guid="beb10aca-db2a-4bcb-9df6-5088badd96f8">
+			  <File Id="ToastNotifications.dll" Name="ToastNotifications.dll" Source="$(var.Impulse.Dashboard_TargetDir)ToastNotifications.dll" />
+			</Component>
+			<Component Id="ToastNotifications.Messages.dll" Guid="158ebac1-6750-4568-ba79-f22e1ea87536">
+			  <File Id="ToastNotifications.Messages.dll" Name="ToastNotifications.Messages.dll" Source="$(var.Impulse.Dashboard_TargetDir)ToastNotifications.Messages.dll" />
+			</Component>
+			<Component Id="Caliburn.Micro.dll" Guid="b7ab3555-50b9-4748-8bf4-04caa9b31007">
+			  <File Id="Caliburn.Micro.dll" Name="Caliburn.Micro.dll" Source="$(var.Impulse.Dashboard_TargetDir)Caliburn.Micro.dll" />
+			</Component>
+			<Component Id="ControlzEx.dll" Guid="7bf1b692-c81b-4265-9b73-eb122af05f15">
+			  <File Id="ControlzEx.dll" Name="ControlzEx.dll" Source="$(var.Impulse.Dashboard_TargetDir)ControlzEx.dll" />
+			</Component>
+			<Component Id="libveldrid_spirv.dll" Guid="40F02B5A-8BD9-43BE-92AF-11698CB8588A">
+			  <File Id="libveldrid_spirv.dll" Name="libveldrid-spirv.dll" Source="$(var.Impulse.Dashboard_TargetDir)runtimes\win-x64\native\libveldrid-spirv.dll" />
+			</Component>
+			<Component Id="AssimpNet.dll" Guid="4b5687ed-fcb4-4456-bf4e-99daab62d896">
+			  <File Id="AssimpNet.dll" Name="AssimpNet.dll" Source="$(var.Impulse.Dashboard_TargetDir)AssimpNet.dll" />
+			</Component>
+			<Component Id="SharpDX.XAudio2.dll" Guid="b41cb7a8-54f5-4c06-a606-d79e573e46f7">
+			  <File Id="SharpDX.XAudio2.dll" Name="SharpDX.XAudio2.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.XAudio2.dll" />
+			</Component>
+			<Component Id="MonoGame.Framework.dll" Guid="3199c117-0c71-4428-a808-8d8051431ac3">
+			  <File Id="MonoGame.Framework.dll" Name="MonoGame.Framework.dll" Source="$(var.Impulse.Dashboard_TargetDir)MonoGame.Framework.dll" />
+			</Component>
+			<Component Id="SharpDX.XInput.dll" Guid="a01eac3c-43cf-4004-b01c-5ce30f805bea">
+			  <File Id="SharpDX.XInput.dll" Name="SharpDX.XInput.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.XInput.dll" />
+			</Component>
+			<Component Id="SharpDX.Mathematics.dll" Guid="97bd00e9-dc02-4dbd-ab78-014566e60c6e">
+			  <File Id="SharpDX.Mathematics.dll" Name="SharpDX.Mathematics.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.Mathematics.dll" />
+			</Component>
+			<Component Id="SharpDX.Direct3D9.dll" Guid="06b9c312-185e-4f6f-be9e-5d2ce7833dc3">
+			  <File Id="SharpDX.Direct3D9.dll" Name="SharpDX.Direct3D9.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.Direct3D9.dll" />
+			</Component>
+			<Component Id="SharpDX.MediaFoundation.dll" Guid="e35ea9ed-3efc-4e01-a4e8-5e143089532d">
+			  <File Id="SharpDX.MediaFoundation.dll" Name="SharpDX.MediaFoundation.dll" Source="$(var.Impulse.Dashboard_TargetDir)SharpDX.MediaFoundation.dll" />
+			</Component>
+			<Component Id="Impulse.Mono.Viewer.dll" Guid="a70aea3b-6ddb-433e-a3b0-83abbe90284c">
+			  <File Id="Impulse.Mono.Viewer.dll" Name="Impulse.Mono.Viewer.dll" Source="$(var.Impulse.Mono.Viewer_TargetDir)Impulse.Mono.Viewer.dll" />
+			</Component>
+			<Component Id="CppNet.dll" Guid="925a1c57-918d-4e56-a348-aa8a81ade6a0">
+			  <File Id="CppNet.dll" Name="CppNet.dll" Source="$(var.Impulse.Dashboard_TargetDir)CppNet.dll" />
+			</Component>
+			<Component Id="Xceed.Wpf.Toolkit.dll" Guid="ad6fd000-cdd8-4b52-a0a0-bbc37ddcf003">
+			  <File Id="Xceed.Wpf.Toolkit.dll" Name="Xceed.Wpf.Toolkit.dll" Source="$(var.Impulse.Dashboard_TargetDir)Xceed.Wpf.Toolkit.dll" />
+			</Component>
+			<Component Id="Impulse.Cloud.dll" Guid="2d540610-d064-4ad8-9568-726de72b8b1b">
+			  <File Id="Impulse.Cloud.dll" Name="Impulse.Cloud.dll" Source="$(var.Impulse.Cloud_TargetDir)Impulse.Cloud.dll" />
+			</Component>
+			<Component Id="SFML.Window.dll" Guid="d03c5abd-7cb4-4ed4-90cc-a54f39706eeb">
+			  <File Id="SFML.Window.dll" Name="SFML.Window.dll" Source="$(var.Impulse.Dashboard_TargetDir)SFML.Window.dll" />
+			</Component>
+			<Component Id="Impulse.SFML.Viewer.dll" Guid="7b3526ce-7198-4466-810f-13a1fa93d8c3">
+			  <File Id="Impulse.SFML.Viewer.dll" Name="Impulse.SFML.Viewer.dll" Source="$(var.Impulse.Dashboard_TargetDir)Impulse.SFML.Viewer.dll" />
+			</Component>
+			<Component Id="SFML.System.dll" Guid="42bf7572-3c6f-4ce7-8af2-77fc7d1fd64a">
+			  <File Id="SFML.System.dll" Name="SFML.System.dll" Source="$(var.Impulse.Dashboard_TargetDir)SFML.System.dll" />
+			</Component>
+			<Component Id="SFML.Graphics.dll" Guid="afa8c4ea-da67-4051-9694-3c177bde30aa">
+			  <File Id="SFML.Graphics.dll" Name="SFML.Graphics.dll" Source="$(var.Impulse.Dashboard_TargetDir)SFML.Graphics.dll" />
+			</Component>
+			<Component Id="Impulse.Dashboard.dll.config" Guid="1e128c38-7685-44a0-b743-41ec540a4e2c">
+			  <File Id="Impulse.Dashboard.dll.config" Name="Impulse.Dashboard.dll.config" Source="$(var.Impulse.Dashboard_TargetDir)Impulse.Dashboard.dll.config" />
+			</Component>
+			<Component Id="SchedullingDemo.dll" Guid="c5aa8edf-73d0-4e7c-a350-ceb381b0c32c">
+			  <File Id="SchedullingDemo.dll" Name="SchedullingDemo.dll" Source="$(var.SchedullingDemo_TargetDir)SchedullingDemo.dll" />
+			</Component>
+		</ComponentGroup>
+	</Fragment>
+  
+  <Fragment>
+    <ComponentGroup Id="pl_files" Directory="pl">
+      <Component Id="pl_AvalonDock.resources.dll" Guid="050b552b-89d1-4a53-8f6e-fa908a6fba86">
+        <File Id="pl_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)pl\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ro_files" Directory="ro">
+      <Component Id="ro_AvalonDock.resources.dll" Guid="4eb5baf0-db67-4fb1-ae59-e98472535b2e">
+        <File Id="ro_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)ro\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ru_files" Directory="ru">
+      <Component Id="ru_AvalonDock.resources.dll" Guid="d201ca31-30f0-4a47-b878-f6eb12fe79e0">
+        <File Id="ru_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)ru\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="sv_files" Directory="sv">
+      <Component Id="sv_AvalonDock.resources.dll" Guid="8888c41e-4be3-4a63-8b09-0efccbaa2223">
+        <File Id="sv_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)sv\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="zh_Hans_files" Directory="zh_Hans">
+      <Component Id="zh_Hans_AvalonDock.resources.dll" Guid="0b4d4ed6-fe4f-486b-8749-ff8b5a87dfe4">
+        <File Id="zh_Hans_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)zh-Hans\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="zh_Hant_files" Directory="zh_Hant">
+      <Component Id="zh_Hant_AvalonDock.resources.dll" Guid="188fc93d-c4f8-4f24-86ea-c011db66ad1c">
+        <File Id="zh_Hant_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)zh-Hant\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="pt_BR_files" Directory="pt_BR">
+      <Component Id="pt_BR_AvalonDock.resources.dll" Guid="1acb578b-8e0c-4ef9-85ed-ae768841a1aa">
+        <File Id="pt_BR_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)pt-BR\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ko_files" Directory="ko">
+      <Component Id="ko_AvalonDock.resources.dll" Guid="c54ae636-d3f7-47f3-b560-6c94e01394f0">
+        <File Id="ko_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)ko\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="nl_BE_files" Directory="nl_BE">
+      <Component Id="nl_BE_AvalonDock.resources.dll" Guid="a09eb2f4-0815-42c4-8e6d-1676dea58ca8">
+        <File Id="nl_BE_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)nl-BE\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ca_ES_files" Directory="ca_ES">
+      <Component Id="ca_ES_AvalonDock.resources.dll" Guid="d766be59-b4ee-4d19-bc64-b58dac6c541c">
+        <File Id="ca_ES_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)ca-ES\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="cs_CZ_files" Directory="cs_CZ">
+      <Component Id="cs_CZ_AvalonDock.resources.dll" Guid="2774b2ec-8354-4cce-9598-3c0ad49650ac">
+        <File Id="cs_CZ_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)cs-CZ\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="de_files" Directory="de">
+      <Component Id="de_AvalonDock.resources.dll" Guid="1f885736-0f64-4689-8a47-23996507aa0f">
+        <File Id="de_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)de\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="es_files" Directory="es">
+      <Component Id="es_AvalonDock.resources.dll" Guid="a75eb470-4c90-4239-8c15-a1a5d47120f7">
+        <File Id="es_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)es\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="fr_files" Directory="fr">
+      <Component Id="fr_AvalonDock.resources.dll" Guid="73d84862-a707-4382-a18a-8ce0ec528320">
+        <File Id="fr_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)fr\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="hu_files" Directory="hu">
+      <Component Id="hu_AvalonDock.resources.dll" Guid="f68764e9-2103-4d3a-a315-515758f2ef04">
+        <File Id="hu_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)hu\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="it_files" Directory="it">
+      <Component Id="it_AvalonDock.resources.dll" Guid="34139af1-f3e6-468e-a4b1-3286b55472fe">
+        <File Id="it_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)it\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ja_files" Directory="ja">
+      <Component Id="ja_AvalonDock.resources.dll" Guid="f475787e-313f-45d2-9237-084eb2ade03b">
+        <File Id="ja_AvalonDock.resources.dll" Name="AvalonDock.resources.dll" Source="$(var.Impulse.Dashboard_TargetDir)ja\AvalonDock.resources.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+  
+  <!-- SFML Runtimes -->  
+</Wix>

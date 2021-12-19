@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Impulse.SharedFramework.Themes">
+    <SolidColorBrush x:Key="BlueBrush100" Color="{StaticResource Blue100}"/>
+    <SolidColorBrush x:Key="Blue80" Color="{StaticResource Blue80}"/>
+    <SolidColorBrush x:Key="Blue60" Color="{StaticResource Blue60}"/>
+    <SolidColorBrush x:Key="Blue40" Color="{StaticResource Blue40}"/>
+    <SolidColorBrush x:Key="Blue20" Color="{StaticResource Blue20}"/>
+    <SolidColorBrush x:Key="Green100" Color="{StaticResource Green100}"/>
+    <SolidColorBrush x:Key="Green80" Color="{StaticResource Green80}"/>
+    <SolidColorBrush x:Key="Green60" Color="{StaticResource Green60}"/>
+    <SolidColorBrush x:Key="Green40" Color="{StaticResource Green40}"/>
+    <SolidColorBrush x:Key="Green20" Color="{StaticResource Green20}"/>
+    <SolidColorBrush x:Key="Yellow100" Color="{StaticResource Yellow100}"/>
+    <SolidColorBrush x:Key="Yellow80" Color="{StaticResource Yellow80}"/>
+    <SolidColorBrush x:Key="Yellow60" Color="{StaticResource Yellow60}"/>
+    <SolidColorBrush x:Key="Yellow40" Color="{StaticResource Yellow40}"/>
+    <SolidColorBrush x:Key="Yellow20" Color="{StaticResource Yellow20}"/>
+    <SolidColorBrush x:Key="Red100" Color="{StaticResource Red100}"/>
+    <SolidColorBrush x:Key="Red80" Color="{StaticResource Red80}"/>
+    <SolidColorBrush x:Key="Red60" Color="{StaticResource Red60}"/>
+    <SolidColorBrush x:Key="Red40" Color="{StaticResource Red40}"/>
+    <SolidColorBrush x:Key="Red20" Color="{StaticResource Red20}"/>
+    <SolidColorBrush x:Key="Purple100" Color="{StaticResource Purple100}"/>
+    <SolidColorBrush x:Key="Purple80" Color="{StaticResource Purple80}"/>
+    <SolidColorBrush x:Key="Purple60" Color="{StaticResource Purple60}"/>
+    <SolidColorBrush x:Key="Purple40" Color="{StaticResource Purple40}"/>
+    <SolidColorBrush x:Key="Purple20" Color="{StaticResource Purple20}"/>
+    <SolidColorBrush x:Key="GreyBrush100" Color="{StaticResource Grey100}"/>
+    <SolidColorBrush x:Key="GreyBrush80" Color="{StaticResource Grey80}"/>
+    <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
+</ResourceDictionary>

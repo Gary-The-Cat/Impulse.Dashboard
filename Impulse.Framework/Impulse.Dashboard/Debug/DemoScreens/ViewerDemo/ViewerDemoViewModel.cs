@@ -1,0 +1,58 @@
+﻿// <copyright file="ViewerDemoViewModel.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+using Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ViewerToolbar;
+using Impulse.SharedFramework.Services.Layout;
+using Impulse.Viewer.ViewerControl;
+using Ninject;
+using Ninject.Parameters;
+
+namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView
+{
+    public class ViewerDemoViewModel : DocumentBase
+    {
+        private ViewerControlViewModel viewerControlViewModel;
+
+        private IKernel kernel;
+
+        public ViewerDemoViewModel(IKernel kernel) : base(kernel)
+        {
+            DisplayName = "Viewer";
+
+            this.kernel = kernel;
+
+            ViewerViewModel = kernel.Get<ViewerViewModel>();
+
+            // Create the view for our tool window and attach its DataContext
+            viewerControlViewModel = this.kernel.Get<ViewerControlViewModel>(
+                new ConstructorArgument("viewer", ViewerViewModel));
+
+            viewerControlViewModel.DisplayName = "Viewer Control 1";
+
+            // Ask the document service to show the panel
+            AddToolWindow(viewerControlViewModel);
+        }
+
+        public ViewerViewModel ViewerViewModel { get; private set; }
+
+        public override void TryClose(bool? dialogResult = null)
+        {
+            base.TryClose(dialogResult);
+
+            ViewerViewModel.OnClosing();
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            ViewerViewModel.OnSelected();
+        }
+
+        protected override void OnDeactivate(bool close)
+        {
+            base.OnDeactivate(close);
+            ViewerViewModel.OnDeselected();
+        }
+    }
+}

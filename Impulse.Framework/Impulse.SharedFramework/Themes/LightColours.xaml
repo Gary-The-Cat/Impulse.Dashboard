@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Impulse.SharedFramework;component/Themes/DefaultColours.xaml" />
+        <ResourceDictionary>
+            <Color x:Key="PrimaryAccentColour">#FF405CAA</Color>
+            <Color x:Key="PrimaryAccentColour80">#CC405CAA</Color>
+            <Color x:Key="PrimaryAccentColour60">#99405CAA</Color>
+            <Color x:Key="PrimaryAccentColour20">#33405CAA</Color>
+            <Color x:Key="SecondaryAccentColour">#CC58BA4F</Color>
+            <Color x:Key="TertiaryPrimaryAccentColour">#CCEF4823</Color>
+            <Color x:Key="TertiarySecondaryAccentColour">#CCA44F9E</Color>
+            <Color x:Key="ForegroundColour">#FF1F1D1C</Color>
+            <Color x:Key="ForegroundColour80">#CC1F1D1C</Color>
+            <Color x:Key="ForegroundColour60">#991F1D1C</Color>
+            <Color x:Key="ForegroundColour40">#661F1D1C</Color>
+            <Color x:Key="ForegroundColour20">#331F1D1C</Color>
+            <Color x:Key="BackgroundColour80">#191F1D1C</Color>
+            <Color x:Key="BackgroundColour60">#99e1e1e1</Color>
+            <Color x:Key="BackgroundColour">#FFEAEAEA</Color>
+            <Color x:Key="HighlightBackgroundColour">#FFF1F1F1</Color>
+        </ResourceDictionary>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

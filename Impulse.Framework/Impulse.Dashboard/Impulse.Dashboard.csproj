@@ -1,0 +1,300 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>ImpulseIcon.ico</ApplicationIcon>
+    <RootNamespace>Impulse.Framework.Dashboard</RootNamespace>
+    <AssemblyName>Impulse.Dashboard</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;NU1701;1998;SA1600;SA1101;SA0001;SA1127;SA1402;SA1313;SA1128;SA1629;SA1413;SA1502;SA1601;SA1611</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\CppNet.dll" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\libmojoshader_64.dll" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\mgfxc.deps.json" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\mgfxc.dll" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\mgfxc.exe" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\mgfxc.pdb" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\mgfxc.runtimeconfig.dev.json" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\mgfxc.runtimeconfig.json" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\SharpDX.D3DCompiler.dll" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\SharpDX.D3DCompiler.xml" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\SharpDX.dll" />
+    <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\SharpDX.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Icon.png" />
+    <None Remove="Icons\CloseWindow.png" />
+    <None Remove="Icons\Export\Bat.png" />
+    <None Remove="Icons\Export\Bat_GS.png" />
+    <None Remove="Icons\Export\Candy.png" />
+    <None Remove="Icons\Export\Candy_GS.png" />
+    <None Remove="Icons\Export\Close.png" />
+    <None Remove="Icons\Export\Close_GS.png" />
+    <None Remove="Icons\Export\Coffin.png" />
+    <None Remove="Icons\Export\Coffin_GS.png" />
+    <None Remove="Icons\Export\Configuration.png" />
+    <None Remove="Icons\Export\Configuration_GS.png" />
+    <None Remove="Icons\Export\Couldren.png" />
+    <None Remove="Icons\Export\Couldren_GS.png" />
+    <None Remove="Icons\Export\Folder.png" />
+    <None Remove="Icons\Export\Ghost.png" />
+    <None Remove="Icons\Export\Ghost_GS.png" />
+    <None Remove="Icons\Export\Global.png" />
+    <None Remove="Icons\Export\Home.png" />
+    <None Remove="Icons\Export\Local.png" />
+    <None Remove="Icons\Export\Monster.png" />
+    <None Remove="Icons\Export\Monster_GS.png" />
+    <None Remove="Icons\Export\Moon.png" />
+    <None Remove="Icons\Export\Moon_GS.png" />
+    <None Remove="Icons\Export\Open.png" />
+    <None Remove="Icons\Export\Open_GS.png" />
+    <None Remove="Icons\Export\Optimize.png" />
+    <None Remove="Icons\Export\Optimize_GS.png" />
+    <None Remove="Icons\Export\Project.png" />
+    <None Remove="Icons\Export\Project_GS.png" />
+    <None Remove="Icons\Export\Pumpkin.png" />
+    <None Remove="Icons\Export\Pumpkin_GS.png" />
+    <None Remove="Icons\Export\Reaper.png" />
+    <None Remove="Icons\Export\Reaper_GS.png" />
+    <None Remove="Icons\Export\Results.png" />
+    <None Remove="Icons\Export\Results_GS.png" />
+    <None Remove="Icons\Export\Save.png" />
+    <None Remove="Icons\Export\Save_GS.png" />
+    <None Remove="Icons\Export\Skull.png" />
+    <None Remove="Icons\Export\Skull_GS.png" />
+    <None Remove="Icons\Export\Spider.png" />
+    <None Remove="Icons\Export\Spider_GS.png" />
+    <None Remove="Icons\Export\Tombstone.png" />
+    <None Remove="Icons\Export\Tombstone_GS.png" />
+    <None Remove="Icons\Maximize.png" />
+    <None Remove="Icons\Maximize2.png" />
+    <None Remove="Icons\Minimise.png" />
+    <None Remove="Icons\Workflow.png" />
+    <None Remove="Splash.png" />
+    <None Remove="Theme\Images\DockAnchorableBottom.png" />
+    <None Remove="Theme\Images\DockAnchorableLeft.png" />
+    <None Remove="Theme\Images\DockAnchorableRight.png" />
+    <None Remove="Theme\Images\DockAnchorableTop.png" />
+    <None Remove="Theme\Images\DockDocumentAsAnchorableBottom.png" />
+    <None Remove="Theme\Images\DockDocumentAsAnchorableLeft.png" />
+    <None Remove="Theme\Images\DockDocumentAsAnchorableRight.png" />
+    <None Remove="Theme\Images\DockDocumentAsAnchorableTop.png" />
+    <None Remove="Theme\Images\DockDocumentBottom.png" />
+    <None Remove="Theme\Images\DockDocumentInside.png" />
+    <None Remove="Theme\Images\DockDocumentLeft.png" />
+    <None Remove="Theme\Images\DockDocumentRight.png" />
+    <None Remove="Theme\Images\DockDocumentTop.png" />
+    <None Remove="Theme\Images\DockPaneEmpty.png" />
+    <None Remove="Theme\Images\DockPaneLargeEmpty.png" />
+    <None Remove="Theme\Images\HTabGroup.png" />
+    <None Remove="Theme\Images\Locked.png" />
+    <None Remove="Theme\Images\PinAutoHide.png" />
+    <None Remove="Theme\Images\PinAutoHide_Black.png" />
+    <None Remove="Theme\Images\PinAutoHide_Dark.png" />
+    <None Remove="Theme\Images\PinClose.png" />
+    <None Remove="Theme\Images\PinClose_Black.png" />
+    <None Remove="Theme\Images\PinClose_Dark.png" />
+    <None Remove="Theme\Images\PinDocMenu.png" />
+    <None Remove="Theme\Images\PinDocMenu_Black.png" />
+    <None Remove="Theme\Images\PinMaximize.png" />
+    <None Remove="Theme\Images\PinMaximize_Black.png" />
+    <None Remove="Theme\Images\PinMaximize_Dark.png" />
+    <None Remove="Theme\Images\PinMenu.png" />
+    <None Remove="Theme\Images\PinMenu_Black.png" />
+    <None Remove="Theme\Images\PinMenu_Dark.png" />
+    <None Remove="Theme\Images\PinRestore.png" />
+    <None Remove="Theme\Images\PinRestore_Black.png" />
+    <None Remove="Theme\Images\PinRestore_Dark.png" />
+    <None Remove="Theme\Images\VTabGroup.png" />
+    <AdditionalFiles Include="..\Configuration\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\Configuration\FodyWeavers.xml" Link="FodyWeavers.xml" />
+    <Content Include="ImpulseIcon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="Atlassian.SDK" Version="12.4.0" />
+    <PackageReference Include="Caliburn.Micro" Version="3.2.0" />
+    <PackageReference Include="ControlzEx" Version="4.4.0" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.14.3" />
+    <PackageReference Include="Dirkster.AvalonDock" Version="4.50.1" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.50.1" />
+    <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.50.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.2" />
+    <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
+    <PackageReference Include="Fody" Version="6.3.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" />
+    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
+    <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
+    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" PrivateAssets="All" />
+    <PackageReference Include="ReactiveUI.Events.WPF" Version="13.1.1" />
+    <PackageReference Include="ReactiveUI.WPF" Version="13.1.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="ToastNotifications" Version="2.5.1" />
+    <PackageReference Include="ToastNotifications.Messages" Version="2.5.1" />
+    <PackageReference Include="WPFTextBoxAutoComplete" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Impulse.Cloud\Impulse.Cloud.csproj" />
+    <ProjectReference Include="..\Impulse.Jira\Impulse.Jira.csproj" />
+    <ProjectReference Include="..\Impulse.Mono.Viewer\Impulse.Mono.Viewer.csproj" />
+    <ProjectReference Include="..\Impulse.Renderer\Impulse.Renderer.csproj" />
+    <ProjectReference Include="..\Impulse.SFML.Viewer\Impulse.SFML.Viewer.csproj" />
+    <ProjectReference Include="..\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
+    <ProjectReference Include="..\Impulse.Shared\Impulse.Shared.csproj" />
+    <ProjectReference Include="..\Impulse.Viewer\Impulse.Viewer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\CloseWindow.png" />
+    <Resource Include="Icons\Export\Bat.png" />
+    <Resource Include="Icons\Export\Bat_GS.png" />
+    <Resource Include="Icons\Export\Candy.png" />
+    <Resource Include="Icons\Export\Candy_GS.png" />
+    <Resource Include="Icons\Export\Close.png" />
+    <Resource Include="Icons\Export\Close_GS.png" />
+    <Resource Include="Icons\Export\Coffin.png" />
+    <Resource Include="Icons\Export\Coffin_GS.png" />
+    <Resource Include="Icons\Export\Configuration.png" />
+    <Resource Include="Icons\Export\Configuration_GS.png" />
+    <Resource Include="Icons\Export\Couldren.png" />
+    <Resource Include="Icons\Export\Couldren_GS.png" />
+    <Resource Include="Icons\Export\Folder.png" />
+    <Resource Include="Icons\Export\Ghost.png" />
+    <Resource Include="Icons\Export\Ghost_GS.png" />
+    <Resource Include="Icons\Export\Global.png" />
+    <Resource Include="Icons\Export\Home.png" />
+    <Resource Include="Icons\Export\Local.png" />
+    <Resource Include="Icons\Export\Monster.png" />
+    <Resource Include="Icons\Export\Monster_GS.png" />
+    <Resource Include="Icons\Export\Moon.png" />
+    <Resource Include="Icons\Export\Moon_GS.png" />
+    <Resource Include="Icons\Export\Open.png" />
+    <Resource Include="Icons\Export\Open_GS.png" />
+    <Resource Include="Icons\Export\Optimize.png" />
+    <Resource Include="Icons\Export\Optimize_GS.png" />
+    <Resource Include="Icons\Export\Project.png" />
+    <Resource Include="Icons\Export\Project_GS.png" />
+    <Resource Include="Icons\Export\Pumpkin.png" />
+    <Resource Include="Icons\Export\Pumpkin_GS.png" />
+    <Resource Include="Icons\Export\Reaper.png" />
+    <Resource Include="Icons\Export\Reaper_GS.png" />
+    <Resource Include="Icons\Export\Results.png" />
+    <Resource Include="Icons\Export\Results_GS.png" />
+    <Resource Include="Icons\Export\Save.png" />
+    <Resource Include="Icons\Export\Save_GS.png" />
+    <Resource Include="Icons\Export\Skull.png" />
+    <Resource Include="Icons\Export\Skull_GS.png" />
+    <Resource Include="Icons\Export\Spider.png" />
+    <Resource Include="Icons\Export\Spider_GS.png" />
+    <Resource Include="Icons\Export\Tombstone.png" />
+    <Resource Include="Icons\Export\Tombstone_GS.png" />
+    <Resource Include="Icons\Maximize.png" />
+    <Resource Include="Icons\Maximize2.png" />
+    <Resource Include="Icons\Minimise.png" />
+    <Resource Include="Icons\Workflow.png" />
+    <Resource Include="Theme\Images\DockAnchorableBottom.png" />
+    <Resource Include="Theme\Images\DockAnchorableLeft.png" />
+    <Resource Include="Theme\Images\DockAnchorableRight.png" />
+    <Resource Include="Theme\Images\DockAnchorableTop.png" />
+    <Resource Include="Theme\Images\DockDocumentAsAnchorableBottom.png" />
+    <Resource Include="Theme\Images\DockDocumentAsAnchorableLeft.png" />
+    <Resource Include="Theme\Images\DockDocumentAsAnchorableRight.png" />
+    <Resource Include="Theme\Images\DockDocumentAsAnchorableTop.png" />
+    <Resource Include="Theme\Images\DockDocumentBottom.png" />
+    <Resource Include="Theme\Images\DockDocumentInside.png" />
+    <Resource Include="Theme\Images\DockDocumentLeft.png" />
+    <Resource Include="Theme\Images\DockDocumentRight.png" />
+    <Resource Include="Theme\Images\DockDocumentTop.png" />
+    <Resource Include="Theme\Images\DockPaneEmpty.png" />
+    <Resource Include="Theme\Images\DockPaneLargeEmpty.png" />
+    <Resource Include="Theme\Images\HTabGroup.png" />
+    <Resource Include="Theme\Images\Locked.png" />
+    <Resource Include="Theme\Images\PinAutoHide.png" />
+    <Resource Include="Theme\Images\PinAutoHide_Black.png" />
+    <Resource Include="Theme\Images\PinAutoHide_Dark.png" />
+    <Resource Include="Theme\Images\PinClose.png" />
+    <Resource Include="Theme\Images\PinClose_Black.png" />
+    <Resource Include="Theme\Images\PinClose_Dark.png" />
+    <Resource Include="Theme\Images\PinDocMenu.png" />
+    <Resource Include="Theme\Images\PinDocMenu_Black.png" />
+    <Resource Include="Theme\Images\PinMaximize.png" />
+    <Resource Include="Theme\Images\PinMaximize_Black.png" />
+    <Resource Include="Theme\Images\PinMaximize_Dark.png" />
+    <Resource Include="Theme\Images\PinMenu.png" />
+    <Resource Include="Theme\Images\PinMenu_Black.png" />
+    <Resource Include="Theme\Images\PinMenu_Dark.png" />
+    <Resource Include="Theme\Images\PinRestore.png" />
+    <Resource Include="Theme\Images\PinRestore_Black.png" />
+    <Resource Include="Theme\Images\PinRestore_Dark.png" />
+    <Resource Include="Theme\Images\VTabGroup.png" />
+    <Resource Include="Splash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Debug\DemoScreens\WorkflowDemo\ProvideAgeWorkflowTabView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="Debug\DemoScreens\RoutePlannerDemo\RoutePlannerDemoView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Debug\DemoScreens\GoogleSuggestionApiDemo\GoogleSuggestionApiDemoView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+    </Page>
+    <Page Update="Debug\DemoScreens\WorkflowDemo\ProvideAgeWorkflowTabView.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
+</Project>
