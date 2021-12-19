@@ -2,13 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using Caliburn.Micro;
 using PropertyChanged;
 
-namespace Impulse.SharedFramework.Reactive
+namespace Impulse.Shared.ReactiveUI
 {
     public class ReactiveScreen : Screen, IChangeTracking
     {
@@ -48,9 +47,9 @@ namespace Impulse.SharedFramework.Reactive
             this.AcceptChanges();
         }
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken ct)
         {
-            base.OnActivate();
+            await base.OnActivateAsync(ct);
 
             if (!IsLoaded)
             {
@@ -58,9 +57,9 @@ namespace Impulse.SharedFramework.Reactive
             }
         }
 
-        protected override void OnDeactivate(bool close)
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            base.OnDeactivate(close);
+            await base.OnDeactivateAsync(close, cancellationToken);
 
             if (IsLoaded && IsChanged)
             {

@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo
 {

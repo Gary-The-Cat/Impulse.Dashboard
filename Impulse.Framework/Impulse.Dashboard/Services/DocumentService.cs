@@ -5,7 +5,7 @@
 using System;
 using System.Linq;
 using Impulse.Dashboard.Shell;
-using Impulse.SharedFramework.ExtensionMethods;
+using Impulse.Shared.ExtensionMethods;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
@@ -27,7 +27,7 @@ namespace Impulse.Dashboard.Services
         {
             var existingDocument = Shell.Items.FirstOrDefault(i => document.Id == i.Id);
 
-            Shell.ActivateItem(existingDocument ?? document);
+            Shell.ActivateItemAsync(existingDocument ?? document);
         }
 
         public void CloseDocument(Guid documentId)

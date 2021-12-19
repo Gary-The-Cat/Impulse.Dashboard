@@ -5,7 +5,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Impulse.SharedFramework.Application
+namespace Impulse.Shared.Application
 {
     public interface IApplication
     {

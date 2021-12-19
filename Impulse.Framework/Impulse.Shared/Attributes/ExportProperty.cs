@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Impulse.SharedFramework.Attributes
+namespace Impulse.Shared.Attributes
 {
     public class ExportProperty : Attribute
     {

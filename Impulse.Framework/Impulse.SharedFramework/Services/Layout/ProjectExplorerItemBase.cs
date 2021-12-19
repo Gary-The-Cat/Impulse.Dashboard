@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Impulse.Shared.Interfaces;
+using Impulse.Shared.ProjectExplorer;
 using Impulse.SharedFramework.ProjectExplorer;
 
 namespace Impulse.SharedFramework.Services.Layout

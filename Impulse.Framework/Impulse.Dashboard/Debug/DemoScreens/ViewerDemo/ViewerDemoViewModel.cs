@@ -7,6 +7,8 @@ using Impulse.SharedFramework.Services.Layout;
 using Impulse.Viewer.ViewerControl;
 using Ninject;
 using Ninject.Parameters;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView
 {
@@ -36,22 +38,22 @@ namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView
 
         public ViewerViewModel ViewerViewModel { get; private set; }
 
-        public override void TryClose(bool? dialogResult = null)
+        public override async Task TryCloseAsync(bool? dialogResult = null)
         {
-            base.TryClose(dialogResult);
+            await base.TryCloseAsync(dialogResult);
 
             ViewerViewModel.OnClosing();
         }
 
-        protected override void OnActivate()
+        protected async override Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
+            await base.OnActivateAsync(cancellationToken);
             ViewerViewModel.OnSelected();
         }
 
-        protected override void OnDeactivate(bool close)
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            base.OnDeactivate(close);
+            await base.OnDeactivateAsync(close, cancellationToken);
             ViewerViewModel.OnDeselected();
         }
     }

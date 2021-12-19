@@ -122,7 +122,6 @@ namespace Impulse.Mono.Viewer.ViewerControl
             {
                 GraphicsDeviceService.StartDirect3D(Application.Current.MainWindow);
                 viewModel?.Initialize();
-                viewModel?.LoadContent();
                 isFirstLoad = false;
             }
 

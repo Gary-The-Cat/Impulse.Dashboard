@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Impulse.SharedFramework.ExtensionMethods
+namespace Impulse.Shared.ExtensionMethods
 {
     public static class LinqExtensions
     {

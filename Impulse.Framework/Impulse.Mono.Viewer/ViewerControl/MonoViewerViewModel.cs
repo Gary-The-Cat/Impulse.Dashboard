@@ -25,8 +25,6 @@ namespace Impulse.Mono.Viewer.ViewerControl
         public override void LoadContent()
         {
             Content.RootDirectory = "Models";
-            var model = Content.Load<Model>("Icosphere");
-            renderer.AddItem(model);
         }
 
         public override void Update(GameTime gameTime)

@@ -29,7 +29,7 @@ namespace Impulse.Dashboard.Shell
             {
                 e.Cancel = true;
 
-                document.TryClose();
+                document.TryCloseAsync();
             }
         }
 

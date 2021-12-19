@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.SharedFramework.ExtensionMethods
+namespace Impulse.Shared.ExtensionMethods
 {
     public static class ObjectExtensions
     {

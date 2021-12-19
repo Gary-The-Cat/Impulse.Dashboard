@@ -4,7 +4,7 @@
 
 using System;
 using Impulse.Shared.Enums;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 
 namespace Impulse.SharedFramework.Services.Layout
 {

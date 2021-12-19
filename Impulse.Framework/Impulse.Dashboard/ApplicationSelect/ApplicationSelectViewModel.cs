@@ -5,8 +5,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Impulse.SharedFramework.Application;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.Application;
+using Impulse.Shared.ReactiveUI;
 
 namespace Impulse.Dashboard.ApplicaitonSelect
 {
@@ -23,9 +23,9 @@ namespace Impulse.Dashboard.ApplicaitonSelect
 
         public IApplication SelectedApplication { get; set; }
 
-        public void Close()
+        public async void Close()
         {
-            this.TryClose(true);
+            this.TryCloseAsync(true);
         }
     }
 }

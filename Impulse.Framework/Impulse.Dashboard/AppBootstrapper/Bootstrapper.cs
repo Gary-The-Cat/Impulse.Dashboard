@@ -18,10 +18,10 @@ using Impulse.Dashboard.Services.Workflow;
 using Impulse.Dashboard.Shell;
 using Impulse.Dashboard.Themes;
 using Impulse.Jira;
+using Impulse.Shared.Application;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 using Impulse.Shared.Services;
-using Impulse.SharedFramework.Application;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Shell;
@@ -82,7 +82,7 @@ namespace Impulse.Dashboard.AppBootstrapper
             var windowManager = Kernel.Get<IWindowManager>();
             var documentService = Kernel.Get<IDocumentService>();
 
-            windowManager.ShowWindow(shellViewModel);
+            await windowManager.ShowWindowAsync(shellViewModel);
 
             if (ActiveApplication == null && Applications != null)
             {
@@ -179,7 +179,7 @@ namespace Impulse.Dashboard.AppBootstrapper
 
         private bool Filter(Assembly s)
         {
-            return s.FullName.StartsWith("Impulse.") || s.FullName.StartsWith("Schedulling");
+            return s.FullName.StartsWith("Impulse.");
         }
 
         private void InitializeKernel()
@@ -199,7 +199,6 @@ namespace Impulse.Dashboard.AppBootstrapper
             Kernel.Bind<IJiraApiService>().To<JiraApiService>().InSingletonScope();
             Kernel.Bind<IRibbonService>().To<RibbonService>().InSingletonScope();
             Kernel.Bind<IDocumentService>().To<DocumentService>().InSingletonScope();
-            Kernel.Bind<ISerializationService>().To<SerializationService>().InSingletonScope();
             Kernel.Bind<IToolWindowService>().To<ToolWindowService>().InSingletonScope();
             Kernel.Bind<IWorkflowService>().To<WorkflowService>().InSingletonScope();
             Kernel.Bind<IProjectExplorerService>().To<ProjectExplorerViewModel>().InSingletonScope();

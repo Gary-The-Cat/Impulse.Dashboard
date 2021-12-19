@@ -237,7 +237,7 @@ namespace Impulse.Dashboard.Debug
             var bindingDemo = kernel.Get<BindingDemoViewModel>();
             var windowManager = kernel.Get<IWindowManager>();
 
-            windowManager.ShowDialog(bindingDemo);
+            windowManager.ShowDialogAsync(bindingDemo);
         }
 
         private static void OpenBindingDemo2(IKernel kernel)
@@ -245,7 +245,7 @@ namespace Impulse.Dashboard.Debug
             var bindingDemo2 = kernel.Get<BindingDemo2ViewModel>();
             var windowManager = kernel.Get<IWindowManager>();
 
-            windowManager.ShowDialog(bindingDemo2);
+            windowManager.ShowDialogAsync(bindingDemo2);
         }
 
         private static void OpenBindingDemo3(IKernel kernel)
@@ -253,7 +253,7 @@ namespace Impulse.Dashboard.Debug
             var bindingDemo3 = kernel.Get<BindingDemo3ViewModel>();
             var windowManager = kernel.Get<IWindowManager>();
 
-            windowManager.ShowDialog(bindingDemo3);
+            windowManager.ShowDialogAsync(bindingDemo3);
         }
 
         private static void OpenUserControlDemo(IKernel kernel)
@@ -261,7 +261,7 @@ namespace Impulse.Dashboard.Debug
             var userControlDemo = kernel.Get<UserControlDemoViewModel>();
             var windowManager = kernel.Get<IWindowManager>();
 
-            windowManager.ShowWindow(userControlDemo);
+            windowManager.ShowWindowAsync(userControlDemo);
         }
 
         private static void OpenRendererDemo(IKernel kernel)
@@ -324,7 +324,7 @@ namespace Impulse.Dashboard.Debug
             var routePlannerDemo = kernel.Get<DirectionsDemoViewModel>();
             var windowManager = kernel.Get<IWindowManager>();
 
-            windowManager.ShowWindow(routePlannerDemo);
+            windowManager.ShowWindowAsync(routePlannerDemo);
         }
 
         private static async Task OpenJiraDemo(IKernel kernel)
@@ -363,7 +363,7 @@ namespace Impulse.Dashboard.Debug
             var userControlDemo = kernel.Get<TemplatePracticeViewModel>();
             var windowManager = kernel.Get<IWindowManager>();
 
-            windowManager.ShowWindow(userControlDemo);
+            windowManager.ShowWindowAsync(userControlDemo);
         }
     }
 }

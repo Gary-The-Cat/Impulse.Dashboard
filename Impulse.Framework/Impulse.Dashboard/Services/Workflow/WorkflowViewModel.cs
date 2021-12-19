@@ -5,10 +5,11 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Caliburn.Micro;
 using Impulse.Dashboard.Services.Workflow.WorkflowTabBadge;
-using Impulse.SharedFramework.Attributes;
-using Impulse.SharedFramework.ExtensionMethods;
+using Impulse.Shared.Attributes;
+using Impulse.Shared.ExtensionMethods;
 using Impulse.SharedFramework.Services.Layout;
 
 namespace Impulse.Dashboard.Services.Workflow
@@ -57,14 +58,14 @@ namespace Impulse.Dashboard.Services.Workflow
             return default;
         }
 
-        public void NextClick()
+        public async void NextClick()
         {
             var preChangeIndex = Items.IndexOf(ActiveItem);
             int postChangeIndex = preChangeIndex + 1;
 
             if (postChangeIndex >= Items.Count)
             {
-                TryClose(true);
+                await this.TryCloseAsync(true);
             }
             else
             {
@@ -73,14 +74,14 @@ namespace Impulse.Dashboard.Services.Workflow
             }
         }
 
-        public void BackClick()
+        public async void BackClick()
         {
             var preChangeIndex = Items.IndexOf(ActiveItem);
             int postChangeIndex = preChangeIndex - 1;
 
             if (postChangeIndex < 0)
             {
-                TryClose(false);
+                await TryCloseAsync(false);
             }
             else
             {

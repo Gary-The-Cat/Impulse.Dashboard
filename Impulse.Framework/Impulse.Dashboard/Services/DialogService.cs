@@ -9,7 +9,7 @@ using System.Windows;
 using Impulse.Dashboard.CrashReporting.ExceptionScreen;
 using Impulse.Dashboard.Shell;
 using Impulse.Shared.Enums;
-using Impulse.SharedFramework.ExtensionMethods;
+using Impulse.Shared.ExtensionMethods;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Shell;
 using Impulse.SharedFramework.ToastNotifications;

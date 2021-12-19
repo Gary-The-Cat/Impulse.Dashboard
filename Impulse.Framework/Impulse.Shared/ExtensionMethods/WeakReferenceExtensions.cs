@@ -4,7 +4,7 @@
 
 using System;
 
-namespace Impulse.SharedFramework.ExtensionMethods
+namespace Impulse.Shared.ExtensionMethods
 {
     public static class WeakReferenceExtensions
     {

@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
 using ReactiveUI;

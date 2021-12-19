@@ -64,26 +64,6 @@ namespace Impulse.Dashboard.Services.Workflow
                 grid.ColumnDefinitions.Add(columnDefinition);
             }
 
-            for (int i = 0; i < tabs.Count() - 1; i++)
-            {
-                var rectangle = new Rectangle()
-                {
-                    Width = 100,
-                    Height = 10,
-                    Fill = new SolidColorBrush(Colors.Black)
-                };
-
-                // If a column does not exist, this creates a new column with width '*'
-                Grid.SetColumn(rectangle, i);
-
-                // All of our centre columns should be centre aligned.
-                rectangle.HorizontalAlignment = HorizontalAlignment.Left;
-                rectangle.VerticalAlignment = VerticalAlignment.Center;
-
-                // Add the badge to the grid
-                grid.Children.Add(rectangle);
-            }
-
             Window_SizeChanged(null, null);
         }
 

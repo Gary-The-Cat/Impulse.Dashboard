@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Windows.Controls;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 using Impulse.SharedFramework.Ribbon;
 
 namespace Impulse.SharedFramework.Services

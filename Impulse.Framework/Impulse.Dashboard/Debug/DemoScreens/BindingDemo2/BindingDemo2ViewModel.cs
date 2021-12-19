@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Impulse.Dashboard.Debug.DemoScreens.BindingDemo;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo2
 {

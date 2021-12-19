@@ -1,6 +1,4 @@
-﻿using Impulse.SharedFramework.Reactive;
-
-namespace Impulse.SharedFramework.DataStructures
+﻿namespace Impulse.Shared.ReactiveUI
 {
     public class ReactiveMenuItem : ReactiveViewModelBase
     {

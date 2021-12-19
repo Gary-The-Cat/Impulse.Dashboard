@@ -31,7 +31,7 @@ namespace Impulse.Dashboard.Services.Workflow
 
             var windowService = this.kernel.Get<IWindowManager>();
 
-            windowService.ShowDialog(internalWorkflow);
+            windowService.ShowDialogAsync(internalWorkflow);
         }
     }
 }

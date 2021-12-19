@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Impulse.Dashboard.ExtensionMethods;
-using Impulse.SharedFramework.Application;
+using Impulse.Shared.Application;
 
 namespace Impulse.Dashboard.AppBootstrapper
 {

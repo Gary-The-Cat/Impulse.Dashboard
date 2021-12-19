@@ -1,6 +1,6 @@
 ﻿using PropertyChanged;
 
-namespace Impulse.SharedFramework.Reactive
+namespace Impulse.Shared.ReactiveUI
 {
     public class ChangableItem : ReactiveViewModelBase
     {

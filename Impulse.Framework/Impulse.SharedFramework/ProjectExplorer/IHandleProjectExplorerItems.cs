@@ -2,12 +2,13 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using Impulse.Shared.Interfaces;
+using Impulse.SharedFramework.ProjectExplorer;
+using Impulse.SharedFramework.Services.Layout;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Impulse.Shared.Interfaces;
-using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.ProjectExplorer
+namespace Impulse.Shared.ProjectExplorer
 {
     public interface IHandleProjectExplorerItems : IAmKernelInjected
     {

@@ -4,7 +4,7 @@
 
 using System;
 using System.Windows;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

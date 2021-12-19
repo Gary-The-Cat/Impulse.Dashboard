@@ -10,7 +10,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Impulse.Shared.Datastructures;
 using Impulse.Shared.Services;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 using ReactiveUI;
 
 namespace Impulse.SharedFramework.Controls.AddressCompletion

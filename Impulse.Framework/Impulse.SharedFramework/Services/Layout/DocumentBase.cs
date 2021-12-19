@@ -4,8 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using Impulse.SharedFramework.ExtensionMethods;
-using Impulse.SharedFramework.Reactive;
+using System.Threading;
+using System.Threading.Tasks;
+using Impulse.Shared.ExtensionMethods;
+using Impulse.Shared.ReactiveUI;
 using Ninject;
 
 namespace Impulse.SharedFramework.Services.Layout
@@ -33,16 +35,16 @@ namespace Impulse.SharedFramework.Services.Layout
             toolWindows.Add(toolWindow);
         }
 
-        protected override void OnDeactivate(bool close)
+        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
         {
-            base.OnDeactivate(close);
+            await base.OnDeactivateAsync(close, cancellationToken);
 
             toolWindows.ForEach(toolWindow => ToolWindowService.HidePaneToolWindow(toolWindow));
         }
 
-        protected override void OnActivate()
+        protected override async Task OnActivateAsync(CancellationToken cancellationToken)
         {
-            base.OnActivate();
+            await base.OnActivateAsync(cancellationToken);
 
             toolWindows.ForEach(toolWindow =>
             {

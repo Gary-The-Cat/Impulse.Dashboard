@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Impulse.Shared.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 

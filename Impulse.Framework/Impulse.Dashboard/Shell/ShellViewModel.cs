@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows.Controls;
 using Caliburn.Micro;
-using Impulse.SharedFramework.Application;
+using Impulse.Shared.Application;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;

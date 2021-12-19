@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace Impulse.SharedFramework.ExtensionMethods
+namespace Impulse.Shared.ExtensionMethods
 {
     public static class SecureStringExtensions
     {

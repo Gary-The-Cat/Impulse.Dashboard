@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice
 {

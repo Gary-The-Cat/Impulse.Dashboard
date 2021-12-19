@@ -2,10 +2,10 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+using Impulse.Shared.ReactiveUI;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
-using Impulse.SharedFramework.Reactive;
 
 namespace Impulse.SharedFramework.Ribbon
 {

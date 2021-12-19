@@ -4,7 +4,7 @@
 
 using System.ComponentModel;
 
-namespace Impulse.SharedFramework.Reactive
+namespace Impulse.Shared.ReactiveUI
 {
     public class ReactiveViewModelBase : INotifyPropertyChanged
     {

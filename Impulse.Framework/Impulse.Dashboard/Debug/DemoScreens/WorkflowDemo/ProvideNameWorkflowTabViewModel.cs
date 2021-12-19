@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Impulse.SharedFramework.Attributes;
+using Impulse.Shared.Attributes;
 using Impulse.SharedFramework.Services.Layout;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo

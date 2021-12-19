@@ -12,7 +12,7 @@ using DynamicData;
 using Impulse.Shared.Datastructures;
 using Impulse.Shared.Enums;
 using Impulse.Shared.Services;
-using Impulse.SharedFramework.Reactive;
+using Impulse.Shared.ReactiveUI;
 using ReactiveUI;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.DirectionsDemo
