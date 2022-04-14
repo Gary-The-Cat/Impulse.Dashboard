@@ -18,6 +18,7 @@ using Impulse.Dashboard.Debug.DemoScreens.TemplatePractice;
 using Impulse.Dashboard.Debug.DemoScreens.UserControlDemo;
 using Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView;
 using Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo;
+using Impulse.Framework.Dashboard.Debug.DemoScreens.WordChecker;
 using Impulse.SFML.Viewer.Viewer;
 using Impulse.Shared.Services;
 using Impulse.SharedFramework.Ribbon;
@@ -151,6 +152,16 @@ namespace Impulse.Dashboard.Debug
                 Callback = () => OpenAsyncBusyDemo(kernel)
             };
 
+            var wordCheckerDemo = new RibbonButton()
+            {
+                Title = "Word Checker",
+                Id = DebugRibbonIds.WordCheckerDemo,
+                EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Spider.png",
+                DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Spider_GS.png",
+                IsEnabled = true,
+                Callback = () => OpenWordCheckerDemo(kernel)
+            };
+
             var googleApiDemo = new RibbonButton()
             {
                 Title = "Google Api Demo",
@@ -220,6 +231,8 @@ namespace Impulse.Dashboard.Debug
             ribbonService.AddButton(googlePlacesApiDemo);
             ribbonService.AddButton(directionsDemo);
             ribbonService.AddButton(jiraDemo);
+
+            ribbonService.AddButton(wordCheckerDemo);
 
             ribbonService.AddButton(routePlannerDemo);
         }
@@ -301,6 +314,14 @@ namespace Impulse.Dashboard.Debug
             var documentService = kernel.Get<IDocumentService>();
 
             documentService.OpenDocument(asyncBusyDemo);
+        }
+
+        private static void OpenWordCheckerDemo(IKernel kernel)
+        {
+            var wordChecker = kernel.Get<WordCheckerViewModel>();
+            var documentService = kernel.Get<IDocumentService>();
+
+            documentService.OpenDocument(wordChecker);
         }
 
         private static void OpenGoogleApiDemo(IKernel kernel)

@@ -69,6 +69,8 @@ namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo2
 
         public ObservableCollection<Car> Cars { get; set; }
 
+        public Car SelectedCar { get; set; }
+
         public IEnumerable<string> CarMakes => Cars.Select(c => c.Manufacturer).Distinct();
 
         public Person SelectedPerson { get; set; }

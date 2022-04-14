@@ -31,5 +31,7 @@ namespace Impulse.Dashboard.Debug
         public const string RoutePlannerDemo = DemosGroup + "." + "RoutePlannerDemo";
         public const string DirectionsDemo = DemosGroup + "." + "DirectionsDemo";
         public const string JiraDemo = DemosGroup + "." + "JiraDemo";
+
+        public const string WordCheckerDemo = DemosGroup + "." + "WordCheckerDemo";
     }
 }

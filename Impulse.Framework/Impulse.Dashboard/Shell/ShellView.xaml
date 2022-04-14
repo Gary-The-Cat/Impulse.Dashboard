@@ -131,6 +131,21 @@
             Content="{Binding RibbonContent}"/>
 
         <Grid
+            Grid.Row="2"
+            VerticalAlignment="Bottom"
+            Panel.ZIndex="1000"
+            MinHeight="20"
+            Background="{DynamicResource PrimaryAccentBrush}">
+
+            <TextBlock
+                Margin="6,2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Text="{Binding ProgressText, Mode=TwoWay}"
+                Foreground="White"/>
+        </Grid>
+        
+        <Grid
             Panel.ZIndex="1"
             Grid.Row="2">
             <!-- NOTE: Bind to the DocumentsSource here -->
@@ -187,21 +202,6 @@
                 </LayoutRoot>
 
             </xcad:DockingManager>
-        </Grid>
-        
-        <Grid
-            Grid.Row="3"
-            VerticalAlignment="Bottom"
-            Panel.ZIndex="10"
-            MinHeight="20"
-            Background="{DynamicResource PrimaryAccentBrush}">
-
-            <TextBlock
-                Margin="6,2"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Text="{Binding ProgressText, Mode=TwoWay}"
-                Foreground="White"/>
         </Grid>
     </Grid>
 </Window>

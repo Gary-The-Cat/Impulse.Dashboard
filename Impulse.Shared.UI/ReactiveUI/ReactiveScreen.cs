@@ -9,7 +9,7 @@ using PropertyChanged;
 
 namespace Impulse.Shared.ReactiveUI
 {
-    public class ReactiveScreen : Screen, IChangeTracking
+    public abstract class ReactiveScreen : Screen, IChangeTracking
     {
         public ReactiveScreen()
         {

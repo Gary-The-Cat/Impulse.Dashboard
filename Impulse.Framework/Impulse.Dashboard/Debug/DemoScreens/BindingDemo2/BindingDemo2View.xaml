@@ -52,36 +52,27 @@
         <ListBox
                 Margin="5"
                 ItemsSource="{Binding Cars}"
+                SelectedItem="{Binding SelectedCar, Mode=TwoWay}"
                 Grid.Row="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <Grid Height="40">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-
                         <TextBlock
                             Text="{Binding Owner}"
-                            Grid.Column="0"
-                            ></TextBlock>
-
+                            Grid.Column="0"/>
                         <TextBlock
                             Text=" owns a "
-                            Grid.Column="1"
-                            ></TextBlock>
-
-                        <TextBlock
-                            Text="{Binding Manufacturer}"
-                            Grid.Column="2"
-                            ></TextBlock>
-
+                            Grid.Column="1"/>
+                        <Button
+                            Content="{Binding Manufacturer}"
+                            Grid.Column="2"/>
                     </Grid>
-                    
                 </DataTemplate>
-
-
             </ListBox.ItemTemplate>
         </ListBox>
 
