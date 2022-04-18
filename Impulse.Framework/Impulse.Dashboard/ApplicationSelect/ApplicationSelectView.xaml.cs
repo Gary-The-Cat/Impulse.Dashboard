@@ -6,24 +6,23 @@ using System.Windows;
 using System.Windows.Controls;
 using Impulse.Shared.Application;
 
-namespace Impulse.Dashboard.ApplicaitonSelect
+namespace Impulse.Dashboard.ApplicaitonSelect;
+
+/// <summary>
+/// Interaction logic for ApplicationSelectView.xaml
+/// </summary>
+public partial class ApplicationSelectView
 {
-    /// <summary>
-    /// Interaction logic for ApplicationSelectView.xaml
-    /// </summary>
-    public partial class ApplicationSelectView
+    public ApplicationSelectView()
     {
-        public ApplicationSelectView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public ApplicationSelectViewModel ViewModel => (ApplicationSelectViewModel)this.DataContext;
+    public ApplicationSelectViewModel ViewModel => (ApplicationSelectViewModel)this.DataContext;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.SelectedApplication = (IApplication)((Button)sender).DataContext;
-            Close();
-        }
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.SelectedApplication = (IApplication)((Button)sender).DataContext;
+        Close();
     }
 }

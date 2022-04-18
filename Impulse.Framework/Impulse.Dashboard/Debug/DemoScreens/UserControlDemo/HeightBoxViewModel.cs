@@ -4,12 +4,11 @@
 
 using Impulse.Shared.ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo
-{
-    public class HeightBoxViewModel : ReactiveViewModelBase
-    {
-        public double HeightValue { get; set; }
+namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo;
 
-        public string Name { get; set; }
-    }
+public class HeightBoxViewModel : ReactiveViewModelBase
+{
+    public double HeightValue { get; set; }
+
+    public string Name { get; set; }
 }

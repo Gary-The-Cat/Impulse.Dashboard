@@ -4,16 +4,15 @@
 
 using System.Windows.Controls;
 
-namespace Impulse.Dashboard.Services.Workflow.WorkflowTabBadge
+namespace Impulse.Dashboard.Services.Workflow.WorkflowTabBadge;
+
+/// <summary>
+/// Interaction logic for WorkflowTabBadgeView.xaml
+/// </summary>
+public partial class WorkflowTabBadgeView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for WorkflowTabBadgeView.xaml
-    /// </summary>
-    public partial class WorkflowTabBadgeView : UserControl
+    public WorkflowTabBadgeView()
     {
-        public WorkflowTabBadgeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

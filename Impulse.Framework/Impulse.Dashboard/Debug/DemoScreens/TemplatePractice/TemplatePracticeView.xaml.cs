@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice
+namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice;
+
+/// <summary>
+/// Interaction logic for TemplatePracticeView.xaml
+/// </summary>
+public partial class TemplatePracticeView
 {
-    /// <summary>
-    /// Interaction logic for TemplatePracticeView.xaml
-    /// </summary>
-    public partial class TemplatePracticeView
+    public TemplatePracticeView()
     {
-        public TemplatePracticeView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

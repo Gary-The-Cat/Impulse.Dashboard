@@ -2,10 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Interfaces
+namespace Impulse.Shared.Interfaces;
+
+public interface ISolver
 {
-    public interface ISolver
-    {
-        public IResult RunSolver(ISetup setup);
-    }
+    public IResult RunSolver(ISetup setup);
 }

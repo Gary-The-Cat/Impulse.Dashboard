@@ -6,22 +6,21 @@ using Impulse.Mono.Viewer.ViewerControl;
 using Impulse.SharedFramework.Services.Layout;
 using Ninject;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.MonoViewerDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.MonoViewerDemo;
+
+public class MonoViewerDemoViewModel : DocumentBase
 {
-    public class MonoViewerDemoViewModel : DocumentBase
+    public MonoViewerDemoViewModel(IKernel kernel) : base(kernel)
     {
-        public MonoViewerDemoViewModel(IKernel kernel) : base(kernel)
-        {
-            MonoViewerViewModel = new MonoViewerViewModel();
+        MonoViewerViewModel = new MonoViewerViewModel();
 
-            DisplayName = "Mono Demo";
-        }
+        DisplayName = "Mono Demo";
+    }
 
-        public MonoViewerViewModel MonoViewerViewModel { get; set; }
+    public MonoViewerViewModel MonoViewerViewModel { get; set; }
 
-        public void OnResize()
-        {
-            MonoViewerViewModel.OnResize();
-        }
+    public void OnResize()
+    {
+        MonoViewerViewModel.OnResize();
     }
 }

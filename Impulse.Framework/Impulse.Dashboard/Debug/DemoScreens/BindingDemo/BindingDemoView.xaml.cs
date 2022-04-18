@@ -4,26 +4,25 @@
 
 using System.Windows;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo;
+
+/// <summary>
+/// Interaction logic for BindingDemoView.xaml
+/// </summary>
+public partial class BindingDemoView
 {
-    /// <summary>
-    /// Interaction logic for BindingDemoView.xaml
-    /// </summary>
-    public partial class BindingDemoView
+    public BindingDemoView()
     {
-        public BindingDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public BindingDemoViewModel ViewModel => (BindingDemoViewModel)this.DataContext;
+    public BindingDemoViewModel ViewModel => (BindingDemoViewModel)this.DataContext;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.People.Add(new Person(
-                ViewModel.Name,
-                ViewModel.Weight,
-                ViewModel.Height));
-        }
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.People.Add(new Person(
+            ViewModel.Name,
+            ViewModel.Weight,
+            ViewModel.Height));
     }
 }

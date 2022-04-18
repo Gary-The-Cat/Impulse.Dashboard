@@ -6,20 +6,19 @@ using System.Windows;
 using System.Windows.Controls;
 using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.VisualTemplates
+namespace Impulse.SharedFramework.VisualTemplates;
+
+public class LayoutItemTemplateSelector : DataTemplateSelector
 {
-    public class LayoutItemTemplateSelector : DataTemplateSelector
+    public DataTemplate Template { get; set; }
+
+    public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
-        public DataTemplate Template { get; set; }
-
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        if (item is DocumentBase)
         {
-            if (item is DocumentBase)
-            {
-                return Template;
-            }
-
-            return base.SelectTemplate(item, container);
+            return Template;
         }
+
+        return base.SelectTemplate(item, container);
     }
 }

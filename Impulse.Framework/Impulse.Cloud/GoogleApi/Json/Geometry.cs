@@ -4,12 +4,11 @@
 
 using Impulse.Shared.Datastructures;
 
-namespace Impulse.Cloud.GoogleApi.Json
-{
-    public class Geometry
-    {
-        public Location Location { get; set; }
+namespace Impulse.Cloud.GoogleApi.Json;
 
-        public Viewport ViewPort { get; set; }
-    }
+public class Geometry
+{
+    public Location Location { get; set; }
+
+    public Viewport ViewPort { get; set; }
 }

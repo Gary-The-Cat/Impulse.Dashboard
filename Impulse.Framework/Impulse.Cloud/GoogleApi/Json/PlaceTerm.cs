@@ -2,12 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Cloud.GoogleApi.Json
-{
-    public class PlaceTerm
-    {
-        public int Offset { get; set; }
+namespace Impulse.Cloud.GoogleApi.Json;
 
-        public string Value { get; set; }
-    }
+public class PlaceTerm
+{
+    public int Offset { get; set; }
+
+    public string Value { get; set; }
 }

@@ -4,16 +4,15 @@
 
 using System.Windows.Controls;
 
-namespace Impulse.SharedFramework.Controls.AddressCompletion
+namespace Impulse.SharedFramework.Controls.AddressCompletion;
+
+/// <summary>
+/// Interaction logic for AddressCompletionView.xaml
+/// </summary>
+public partial class AddressCompletionView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AddressCompletionView.xaml
-    /// </summary>
-    public partial class AddressCompletionView : UserControl
+    public AddressCompletionView()
     {
-        public AddressCompletionView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -2,12 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Cloud.GoogleApi.Enums
+namespace Impulse.Cloud.GoogleApi.Enums;
+
+public enum BusinessStatus
 {
-    public enum BusinessStatus
-    {
-        OPERATIONAL,
-        CLOSED_TEMPORARILY,
-        CLOSED_PERMANENTLY,
-    }
+    OPERATIONAL,
+    CLOSED_TEMPORARILY,
+    CLOSED_PERMANENTLY,
 }

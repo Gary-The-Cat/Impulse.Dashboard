@@ -2,9 +2,8 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Viewer
+namespace Impulse.Shared.Viewer;
+
+public interface IViewer
 {
-    public interface IViewer
-    {
-    }
 }

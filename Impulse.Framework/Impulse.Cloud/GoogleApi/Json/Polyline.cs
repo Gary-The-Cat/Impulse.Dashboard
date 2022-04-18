@@ -2,10 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Cloud.GoogleApi.Json
+namespace Impulse.Cloud.GoogleApi.Json;
+
+public class Polyline
 {
-    public class Polyline
-    {
-        public string Points { get; set; }
-    }
+    public string Points { get; set; }
 }

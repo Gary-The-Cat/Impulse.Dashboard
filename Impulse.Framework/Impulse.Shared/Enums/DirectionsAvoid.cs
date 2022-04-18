@@ -2,14 +2,13 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Enums
+namespace Impulse.Shared.Enums;
+
+public enum DirectionsAvoid
 {
-    public enum DirectionsAvoid
-    {
-        none,
-        tolls,
-        highways,
-        ferries,
-        indoor,
-    }
+    none,
+    tolls,
+    highways,
+    ferries,
+    indoor,
 }

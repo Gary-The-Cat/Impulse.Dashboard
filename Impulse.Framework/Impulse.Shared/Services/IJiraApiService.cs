@@ -6,14 +6,13 @@ using CSharpFunctionalExtensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Impulse.Shared.Services
+namespace Impulse.Shared.Services;
+
+public interface IJiraApiService
 {
-    public interface IJiraApiService
-    {
-        Task<Result<List<string>>> GetAllReadyForDemoJiraIssuesForEmployee(
-            string jiraEndpoint,
-            string userName,
-            string password,
-            string employee);
-    }
+    Task<Result<List<string>>> GetAllReadyForDemoJiraIssuesForEmployee(
+        string jiraEndpoint,
+        string userName,
+        string password,
+        string employee);
 }

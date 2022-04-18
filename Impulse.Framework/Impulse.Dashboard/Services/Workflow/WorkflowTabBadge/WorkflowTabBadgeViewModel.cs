@@ -5,16 +5,15 @@
 using System;
 using Impulse.Shared.ReactiveUI;
 
-namespace Impulse.Dashboard.Services.Workflow.WorkflowTabBadge
+namespace Impulse.Dashboard.Services.Workflow.WorkflowTabBadge;
+
+public class WorkflowTabBadgeViewModel : ReactiveViewModelBase
 {
-    public class WorkflowTabBadgeViewModel : ReactiveViewModelBase
-    {
-        public Uri Image { get; set; }
+    public Uri Image { get; set; }
 
-        public string DisplayName { get; set; }
+    public string DisplayName { get; set; }
 
-        public string Details { get; set; }
+    public string Details { get; set; }
 
-        public bool IsSelected { get; set; }
-    }
+    public bool IsSelected { get; set; }
 }

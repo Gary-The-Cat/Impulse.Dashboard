@@ -4,12 +4,11 @@
 
 using Impulse.Shared.ReactiveUI;
 
-namespace Impulse.SharedFramework.Services.Layout
-{
-    public abstract class WorkflowTabBase : ReactiveScreen
-    {
-        public new abstract string DisplayName { get; }
+namespace Impulse.SharedFramework.Services.Layout;
 
-        public abstract string Descrption { get; }
-    }
+public abstract class WorkflowTabBase : ReactiveScreen
+{
+    public new abstract string DisplayName { get; }
+
+    public abstract string Descrption { get; }
 }

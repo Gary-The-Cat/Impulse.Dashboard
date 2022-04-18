@@ -4,12 +4,11 @@
 
 using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.Services
-{
-    public interface IWorkflowService
-    {
-        public IWorkflowViewModel CreateWorkflow(params WorkflowTabBase[] workflowTabs);
+namespace Impulse.SharedFramework.Services;
 
-        public void ShowWorkflow(IWorkflowViewModel workflow);
-    }
+public interface IWorkflowService
+{
+    public IWorkflowViewModel CreateWorkflow(params WorkflowTabBase[] workflowTabs);
+
+    public void ShowWorkflow(IWorkflowViewModel workflow);
 }

@@ -4,10 +4,9 @@
 
 using System;
 
-namespace Impulse.Shared.Interfaces
+namespace Impulse.Shared.Interfaces;
+
+public interface IHaveId
 {
-    public interface IHaveId
-    {
-        Guid Id { get; set; }
-    }
+    Guid Id { get; set; }
 }

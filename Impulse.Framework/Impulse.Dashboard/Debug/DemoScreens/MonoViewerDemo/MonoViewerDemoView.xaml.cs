@@ -4,16 +4,15 @@
 
 using System.Windows.Controls;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.MonoViewerDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.MonoViewerDemo;
+
+/// <summary>
+/// Interaction logic for MonoViewerDemoView.xaml
+/// </summary>
+public partial class MonoViewerDemoView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for MonoViewerDemoView.xaml
-    /// </summary>
-    public partial class MonoViewerDemoView : UserControl
+    public MonoViewerDemoView()
     {
-        public MonoViewerDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -5,18 +5,17 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Impulse.Shared.Application
+namespace Impulse.Shared.Application;
+
+public interface IApplication
 {
-    public interface IApplication
-    {
-        string DisplayName { get; }
+    string DisplayName { get; }
 
-        Uri Icon { get; }
+    Uri Icon { get; }
 
-        Task LaunchApplication();
+    Task LaunchApplication();
 
-        Task Initialize();
+    Task Initialize();
 
-        Task OnClose();
-    }
+    Task OnClose();
 }

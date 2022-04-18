@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.RoutePlannerDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.RoutePlannerDemo;
+
+/// <summary>
+/// Interaction logic for RoutePlannerDemoView.xaml
+/// </summary>
+public partial class RoutePlannerDemoView
 {
-    /// <summary>
-    /// Interaction logic for RoutePlannerDemoView.xaml
-    /// </summary>
-    public partial class RoutePlannerDemoView
+    public RoutePlannerDemoView()
     {
-        public RoutePlannerDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

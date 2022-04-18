@@ -7,18 +7,17 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.Services
+namespace Impulse.SharedFramework.Services;
+
+public interface IProjectExplorerService
 {
-    public interface IProjectExplorerService
-    {
-        Task AddItemAsync(ProjectExplorerItemBase item);
+    Task AddItemAsync(ProjectExplorerItemBase item);
 
-        Task DeleteItemAsync(Guid itemId);
+    Task DeleteItemAsync(Guid itemId);
 
-        IEnumerable<ProjectExplorerItemBase> GetItems();
+    IEnumerable<ProjectExplorerItemBase> GetItems();
 
-        IEnumerable<ProjectExplorerItemBase> GetItemsRecursive();
+    IEnumerable<ProjectExplorerItemBase> GetItemsRecursive();
 
-        void ClearAllItems();
-    }
+    void ClearAllItems();
 }

@@ -4,16 +4,15 @@
 
 using System.Windows.Controls;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo;
+
+/// <summary>
+/// Interaction logic for ProvideAgeWorkflowTabView.xaml
+/// </summary>
+public partial class ProvideAgeWorkflowTabView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ProvideAgeWorkflowTabView.xaml
-    /// </summary>
-    public partial class ProvideAgeWorkflowTabView : UserControl
+    public ProvideAgeWorkflowTabView()
     {
-        public ProvideAgeWorkflowTabView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

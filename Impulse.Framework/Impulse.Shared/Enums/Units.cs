@@ -2,11 +2,10 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Enums
+namespace Impulse.Shared.Enums;
+
+public enum Units
 {
-    public enum Units
-    {
-        metric,
-        imperial,
-    }
+    metric,
+    imperial,
 }

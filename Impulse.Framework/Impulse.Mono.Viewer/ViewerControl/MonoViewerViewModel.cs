@@ -6,51 +6,50 @@ using Impulse.Mono.Viewer.MonoGameWrapper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Impulse.Mono.Viewer.ViewerControl
+namespace Impulse.Mono.Viewer.ViewerControl;
+
+public class MonoViewerViewModel : MonoGameViewModel
 {
-    public class MonoViewerViewModel : MonoGameViewModel
+    private Renderer renderer;
+
+    public MonoViewerViewModel()
     {
-        private Renderer renderer;
+    }
 
-        public MonoViewerViewModel()
-        {
-        }
+    public override void Initialize()
+    {
+        renderer = new Renderer(GraphicsDevice);
+        base.Initialize();
+    }
 
-        public override void Initialize()
-        {
-            renderer = new Renderer(GraphicsDevice);
-            base.Initialize();
-        }
+    public override void LoadContent()
+    {
+        Content.RootDirectory = "Models";
+    }
 
-        public override void LoadContent()
-        {
-            Content.RootDirectory = "Models";
-        }
+    public override void Update(GameTime gameTime)
+    {
+        renderer.OnResize(GraphicsDevice.Viewport.AspectRatio);
 
-        public override void Update(GameTime gameTime)
-        {
-            renderer.OnResize(GraphicsDevice.Viewport.AspectRatio);
+        renderer.Update(gameTime.ElapsedGameTime.Milliseconds / 1000f);
 
-            renderer.Update(gameTime.ElapsedGameTime.Milliseconds / 1000f);
+        base.Update(gameTime);
+    }
 
-            base.Update(gameTime);
-        }
+    public void Draw()
+    {
+        renderer.Draw();
+    }
 
-        public void Draw()
-        {
-            renderer.Draw();
-        }
+    public override void Draw(GameTime gameTime)
+    {
+        renderer.Draw();
 
-        public override void Draw(GameTime gameTime)
-        {
-            renderer.Draw();
+        base.Draw(gameTime);
+    }
 
-            base.Draw(gameTime);
-        }
-
-        public void OnResize()
-        {
-            // renderer.OnResize(GraphicsDevice.Viewport.AspectRatio);
-        }
+    public void OnResize()
+    {
+        // renderer.OnResize(GraphicsDevice.Viewport.AspectRatio);
     }
 }

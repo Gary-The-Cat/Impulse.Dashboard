@@ -2,32 +2,31 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
+namespace Impulse.Viewer.ViewerControl;
+
 using System;
 using Impulse.SharedFramework.Viewer;
 
-namespace Impulse.Viewer.ViewerControl
+public class ViewerView : Win32HwndControl
 {
-    public class ViewerView : Win32HwndControl
+    private ViewerViewModel ViewModel => (ViewerViewModel)this.DataContext;
+
+    protected override sealed void Initialize()
     {
-        private ViewerViewModel ViewModel => (ViewerViewModel)this.DataContext;
+        ViewModel.Initialize();
+    }
 
-        protected override sealed void Initialize()
-        {
-            ViewModel.Initialize();
-        }
+    protected sealed override void Resized()
+    {
+        ViewModel.OnResize();
+    }
 
-        protected sealed override void Resized()
-        {
-            ViewModel.OnResize();
-        }
+    protected override sealed void Uninitialize()
+    {
+    }
 
-        protected override sealed void Uninitialize()
-        {
-        }
-
-        protected override void Render(IntPtr windowHandle)
-        {
-            ViewModel.Render();
-        }
+    protected override void Render(IntPtr windowHandle)
+    {
+        ViewModel.Render();
     }
 }

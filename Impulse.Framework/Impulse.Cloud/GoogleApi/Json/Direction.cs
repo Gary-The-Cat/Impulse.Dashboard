@@ -4,23 +4,22 @@
 
 using System.Collections.Generic;
 
-namespace Impulse.Cloud.GoogleApi.Json
+namespace Impulse.Cloud.GoogleApi.Json;
+
+public class Direction
 {
-    public class Direction
-    {
-        public string Summary { get; set; }
+    public string Summary { get; set; }
 
-        public List<Leg> Legs { get; set; }
+    public List<Leg> Legs { get; set; }
 
-        // Only used when returning optimised waypoints.
-        public List<int> Waypoint_Order { get; set; }
+    // Only used when returning optimised waypoints.
+    public List<int> Waypoint_Order { get; set; }
 
-        public Polyline Overview_Polyline { get; set; }
+    public Polyline Overview_Polyline { get; set; }
 
-        public Viewport Bounds { get; set; }
+    public Viewport Bounds { get; set; }
 
-        public string Copyrights { get; set; }
+    public string Copyrights { get; set; }
 
-        public List<string> Warnings { get; set; }
-    }
+    public List<string> Warnings { get; set; }
 }

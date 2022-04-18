@@ -4,16 +4,15 @@
 
 using System.Windows.Controls;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo;
+
+/// <summary>
+/// Interaction logic for ProvideNameWorkflowTabView.xaml
+/// </summary>
+public partial class ProvideNameWorkflowTabView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ProvideNameWorkflowTabView.xaml
-    /// </summary>
-    public partial class ProvideNameWorkflowTabView : UserControl
+    public ProvideNameWorkflowTabView()
     {
-        public ProvideNameWorkflowTabView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

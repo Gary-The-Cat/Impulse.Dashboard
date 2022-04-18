@@ -4,9 +4,8 @@
 
 using Caliburn.Micro;
 
-namespace Impulse.Dashboard.Ribbon
+namespace Impulse.Dashboard.Ribbon;
+
+public class RibbonViewModel : Screen
 {
-    public class RibbonViewModel : Screen
-    {
-    }
 }

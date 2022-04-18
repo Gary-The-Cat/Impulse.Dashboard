@@ -6,13 +6,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Impulse.Shared.ExtensionMethods
+namespace Impulse.Shared.ExtensionMethods;
+
+public static class LinqExtensions
 {
-    public static class LinqExtensions
+    public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> items, Func<T, TKey> property)
     {
-        public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> items, Func<T, TKey> property)
-        {
-            return items.GroupBy(property).Select(x => x.First());
-        }
+        return items.GroupBy(property).Select(x => x.First());
     }
 }

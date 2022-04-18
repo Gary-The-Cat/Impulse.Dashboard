@@ -4,27 +4,26 @@
 
 using System;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.TaylorDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.TaylorDemo;
+
+public class DateWeight
 {
-    public class DateWeight
+    public DateWeight(DateTime date, float weight)
     {
-        public DateWeight(DateTime date, float weight)
-        {
-            Date = date;
-            Weight = weight;
-        }
+        Date = date;
+        Weight = weight;
+    }
 
-        public DateTime Date { get; set; }
+    public DateTime Date { get; set; }
 
-        public float Weight { get; set; }
+    public float Weight { get; set; }
 
-        public string WeightFormatted => Weight.ToString("#.00");
+    public string WeightFormatted => Weight.ToString("#.00");
 
-        public string DateFormatted => Date.ToShortDateString();
+    public string DateFormatted => Date.ToShortDateString();
 
-        public override string ToString()
-        {
-            return $"{DateFormatted} => {WeightFormatted}";
-        }
+    public override string ToString()
+    {
+        return $"{DateFormatted} => {WeightFormatted}";
     }
 }

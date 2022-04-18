@@ -5,23 +5,22 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ViewerToolbar
+namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ViewerToolbar;
+
+/// <summary>
+/// Interaction logic for ViewerControlView.xaml
+/// </summary>
+public partial class ViewerControlView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ViewerControlView.xaml
-    /// </summary>
-    public partial class ViewerControlView : UserControl
+    public ViewerControlView()
     {
-        public ViewerControlView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private ViewerControlViewModel ViewModel => (ViewerControlViewModel)this.DataContext;
+    private ViewerControlViewModel ViewModel => (ViewerControlViewModel)this.DataContext;
 
-        private void NewViewer_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.LoadNewObjFile();
-        }
+    private void NewViewer_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.LoadNewObjFile();
     }
 }

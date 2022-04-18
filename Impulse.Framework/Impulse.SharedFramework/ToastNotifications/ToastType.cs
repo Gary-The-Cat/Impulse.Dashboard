@@ -2,13 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.SharedFramework.ToastNotifications
+namespace Impulse.SharedFramework.ToastNotifications;
+
+public enum ToastType
 {
-    public enum ToastType
-    {
-        Success,
-        Information,
-        Warning,
-        Error
-    }
+    Success,
+    Information,
+    Warning,
+    Error
 }

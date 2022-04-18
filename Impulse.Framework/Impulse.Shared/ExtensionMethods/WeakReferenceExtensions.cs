@@ -4,18 +4,17 @@
 
 using System;
 
-namespace Impulse.Shared.ExtensionMethods
-{
-    public static class WeakReferenceExtensions
-    {
-        public static T Value<T>(this WeakReference<T> weakReference) where T : class
-        {
-            if (weakReference.TryGetTarget(out var value))
-            {
-                return value;
-            }
+namespace Impulse.Shared.ExtensionMethods;
 
-            return default(T);
+public static class WeakReferenceExtensions
+{
+    public static T Value<T>(this WeakReference<T> weakReference) where T : class
+    {
+        if (weakReference.TryGetTarget(out var value))
+        {
+            return value;
         }
+
+        return default(T);
     }
 }

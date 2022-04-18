@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo;
+
+/// <summary>
+/// Interaction logic for UserControlView.xaml
+/// </summary>
+public partial class UserControlDemoView
 {
-    /// <summary>
-    /// Interaction logic for UserControlView.xaml
-    /// </summary>
-    public partial class UserControlDemoView
+    public UserControlDemoView()
     {
-        public UserControlDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -7,13 +7,12 @@ using Impulse.Cloud.GoogleApi.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Impulse.Cloud.GoogleApi.Json
-{
-    public class DirectionResponse
-    {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public StatusResponse Status { get; set; }
+namespace Impulse.Cloud.GoogleApi.Json;
 
-        public List<Direction> Routes { get; set; }
-    }
+public class DirectionResponse
+{
+    [JsonConverter(typeof(StringEnumConverter))]
+    public StatusResponse Status { get; set; }
+
+    public List<Direction> Routes { get; set; }
 }

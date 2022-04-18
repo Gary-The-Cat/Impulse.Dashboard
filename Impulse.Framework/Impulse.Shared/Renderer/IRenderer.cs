@@ -4,10 +4,9 @@
 
 using System.Drawing;
 
-namespace Impulse.Shared.Renderer
+namespace Impulse.Shared.Renderer;
+
+public interface IRenderer
 {
-    public interface IRenderer
-    {
-        Color RenderColor { get; set; }
-    }
+    Color RenderColor { get; set; }
 }

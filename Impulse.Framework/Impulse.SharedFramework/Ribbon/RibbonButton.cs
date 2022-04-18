@@ -7,67 +7,66 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace Impulse.SharedFramework.Ribbon
+namespace Impulse.SharedFramework.Ribbon;
+
+public class RibbonButton : ReactiveViewModelBase
 {
-    public class RibbonButton : ReactiveViewModelBase
+    private ReactiveScreen context;
+
+    public RibbonButton()
     {
-        private ReactiveScreen context;
+    }
 
-        public RibbonButton()
+    public string Title { get; set; } = "Not Set";
+
+    public string Id { get; set; }
+
+    public string Icon => IsEnabled ? EnabledIcon : DisabledIcon;
+
+    public string DisabledIcon { get; set; }
+
+    public string EnabledIcon { get; set; }
+
+    public bool IsEnabled { get; set; } = true;
+
+    public string EnabledPropertyName { get; set; }
+
+    public ReactiveScreen Context
+    {
+        get => context;
+        set
         {
+            context = value;
+            Context.PropertyChanged += EnabledCallback;
         }
+    }
 
-        public string Title { get; set; } = "Not Set";
+    public Action Callback { get; set; } = () => { };
 
-        public string Id { get; set; }
+    public ICommand Command { get; set; }
 
-        public string Icon => IsEnabled ? EnabledIcon : DisabledIcon;
-
-        public string DisabledIcon { get; set; }
-
-        public string EnabledIcon { get; set; }
-
-        public bool IsEnabled { get; set; } = true;
-
-        public string EnabledPropertyName { get; set; }
-
-        public ReactiveScreen Context
+    public Func<object, bool> PropertyConverter { get; set; } =
+        o =>
         {
-            get => context;
-            set
+            if (bool.TryParse(o.ToString(), out var result))
             {
-                context = value;
-                Context.PropertyChanged += EnabledCallback;
+                return result;
             }
-        }
 
-        public Action Callback { get; set; } = () => { };
+            return false;
+        };
 
-        public ICommand Command { get; set; }
+    public static object GetPropValue(object src, string propName)
+    {
+        return src.GetType().GetProperty(propName).GetValue(src, null);
+    }
 
-        public Func<object, bool> PropertyConverter { get; set; } =
-            o =>
-            {
-                if (bool.TryParse(o.ToString(), out var result))
-                {
-                    return result;
-                }
-
-                return false;
-            };
-
-        public static object GetPropValue(object src, string propName)
+    private void EnabledCallback(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName.Equals(EnabledPropertyName))
         {
-            return src.GetType().GetProperty(propName).GetValue(src, null);
-        }
-
-        private void EnabledCallback(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName.Equals(EnabledPropertyName))
-            {
-                var value = PropertyConverter(GetPropValue(sender, e.PropertyName));
-                IsEnabled = value;
-            }
+            var value = PropertyConverter(GetPropValue(sender, e.PropertyName));
+            IsEnabled = value;
         }
     }
 }

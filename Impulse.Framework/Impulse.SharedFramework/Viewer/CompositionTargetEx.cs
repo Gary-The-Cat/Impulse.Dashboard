@@ -5,47 +5,46 @@
 using System;
 using System.Windows.Media;
 
-namespace Impulse.SharedFramework.Viewer
+namespace Impulse.SharedFramework.Viewer;
+
+public static class CompositionTargetEx
 {
-    public static class CompositionTargetEx
+    private static TimeSpan last = TimeSpan.Zero;
+
+    public static event EventHandler<RenderingEventArgs> Rendering
     {
-        private static TimeSpan last = TimeSpan.Zero;
-
-        public static event EventHandler<RenderingEventArgs> Rendering
+        add
         {
-            add
+            if (FrameUpdating == null)
             {
-                if (FrameUpdating == null)
-                {
-                    CompositionTarget.Rendering += CompositionTarget_Rendering;
-                }
-
-                FrameUpdating += value;
+                CompositionTarget.Rendering += CompositionTarget_Rendering;
             }
 
-            remove
-            {
-                FrameUpdating -= value;
-                if (FrameUpdating == null)
-                {
-                    CompositionTarget.Rendering -= CompositionTarget_Rendering;
-                }
-            }
+            FrameUpdating += value;
         }
 
-        private static event EventHandler<RenderingEventArgs> FrameUpdating;
-
-        private static void CompositionTarget_Rendering(object sender, EventArgs e)
+        remove
         {
-            RenderingEventArgs args = (RenderingEventArgs)e;
-            if (args.RenderingTime == last)
+            FrameUpdating -= value;
+            if (FrameUpdating == null)
             {
-                return;
+                CompositionTarget.Rendering -= CompositionTarget_Rendering;
             }
-
-            last = args.RenderingTime;
-
-            FrameUpdating(sender, args);
         }
+    }
+
+    private static event EventHandler<RenderingEventArgs> FrameUpdating;
+
+    private static void CompositionTarget_Rendering(object sender, EventArgs e)
+    {
+        RenderingEventArgs args = (RenderingEventArgs)e;
+        if (args.RenderingTime == last)
+        {
+            return;
+        }
+
+        last = args.RenderingTime;
+
+        FrameUpdating(sender, args);
     }
 }

@@ -4,55 +4,54 @@
 
 using System;
 
-namespace Impulse.Shared.Maths
+namespace Impulse.Shared.Maths;
+
+public class EasingWorker
 {
-    public class EasingWorker
+    private readonly Func<double, double> getValue;
+
+    private readonly Action<double> setValue;
+
+    private readonly float duration;
+
+    private readonly float minValue;
+
+    private readonly float difference;
+
+    private float timeAlive;
+
+    public EasingWorker(
+        Func<double, double> getValue,
+        Action<double> setValue,
+        float durationSeconds,
+        float minValue = 0,
+        float maxValue = 1)
     {
-        private readonly Func<double, double> getValue;
+        this.getValue = getValue;
+        this.setValue = setValue;
+        this.duration = durationSeconds;
+        this.minValue = minValue;
+        this.difference = maxValue - minValue;
+        timeAlive = 0;
+    }
 
-        private readonly Action<double> setValue;
+    public bool IsAlive => timeAlive < duration;
 
-        private readonly float duration;
-
-        private readonly float minValue;
-
-        private readonly float difference;
-
-        private float timeAlive;
-
-        public EasingWorker(
-            Func<double, double> getValue,
-            Action<double> setValue,
-            float durationSeconds,
-            float minValue = 0,
-            float maxValue = 1)
+    public void OnUpdate(float deltaT)
+    {
+        if (!IsAlive)
         {
-            this.getValue = getValue;
-            this.setValue = setValue;
-            this.duration = durationSeconds;
-            this.minValue = minValue;
-            this.difference = maxValue - minValue;
-            timeAlive = 0;
+            return;
         }
 
-        public bool IsAlive => timeAlive < duration;
+        timeAlive += deltaT;
 
-        public void OnUpdate(float deltaT)
-        {
-            if (!IsAlive)
-            {
-                return;
-            }
+        var proportion = timeAlive / duration;
 
-            timeAlive += deltaT;
+        var scale = getValue(proportion);
 
-            var proportion = timeAlive / duration;
+        var newValue = minValue + (scale * difference);
 
-            var scale = getValue(proportion);
-
-            var newValue = minValue + (scale * difference);
-
-            setValue(newValue);
-        }
+        setValue(newValue);
     }
 }

@@ -12,43 +12,42 @@ using Impulse.SharedFramework.Services.Layout;
 using Ninject;
 using ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.GoogleApiDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.GoogleApiDemo;
+
+public class GoogleApiDemoViewModel : DocumentBase
 {
-    public class GoogleApiDemoViewModel : DocumentBase
+    private readonly IGoogleApiService googleApiService;
+
+    public GoogleApiDemoViewModel(IKernel kernel, IGoogleApiService googleApiService) : base(kernel)
     {
-        private readonly IGoogleApiService googleApiService;
+        // Set the documents display name
+        DisplayName = "Google Api Demo";
 
-        public GoogleApiDemoViewModel(IKernel kernel, IGoogleApiService googleApiService) : base(kernel)
+        // Grab a reference to our service
+        this.googleApiService = googleApiService;
+
+        // Initialize the suggested addresses list, slightly faster than new'ing on update
+        SuggestedAddresses = new ObservableCollection<string>();
+
+        // The current address value has been changed, update the suggested addresses
+        this.WhenAnyValue(i => i.CurrentAddress).Subscribe(async _ =>
         {
-            // Set the documents display name
-            DisplayName = "Google Api Demo";
+            var suggestions = await CalculateSuggestedAddresses(CurrentAddress);
 
-            // Grab a reference to our service
-            this.googleApiService = googleApiService;
-
-            // Initialize the suggested addresses list, slightly faster than new'ing on update
-            SuggestedAddresses = new ObservableCollection<string>();
-
-            // The current address value has been changed, update the suggested addresses
-            this.WhenAnyValue(i => i.CurrentAddress).Subscribe(async _ =>
+            SuggestedAddresses.Clear();
+            foreach (var suggestion in suggestions)
             {
-                var suggestions = await CalculateSuggestedAddresses(CurrentAddress);
+                SuggestedAddresses.Add(suggestion.FormattedAddress);
+            }
+        });
+    }
 
-                SuggestedAddresses.Clear();
-                foreach (var suggestion in suggestions)
-                {
-                    SuggestedAddresses.Add(suggestion.FormattedAddress);
-                }
-            });
-        }
+    public ObservableCollection<string> SuggestedAddresses { get; set; }
 
-        public ObservableCollection<string> SuggestedAddresses { get; set; }
+    public string CurrentAddress { get; set; }
 
-        public string CurrentAddress { get; set; }
-
-        private async Task<IEnumerable<Address>> CalculateSuggestedAddresses(string userInput)
-        {
-            return await googleApiService.ListPlacePredictionAddressesAsync(userInput);
-        }
+    private async Task<IEnumerable<Address>> CalculateSuggestedAddresses(string userInput)
+    {
+        return await googleApiService.ListPlacePredictionAddressesAsync(userInput);
     }
 }

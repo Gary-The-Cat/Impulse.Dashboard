@@ -2,9 +2,8 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Interfaces
+namespace Impulse.Shared.Interfaces;
+
+public interface IAmKernelInjected
 {
-    public interface IAmKernelInjected
-    {
-    }
 }

@@ -7,17 +7,16 @@ using Impulse.Cloud.GoogleApi.Enums;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Impulse.Cloud.GoogleApi.Json
+namespace Impulse.Cloud.GoogleApi.Json;
+
+public class SearchResponse
 {
-    public class SearchResponse
-    {
-        [JsonConverter(typeof(StringEnumConverter))]
-        public StatusResponse Status { get; set; }
+    [JsonConverter(typeof(StringEnumConverter))]
+    public StatusResponse Status { get; set; }
 
-        public List<string> HtmlAttributes { get; set; }
+    public List<string> HtmlAttributes { get; set; }
 
-        public string NextPageToken { get; set; }
+    public string NextPageToken { get; set; }
 
-        public List<PlaceSearch> Candidates { get; set; }
-    }
+    public List<PlaceSearch> Candidates { get; set; }
 }

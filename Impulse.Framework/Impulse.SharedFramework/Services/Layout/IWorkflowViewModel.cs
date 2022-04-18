@@ -2,10 +2,9 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.SharedFramework.Services.Layout
+namespace Impulse.SharedFramework.Services.Layout;
+
+public interface IWorkflowViewModel
 {
-    public interface IWorkflowViewModel
-    {
-        T GetValue<T>(string propertyName);
-    }
+    T GetValue<T>(string propertyName);
 }

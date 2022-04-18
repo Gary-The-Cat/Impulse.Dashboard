@@ -12,36 +12,35 @@ using Impulse.SharedFramework.Services.Layout;
 using Ninject;
 using ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.GoogleSuggestionApiDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.GoogleSuggestionApiDemo;
+
+public class GoogleSuggestionApiDemoViewModel : DocumentBase
 {
-    public class GoogleSuggestionApiDemoViewModel : DocumentBase
+    private readonly IGoogleApiService googleApiService;
+
+    public GoogleSuggestionApiDemoViewModel(IKernel kernel, IGoogleApiService googleApiService) : base(kernel)
     {
-        private readonly IGoogleApiService googleApiService;
+        // Set the documents display name
+        DisplayName = "Google Api Demo";
 
-        public GoogleSuggestionApiDemoViewModel(IKernel kernel, IGoogleApiService googleApiService) : base(kernel)
+        // Grab a reference to our service
+        this.googleApiService = googleApiService;
+
+        ClickCommand = ReactiveCommand.Create(async () =>
         {
-            // Set the documents display name
-            DisplayName = "Google Api Demo";
+            var suggestions = await GetSuggestedAddress(CurrentAddress);
+            SuggestedAddress = suggestions.Any() ? suggestions.First().FormattedAddress : string.Empty;
+        });
+    }
 
-            // Grab a reference to our service
-            this.googleApiService = googleApiService;
+    public string CurrentAddress { get; set; }
 
-            ClickCommand = ReactiveCommand.Create(async () =>
-            {
-                var suggestions = await GetSuggestedAddress(CurrentAddress);
-                SuggestedAddress = suggestions.Any() ? suggestions.First().FormattedAddress : string.Empty;
-            });
-        }
+    public string SuggestedAddress { get; set; }
 
-        public string CurrentAddress { get; set; }
+    public ICommand ClickCommand { get; set; }
 
-        public string SuggestedAddress { get; set; }
-
-        public ICommand ClickCommand { get; set; }
-
-        private async Task<IEnumerable<Address>> GetSuggestedAddress(string userInput)
-        {
-            return await googleApiService.ListSearchAddressesAsync(userInput);
-        }
+    private async Task<IEnumerable<Address>> GetSuggestedAddress(string userInput)
+    {
+        return await googleApiService.ListSearchAddressesAsync(userInput);
     }
 }

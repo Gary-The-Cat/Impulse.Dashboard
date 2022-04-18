@@ -7,35 +7,34 @@ using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
 
-namespace Impulse.Dashboard.Services
+namespace Impulse.Dashboard.Services;
+
+public class ToolWindowService : IToolWindowService
 {
-    public class ToolWindowService : IToolWindowService
+    private readonly ShellViewModel shell;
+
+    public ToolWindowService(IShellViewModel shell)
     {
-        private readonly ShellViewModel shell;
+        this.shell = (ShellViewModel)shell;
+    }
 
-        public ToolWindowService(IShellViewModel shell)
-        {
-            this.shell = (ShellViewModel)shell;
-        }
+    public void HidePaneToolWindow(ToolWindowBase toolWindow)
+    {
+        shell.Tools.Remove(toolWindow);
+    }
 
-        public void HidePaneToolWindow(ToolWindowBase toolWindow)
-        {
-            shell.Tools.Remove(toolWindow);
-        }
+    public void OpenLeftPaneToolWindow(ToolWindowBase toolWindow)
+    {
+        toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Left;
+        shell.Tools.Add(toolWindow);
+    }
 
-        public void OpenLeftPaneToolWindow(ToolWindowBase toolWindow)
+    public void OpenRightPaneToolWindow(ToolWindowBase toolWindow)
+    {
+        toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Right;
+        if (!shell.Tools.Contains(toolWindow))
         {
-            toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Left;
             shell.Tools.Add(toolWindow);
-        }
-
-        public void OpenRightPaneToolWindow(ToolWindowBase toolWindow)
-        {
-            toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Right;
-            if (!shell.Tools.Contains(toolWindow))
-            {
-                shell.Tools.Add(toolWindow);
-            }
         }
     }
 }

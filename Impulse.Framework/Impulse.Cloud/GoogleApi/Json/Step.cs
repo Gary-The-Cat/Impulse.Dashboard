@@ -4,24 +4,23 @@
 
 using Impulse.Shared.Datastructures;
 
-namespace Impulse.Cloud.GoogleApi.Json
+namespace Impulse.Cloud.GoogleApi.Json;
+
+public class Step
 {
-    public class Step
-    {
-        public string Html_Instructions { get; set; }
+    public string Html_Instructions { get; set; }
 
-        // Value is distance in metres.
-        public ValueEntry Distance { get; set; }
+    // Value is distance in metres.
+    public ValueEntry Distance { get; set; }
 
-        // Value is duration in seconds.
-        public ValueEntry Duration { get; set; }
+    // Value is duration in seconds.
+    public ValueEntry Duration { get; set; }
 
-        public Location Start_Location { get; set; }
+    public Location Start_Location { get; set; }
 
-        public Location End_Location { get; set; }
+    public Location End_Location { get; set; }
 
-        public string Maneuver { get; set; }
+    public string Maneuver { get; set; }
 
-        public Polyline Polyline { get; set; }
-    }
+    public Polyline Polyline { get; set; }
 }

@@ -10,48 +10,47 @@ using Microsoft.Win32;
 using PropertyChanged;
 using ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ViewerToolbar
+namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ViewerToolbar;
+
+public class ViewerControlViewModel : ToolWindowBase
 {
-    public class ViewerControlViewModel : ToolWindowBase
+    private readonly ViewerViewModel viewer;
+
+    public ViewerControlViewModel(
+        ViewerViewModel viewer)
     {
-        private readonly ViewerViewModel viewer;
+        DisplayName = "Viewer Toolbar";
+        this.viewer = viewer;
+        SliderValue = 1f;
 
-        public ViewerControlViewModel(
-            ViewerViewModel viewer)
+        Placement = Impulse.Shared.Enums.ToolWindowPlacement.Right;
+
+        this.viewer.SetFrameTime = s =>
         {
-            DisplayName = "Viewer Toolbar";
-            this.viewer = viewer;
-            SliderValue = 1f;
+            FrameTime = $"{s}ms";
+        };
 
-            Placement = Impulse.Shared.Enums.ToolWindowPlacement.Right;
-
-            this.viewer.SetFrameTime = s =>
-            {
-                FrameTime = $"{s}ms";
-            };
-
-            this.WhenAnyValue(i => i.SliderValue).Subscribe(value =>
-            {
-                this.viewer.SetVertexColour((float)value);
-            });
-        }
-
-        public double SliderValue { get; set; }
-
-        [DoNotSetChanged]
-        public string FrameTime { get; set; }
-
-        public void LoadNewObjFile()
+        this.WhenAnyValue(i => i.SliderValue).Subscribe(value =>
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Obj files (*.obj)|*.obj|All files (*.*)|*.*";
-            openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+            this.viewer.SetVertexColour((float)value);
+        });
+    }
 
-            // If the user has selected a file
-            if (openFileDialog.ShowDialog() == true && openFileDialog.CheckFileExists)
-            {
-                // Pass the file to the viewer to place and render
-            }
+    public double SliderValue { get; set; }
+
+    [DoNotSetChanged]
+    public string FrameTime { get; set; }
+
+    public void LoadNewObjFile()
+    {
+        var openFileDialog = new OpenFileDialog();
+        openFileDialog.Filter = "Obj files (*.obj)|*.obj|All files (*.*)|*.*";
+        openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+
+        // If the user has selected a file
+        if (openFileDialog.ShowDialog() == true && openFileDialog.CheckFileExists)
+        {
+            // Pass the file to the viewer to place and render
         }
     }
 }

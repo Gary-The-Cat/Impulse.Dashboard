@@ -5,18 +5,17 @@
 using System;
 using System.Linq;
 
-namespace Impulse.Dashboard.ExtensionMethods
-{
-    public static class TypeExtensions
-    {
-        public static bool Implements(this Type type, Type interfaceType)
-        {
-            if (type.GetInterfaces().Any(i => i == interfaceType))
-            {
-                return true;
-            }
+namespace Impulse.Dashboard.ExtensionMethods;
 
-            return false;
+public static class TypeExtensions
+{
+    public static bool Implements(this Type type, Type interfaceType)
+    {
+        if (type.GetInterfaces().Any(i => i == interfaceType))
+        {
+            return true;
         }
+
+        return false;
     }
 }

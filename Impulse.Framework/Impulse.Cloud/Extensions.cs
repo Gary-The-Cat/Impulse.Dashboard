@@ -2,13 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Cloud
+namespace Impulse.Cloud;
+
+public static class Extensions
 {
-    public static class Extensions
+    public static string ToLowerString(this bool _bool)
     {
-        public static string ToLowerString(this bool _bool)
-        {
-            return _bool.ToString().ToLower();
-        }
+        return _bool.ToString().ToLower();
     }
 }

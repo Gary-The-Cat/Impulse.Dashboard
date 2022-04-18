@@ -4,31 +4,30 @@
 
 using System;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice
+namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice;
+
+public class ObamaFactory
 {
-    public class ObamaFactory
+    private const int ObamaCount = 7;
+
+    private static readonly string[] ObamaAdjectives =
     {
-        private const int ObamaCount = 7;
+        "Professional",
+        "Competent",
+        "Skillful",
+        "Experienced",
+        "Qualified",
+        "Adept",
+        "Expert",
+    };
 
-        private static readonly string[] ObamaAdjectives =
+    private static readonly Random Random = new Random();
+
+    public static Obama CreateObama()
+    {
+        return new Obama
         {
-            "Professional",
-            "Competent",
-            "Skillful",
-            "Experienced",
-            "Qualified",
-            "Adept",
-            "Expert",
+            Name = $"{ObamaAdjectives[Random.Next(ObamaCount)]} Obama",
         };
-
-        private static readonly Random Random = new Random();
-
-        public static Obama CreateObama()
-        {
-            return new Obama
-            {
-                Name = $"{ObamaAdjectives[Random.Next(ObamaCount)]} Obama",
-            };
-        }
     }
 }

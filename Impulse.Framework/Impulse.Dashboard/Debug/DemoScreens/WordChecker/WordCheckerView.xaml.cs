@@ -13,16 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Impulse.Framework.Dashboard.Debug.DemoScreens.WordChecker
+namespace Impulse.Framework.Dashboard.Debug.DemoScreens.WordChecker;
+
+/// <summary>
+/// Interaction logic for WordCheckerView.xaml
+/// </summary>
+public partial class WordCheckerView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for WordCheckerView.xaml
-    /// </summary>
-    public partial class WordCheckerView : UserControl
+    public WordCheckerView()
     {
-        public WordCheckerView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

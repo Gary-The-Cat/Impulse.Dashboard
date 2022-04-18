@@ -8,56 +8,55 @@ using Impulse.Shared.ApiSettings;
 using Impulse.Shared.Datastructures;
 using Impulse.Shared.Enums;
 
-namespace Impulse.Shared.Services
+namespace Impulse.Shared.Services;
+
+public interface IGoogleApiService
 {
-    public interface IGoogleApiService
-    {
-        PlacesApiSettings GetPlacesApiSettings();
+    PlacesApiSettings GetPlacesApiSettings();
 
-        void SetPlacesApiSettings(PlacesApiSettings settings);
+    void SetPlacesApiSettings(PlacesApiSettings settings);
 
-        // List place predictions based on a supplied address.
-        // This uses the places autocomplete api.
-        Task<IEnumerable<Address>> ListPlacePredictionAddressesAsync(string address);
+    // List place predictions based on a supplied address.
+    // This uses the places autocomplete api.
+    Task<IEnumerable<Address>> ListPlacePredictionAddressesAsync(string address);
 
-        SearchApiSettings GetSearchApiSettings();
+    SearchApiSettings GetSearchApiSettings();
 
-        void SetSearchApiSettings(SearchApiSettings settings);
+    void SetSearchApiSettings(SearchApiSettings settings);
 
-        // List place searchs based on a supplied address.
-        // This uses the places search api.
-        Task<IEnumerable<Address>> ListSearchAddressesAsync(string query);
+    // List place searchs based on a supplied address.
+    // This uses the places search api.
+    Task<IEnumerable<Address>> ListSearchAddressesAsync(string query);
 
-        DirectionsApiSettings GetDirectionsApiSettings();
+    DirectionsApiSettings GetDirectionsApiSettings();
 
-        void SetDirectionsApiSettings(DirectionsApiSettings settings);
+    void SetDirectionsApiSettings(DirectionsApiSettings settings);
 
-        // Get directions for the addresses supplied.
-        // If text input addresses are used, set waypoint mode to ADDRESS.
-        // If the addresses are instead place ids, set waypoint mode to PLACE_ID
-        // This uses the directions api.
-        Task<IEnumerable<string>> GetSpokenDirectionsAsync(
-            string originAddress,
-            string destinationAddess,
-            WaypointMode mode,
-            IList<string> waypoints);
+    // Get directions for the addresses supplied.
+    // If text input addresses are used, set waypoint mode to ADDRESS.
+    // If the addresses are instead place ids, set waypoint mode to PLACE_ID
+    // This uses the directions api.
+    Task<IEnumerable<string>> GetSpokenDirectionsAsync(
+        string originAddress,
+        string destinationAddess,
+        WaypointMode mode,
+        IList<string> waypoints);
 
-        // Get directions for the addresses supplied.
-        // If text input addresses are used, set waypoint mode to ADDRESS.
-        // If the addresses are instead place ids, set waypoint mode to PLACE_ID
-        // This uses the directions api.
-        Task<IEnumerable<DirectionInformation>> GetDirectionInformationAsync(
-            string originAddress,
-            string destinationAddess,
-            WaypointMode mode);
+    // Get directions for the addresses supplied.
+    // If text input addresses are used, set waypoint mode to ADDRESS.
+    // If the addresses are instead place ids, set waypoint mode to PLACE_ID
+    // This uses the directions api.
+    Task<IEnumerable<DirectionInformation>> GetDirectionInformationAsync(
+        string originAddress,
+        string destinationAddess,
+        WaypointMode mode);
 
-        // Same as above, but includes stops along the way, i.e the waypoints.
-        // Note the waypoint addresses need to be the same mode (address or place_id) as
-        // the input addresses.
-        Task<IEnumerable<DirectionInformation>> GetDirectionInformationAsync(
-            string originAddress,
-            string destinationAddess,
-            WaypointMode mode,
-            IList<string> waypoints);
-    }
+    // Same as above, but includes stops along the way, i.e the waypoints.
+    // Note the waypoint addresses need to be the same mode (address or place_id) as
+    // the input addresses.
+    Task<IEnumerable<DirectionInformation>> GetDirectionInformationAsync(
+        string originAddress,
+        string destinationAddess,
+        WaypointMode mode,
+        IList<string> waypoints);
 }

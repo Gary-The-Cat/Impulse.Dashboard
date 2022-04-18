@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.AsyncBusyDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.AsyncBusyDemo;
+
+/// <summary>
+/// Interaction logic for AsyncBusyDemoView.xaml
+/// </summary>
+public partial class AsyncBusyDemoView
 {
-    /// <summary>
-    /// Interaction logic for AsyncBusyDemoView.xaml
-    /// </summary>
-    public partial class AsyncBusyDemoView
+    public AsyncBusyDemoView()
     {
-        public AsyncBusyDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

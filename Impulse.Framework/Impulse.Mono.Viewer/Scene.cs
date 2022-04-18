@@ -6,22 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Impulse.Mono.Viewer
+namespace Impulse.Mono.Viewer;
+
+public class Scene
 {
-    public class Scene
+    private readonly List<Model> models;
+
+    public Scene()
     {
-        private readonly List<Model> models;
+        models = new List<Model>();
+    }
 
-        public Scene()
-        {
-            models = new List<Model>();
-        }
+    public IEnumerable<Model> Models => models.AsEnumerable();
 
-        public IEnumerable<Model> Models => models.AsEnumerable();
-
-        public void AddModel(Model model)
-        {
-            models.Add(model);
-        }
+    public void AddModel(Model model)
+    {
+        models.Add(model);
     }
 }

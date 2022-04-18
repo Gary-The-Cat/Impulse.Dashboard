@@ -3,73 +3,72 @@ using System.Collections.Generic;
 using System.Linq;
 using Veldrid;
 
-namespace Impulse.Renderer
+namespace Impulse.Renderer;
+
+public class Mesh : IDisposable
 {
-    public class Mesh : IDisposable
+    public static readonly IndexFormat IndexFormat = IndexFormat.UInt32;
+
+    private readonly Transform transform;
+
+    private readonly DeviceBuffer vertexBuffer;
+    private readonly DeviceBuffer indexBuffer;
+
+    private readonly int vertexCount;
+    private readonly int indexCount;
+
+    public Mesh(GraphicsDevice device, IEnumerable<MeshVertex> vertices, IEnumerable<uint> indices)
     {
-        public static readonly IndexFormat IndexFormat = IndexFormat.UInt32;
+        ResourceFactory factory = device.ResourceFactory;
 
-        private readonly Transform transform;
+        transform = new Transform();
 
-        private readonly DeviceBuffer vertexBuffer;
-        private readonly DeviceBuffer indexBuffer;
+        vertexBuffer = factory.CreateBuffer(
+            new BufferDescription(
+                (uint)vertices.Count() * MeshVertex.SizeInBytes,
+                BufferUsage.VertexBuffer));
 
-        private readonly int vertexCount;
-        private readonly int indexCount;
+        device.UpdateBuffer(VertexBuffer, 0, vertices.ToArray());
 
-        public Mesh(GraphicsDevice device, IEnumerable<MeshVertex> vertices, IEnumerable<uint> indices)
-        {
-            ResourceFactory factory = device.ResourceFactory;
+        indexBuffer = factory.CreateBuffer(
+            new BufferDescription(
+                (uint)indices.Count() * sizeof(uint),
+                BufferUsage.IndexBuffer));
 
-            transform = new Transform();
+        device.UpdateBuffer(IndexBuffer, 0, indices.ToArray());
 
-            vertexBuffer = factory.CreateBuffer(
-                new BufferDescription(
-                    (uint)vertices.Count() * MeshVertex.SizeInBytes,
-                    BufferUsage.VertexBuffer));
+        vertexCount = vertices.Count();
+        indexCount = indices.Count();
+    }
 
-            device.UpdateBuffer(VertexBuffer, 0, vertices.ToArray());
+    public Transform Transform
+    {
+        get => transform;
+    }
 
-            indexBuffer = factory.CreateBuffer(
-                new BufferDescription(
-                    (uint)indices.Count() * sizeof(uint),
-                    BufferUsage.IndexBuffer));
+    public DeviceBuffer VertexBuffer
+    {
+        get => vertexBuffer;
+    }
 
-            device.UpdateBuffer(IndexBuffer, 0, indices.ToArray());
+    public int VertexCount
+    {
+        get => vertexCount;
+    }
 
-            vertexCount = vertices.Count();
-            indexCount = indices.Count();
-        }
+    public DeviceBuffer IndexBuffer
+    {
+        get => indexBuffer;
+    }
 
-        public Transform Transform
-        {
-            get => transform;
-        }
+    public int IndexCount
+    {
+        get => indexCount;
+    }
 
-        public DeviceBuffer VertexBuffer
-        {
-            get => vertexBuffer;
-        }
-
-        public int VertexCount
-        {
-            get => vertexCount;
-        }
-
-        public DeviceBuffer IndexBuffer
-        {
-            get => indexBuffer;
-        }
-
-        public int IndexCount
-        {
-            get => indexCount;
-        }
-
-        public void Dispose()
-        {
-            VertexBuffer.Dispose();
-            IndexBuffer.Dispose();
-        }
+    public void Dispose()
+    {
+        VertexBuffer.Dispose();
+        IndexBuffer.Dispose();
     }
 }

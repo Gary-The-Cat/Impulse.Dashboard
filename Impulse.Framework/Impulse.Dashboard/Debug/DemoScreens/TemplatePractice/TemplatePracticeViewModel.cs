@@ -5,20 +5,19 @@
 using System.Collections.ObjectModel;
 using Impulse.Shared.ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice
+namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice;
+
+public class TemplatePracticeViewModel : ReactiveScreen
 {
-    public class TemplatePracticeViewModel : ReactiveScreen
+    public TemplatePracticeViewModel()
     {
-        public TemplatePracticeViewModel()
+        Obamas = new ObservableCollection<Obama>();
+
+        for (int i = 0; i < 10; i++)
         {
-            Obamas = new ObservableCollection<Obama>();
-
-            for (int i = 0; i < 10; i++)
-            {
-                Obamas.Add(ObamaFactory.CreateObama());
-            }
+            Obamas.Add(ObamaFactory.CreateObama());
         }
-
-        public ObservableCollection<Obama> Obamas { get; set; }
     }
+
+    public ObservableCollection<Obama> Obamas { get; set; }
 }

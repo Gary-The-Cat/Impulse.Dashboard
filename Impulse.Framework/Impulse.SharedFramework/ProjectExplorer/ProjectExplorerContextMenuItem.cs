@@ -4,14 +4,13 @@
 
 using System;
 
-namespace Impulse.SharedFramework.ProjectExplorer
+namespace Impulse.SharedFramework.ProjectExplorer;
+
+public class ProjectExplorerContextMenuItem
 {
-    public class ProjectExplorerContextMenuItem
-    {
-        public Uri Image { get; set; }
+    public Uri Image { get; set; }
 
-        public string Title { get; set; }
+    public string Title { get; set; }
 
-        public Action Callback { get; set; }
-    }
+    public Action Callback { get; set; }
 }

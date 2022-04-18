@@ -2,13 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Enums
+namespace Impulse.Shared.Enums;
+
+public enum DirectionsMode
 {
-    public enum DirectionsMode
-    {
-        driving,
-        walking,
-        bicycling,
-        transit,
-    }
+    driving,
+    walking,
+    bicycling,
+    transit,
 }

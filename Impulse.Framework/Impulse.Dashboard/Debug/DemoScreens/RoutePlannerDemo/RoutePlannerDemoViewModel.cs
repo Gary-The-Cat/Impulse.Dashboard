@@ -18,159 +18,158 @@ using Impulse.SharedFramework.ToastNotifications;
 using Ninject;
 using ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.RoutePlannerDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.RoutePlannerDemo;
+
+public class RoutePlannerDemoViewModel : DocumentBase
 {
-    public class RoutePlannerDemoViewModel : DocumentBase
+    private readonly IGoogleApiService googleApiService;
+    private readonly IDialogService dialogService;
+
+    public RoutePlannerDemoViewModel(
+        IKernel kernel,
+        IGoogleApiService googleApiService,
+        IDialogService dialogService) : base(kernel)
     {
-        private readonly IGoogleApiService googleApiService;
-        private readonly IDialogService dialogService;
+        // Set the documents display name
+        DisplayName = "Route Planner Demo";
 
-        public RoutePlannerDemoViewModel(
-            IKernel kernel,
-            IGoogleApiService googleApiService,
-            IDialogService dialogService) : base(kernel)
+        // Grab a reference to our service
+        this.googleApiService = googleApiService;
+        this.dialogService = dialogService;
+
+        // Initialize the suggested addresses list, slightly faster than new'ing on update
+        Addresses = new ObservableCollection<Address>();
+
+        this.OptimizeCommand = ReactiveCommand.Create(() => this.OptimizeAsync());
+        this.RemoveCommand = ReactiveCommand.Create(() => Addresses.Remove(SelectedAddress));
+
+        // The current address value has been changed, update the suggested addresses
+        StartLocationAutoComplete = kernel.Get<AddressCompletionViewModel>();
+        StartLocationAutoComplete.WhenAnyValue(i => i.SelectedSuggestedAddress).Subscribe(address =>
         {
-            // Set the documents display name
-            DisplayName = "Route Planner Demo";
+            StartAddress = address;
+        });
 
-            // Grab a reference to our service
-            this.googleApiService = googleApiService;
-            this.dialogService = dialogService;
+        EndLocationAutoComplete = kernel.Get<AddressCompletionViewModel>();
+        EndLocationAutoComplete.WhenAnyValue(i => i.SelectedSuggestedAddress).Subscribe(address =>
+        {
+            EndAddress = address;
+        });
 
-            // Initialize the suggested addresses list, slightly faster than new'ing on update
-            Addresses = new ObservableCollection<Address>();
-
-            this.OptimizeCommand = ReactiveCommand.Create(() => this.OptimizeAsync());
-            this.RemoveCommand = ReactiveCommand.Create(() => Addresses.Remove(SelectedAddress));
-
-            // The current address value has been changed, update the suggested addresses
-            StartLocationAutoComplete = kernel.Get<AddressCompletionViewModel>();
-            StartLocationAutoComplete.WhenAnyValue(i => i.SelectedSuggestedAddress).Subscribe(address =>
+        StopLocationAutoComplete = kernel.Get<AddressCompletionViewModel>();
+        StopLocationAutoComplete.WhenAnyValue(i => i.SelectedSuggestedAddress)
+            .Where(a => a != null)
+            .Subscribe(async suggestedAddresses =>
             {
-                StartAddress = address;
+                await AddAsync(suggestedAddresses);
+
+                StopLocationAutoComplete.CurrentAddress = null;
             });
+    }
 
-            EndLocationAutoComplete = kernel.Get<AddressCompletionViewModel>();
-            EndLocationAutoComplete.WhenAnyValue(i => i.SelectedSuggestedAddress).Subscribe(address =>
+    public AddressCompletionViewModel StartLocationAutoComplete { get; set; }
+
+    public AddressCompletionViewModel StopLocationAutoComplete { get; set; }
+
+    public AddressCompletionViewModel EndLocationAutoComplete { get; set; }
+
+    // Address Entry
+    public Address StartAddress { get; set; }
+
+    public Address EndAddress { get; set; }
+
+    public Address SelectedAddress { get; set; }
+
+    public bool IsAddressSelected => SelectedAddress != null;
+
+    public ICommand OptimizeCommand { get; set; }
+
+    public ICommand RemoveCommand { get; set; }
+
+    public ObservableCollection<Address> Addresses { get; set; }
+
+    public bool IsBusy { get; set; }
+
+    private async Task AddAsync(Address address)
+    {
+        if (await ValidateAddress(address))
+        {
+            Addresses.Add(address);
+        }
+    }
+
+    private async Task OptimizeAsync()
+    {
+        IsBusy = true;
+
+        var tempAddresses = Addresses.ToList();
+        tempAddresses.AddRange(new[] { StartAddress, EndAddress });
+
+        var travelCosts = await GetTravelCostLookup(tempAddresses.Select(a => a.PlaceId).Distinct());
+
+        double GetTravelCost((string, string) key)
+        {
+            return travelCosts[key];
+        }
+
+        var solver = new RoutePlanner(
+            StartAddress.PlaceId,
+            EndAddress.PlaceId,
+            Addresses.Select(a => a.PlaceId).ToList(),
+            GetTravelCost);
+
+        solver.ReportProgress = ReportProgress;
+
+        await solver.Solve();
+
+        IsBusy = false;
+    }
+
+    private void ReportProgress(double value)
+    {
+        dialogService.ShowProgressMessage("Best Fitness: " + value.ToString("0.00"));
+    }
+
+    private async Task<Dictionary<(string, string), double>> GetTravelCostLookup(IEnumerable<string> addresses)
+    {
+        var lookup = new Dictionary<(string, string), double>();
+
+        foreach (var addressA in addresses)
+        {
+            foreach (var addressB in addresses)
             {
-                EndAddress = address;
-            });
-
-            StopLocationAutoComplete = kernel.Get<AddressCompletionViewModel>();
-            StopLocationAutoComplete.WhenAnyValue(i => i.SelectedSuggestedAddress)
-                .Where(a => a != null)
-                .Subscribe(async suggestedAddresses =>
+                if (addressA.Equals(addressB))
                 {
-                    await AddAsync(suggestedAddresses);
-
-                    StopLocationAutoComplete.CurrentAddress = null;
-                });
-        }
-
-        public AddressCompletionViewModel StartLocationAutoComplete { get; set; }
-
-        public AddressCompletionViewModel StopLocationAutoComplete { get; set; }
-
-        public AddressCompletionViewModel EndLocationAutoComplete { get; set; }
-
-        // Address Entry
-        public Address StartAddress { get; set; }
-
-        public Address EndAddress { get; set; }
-
-        public Address SelectedAddress { get; set; }
-
-        public bool IsAddressSelected => SelectedAddress != null;
-
-        public ICommand OptimizeCommand { get; set; }
-
-        public ICommand RemoveCommand { get; set; }
-
-        public ObservableCollection<Address> Addresses { get; set; }
-
-        public bool IsBusy { get; set; }
-
-        private async Task AddAsync(Address address)
-        {
-            if (await ValidateAddress(address))
-            {
-                Addresses.Add(address);
-            }
-        }
-
-        private async Task OptimizeAsync()
-        {
-            IsBusy = true;
-
-            var tempAddresses = Addresses.ToList();
-            tempAddresses.AddRange(new[] { StartAddress, EndAddress });
-
-            var travelCosts = await GetTravelCostLookup(tempAddresses.Select(a => a.PlaceId).Distinct());
-
-            double GetTravelCost((string, string) key)
-            {
-                return travelCosts[key];
-            }
-
-            var solver = new RoutePlanner(
-                StartAddress.PlaceId,
-                EndAddress.PlaceId,
-                Addresses.Select(a => a.PlaceId).ToList(),
-                GetTravelCost);
-
-            solver.ReportProgress = ReportProgress;
-
-            await solver.Solve();
-
-            IsBusy = false;
-        }
-
-        private void ReportProgress(double value)
-        {
-            dialogService.ShowProgressMessage("Best Fitness: " + value.ToString("0.00"));
-        }
-
-        private async Task<Dictionary<(string, string), double>> GetTravelCostLookup(IEnumerable<string> addresses)
-        {
-            var lookup = new Dictionary<(string, string), double>();
-
-            foreach (var addressA in addresses)
-            {
-                foreach (var addressB in addresses)
-                {
-                    if (addressA.Equals(addressB))
-                    {
-                        continue;
-                    }
-
-                    var directions = await googleApiService.GetDirectionInformationAsync(addressA, addressB, Impulse.Shared.Enums.WaypointMode.PLACE_ID);
-                    if (!directions.Any())
-                    {
-                        throw new ArgumentException("No valid directions found.");
-                    }
-
-                    var key = (addressA, addressB);
-                    lookup[key] = directions.First().Duration;
+                    continue;
                 }
+
+                var directions = await googleApiService.GetDirectionInformationAsync(addressA, addressB, Impulse.Shared.Enums.WaypointMode.PLACE_ID);
+                if (!directions.Any())
+                {
+                    throw new ArgumentException("No valid directions found.");
+                }
+
+                var key = (addressA, addressB);
+                lookup[key] = directions.First().Duration;
             }
-
-            return lookup;
         }
 
-        private async Task<bool> ValidateAddress(Address currentAddress)
+        return lookup;
+    }
+
+    private async Task<bool> ValidateAddress(Address currentAddress)
+    {
+        if (Addresses.Contains(currentAddress))
         {
-            if (Addresses.Contains(currentAddress))
-            {
-                dialogService.ShowToast("Address already added", ToastType.Error);
-                return false;
-            }
-
-            return true;
+            dialogService.ShowToast("Address already added", ToastType.Error);
+            return false;
         }
 
-        private async Task<IEnumerable<Address>> CalculateSuggestedAddresses(string userInput)
-        {
-            return await googleApiService.ListPlacePredictionAddressesAsync(userInput);
-        }
+        return true;
+    }
+
+    private async Task<IEnumerable<Address>> CalculateSuggestedAddresses(string userInput)
+    {
+        return await googleApiService.ListPlacePredictionAddressesAsync(userInput);
     }
 }

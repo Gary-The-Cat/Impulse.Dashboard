@@ -5,61 +5,60 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Impulse.Shared.Helpers
+namespace Impulse.Shared.Helpers;
+
+public enum UniqueNameMode
 {
-    public enum UniqueNameMode
-    {
-        Numerical,
-        Copy
-    }
+    Numerical,
+    Copy
+}
 
-    public static class NameHelper
-    {
-        public static UniqueNameMode Mode { get; set; } = UniqueNameMode.Numerical;
+public static class NameHelper
+{
+    public static UniqueNameMode Mode { get; set; } = UniqueNameMode.Numerical;
 
-        public static string GetUniqueName(IEnumerable<string> existingNames, string desiredName)
+    public static string GetUniqueName(IEnumerable<string> existingNames, string desiredName)
+    {
+        var existingNameHash = existingNames.ToHashSet();
+
+        // Check if we can immediately return the requested name
+        if (!existingNameHash.Contains(desiredName))
         {
-            var existingNameHash = existingNames.ToHashSet();
+            return desiredName;
+        }
 
-            // Check if we can immediately return the requested name
+        if (Mode == UniqueNameMode.Numerical)
+        {
             if (!existingNameHash.Contains(desiredName))
             {
                 return desiredName;
             }
 
-            if (Mode == UniqueNameMode.Numerical)
+            int currentValue = 2;
+
+            var suggestedName = $"{desiredName}_{currentValue}";
+
+            while (existingNameHash.Contains(suggestedName))
             {
-                if (!existingNameHash.Contains(desiredName))
-                {
-                    return desiredName;
-                }
-
-                int currentValue = 2;
-
-                var suggestedName = $"{desiredName}_{currentValue}";
-
-                while (existingNameHash.Contains(suggestedName))
-                {
-                    currentValue++;
-                    suggestedName = $"{desiredName}_{currentValue}";
-                }
-
-                return suggestedName;
+                currentValue++;
+                suggestedName = $"{desiredName}_{currentValue}";
             }
 
-            if (Mode == UniqueNameMode.Copy)
-            {
-                var suggestedName = $"{desiredName} (Copy)";
-
-                while (existingNameHash.Contains(suggestedName))
-                {
-                    suggestedName = $"{suggestedName} (Copy)";
-                }
-
-                return suggestedName;
-            }
-
-            throw new System.Exception("We were unable to find any unique name.");
+            return suggestedName;
         }
+
+        if (Mode == UniqueNameMode.Copy)
+        {
+            var suggestedName = $"{desiredName} (Copy)";
+
+            while (existingNameHash.Contains(suggestedName))
+            {
+                suggestedName = $"{suggestedName} (Copy)";
+            }
+
+            return suggestedName;
+        }
+
+        throw new System.Exception("We were unable to find any unique name.");
     }
 }

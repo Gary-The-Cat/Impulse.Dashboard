@@ -3,52 +3,51 @@ using SFML.System;
 using System;
 using System.Windows;
 
-namespace Impulse.SFML.Viewer.Viewer
+namespace Impulse.SFML.Viewer.Viewer;
+
+/// <summary>
+/// Interaction logic for SfmlViewerView.xaml
+/// </summary>
+public class SfmlViewerView : ViewerView
 {
-    /// <summary>
-    /// Interaction logic for SfmlViewerView.xaml
-    /// </summary>
-    public class SfmlViewerView : ViewerView
+    public SfmlViewerView()
     {
-        public SfmlViewerView()
+        Loaded += OnLoaded;
+    }
+
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        base.OnInitialized(e);
+
+        ViewModel.Initialize(this.Handle);
+
+        this.isLoaded = true;
+        Loaded -= OnLoaded;
+    }
+
+    public SfmlViewerViewModel ViewModel => (SfmlViewerViewModel)this.DataContext;
+
+    private bool isLoaded = false;
+
+    protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+    {
+        if (!isLoaded)
         {
-            Loaded += OnLoaded;
+            return;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            base.OnInitialized(e);
+        base.OnRenderSizeChanged(sizeInfo);
 
-            ViewModel.Initialize(this.Handle);
+        var fWidth = (float)sizeInfo.NewSize.Width;
+        var fHeight= (float)sizeInfo.NewSize.Height;
 
-            this.isLoaded = true;
-            Loaded -= OnLoaded;
-        }
+        this.ViewModel.RenderWindow.SetView(new View(
+            new Vector2f(fWidth / 2, fHeight / 2),
+            new Vector2f(fWidth, fHeight)));
+    }
 
-        public SfmlViewerViewModel ViewModel => (SfmlViewerViewModel)this.DataContext;
-
-        private bool isLoaded = false;
-
-        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
-        {
-            if (!isLoaded)
-            {
-                return;
-            }
-
-            base.OnRenderSizeChanged(sizeInfo);
-
-            var fWidth = (float)sizeInfo.NewSize.Width;
-            var fHeight= (float)sizeInfo.NewSize.Height;
-
-            this.ViewModel.RenderWindow.SetView(new View(
-                new Vector2f(fWidth / 2, fHeight / 2),
-                new Vector2f(fWidth, fHeight)));
-        }
-
-        protected override void Render(IntPtr _)
-        {
-            this.ViewModel.OnRender();
-        }
+    protected override void Render(IntPtr _)
+    {
+        this.ViewModel.OnRender();
     }
 }

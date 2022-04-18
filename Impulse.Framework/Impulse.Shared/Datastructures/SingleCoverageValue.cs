@@ -7,92 +7,91 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Impulse.Shared.Datastructures
+namespace Impulse.Shared.Datastructures;
+
+public class SingleCoverageValue<T> : IEnumerable<T>
 {
-    public class SingleCoverageValue<T> : IEnumerable<T>
+    private static Random random = new Random();
+    private List<double> keys;
+    private Dictionary<double, DoubleRange<T>> spans;
+
+    public SingleCoverageValue(IEnumerable<DoubleRange<T>> values)
     {
-        private static Random random = new Random();
-        private List<double> keys;
-        private Dictionary<double, DoubleRange<T>> spans;
+        spans = new Dictionary<double, DoubleRange<T>>();
 
-        public SingleCoverageValue(IEnumerable<DoubleRange<T>> values)
+        foreach (var value in values)
         {
-            spans = new Dictionary<double, DoubleRange<T>>();
-
-            foreach (var value in values)
-            {
-                spans.Add(value.Midpoint, value);
-            }
-
-            keys = spans.Keys.OrderBy(k => k).ToList();
+            spans.Add(value.Midpoint, value);
         }
 
-        public double Earliest => keys.First();
+        keys = spans.Keys.OrderBy(k => k).ToList();
+    }
 
-        public double Latest => keys.Last();
+    public double Earliest => keys.First();
 
-        public T Sample => this[Earliest + (random.NextDouble() * (Latest - Earliest))];
+    public double Latest => keys.Last();
 
-        public T this[double x] => this.GetValue(x);
+    public T Sample => this[Earliest + (random.NextDouble() * (Latest - Earliest))];
 
-        public T GetValue(double x)
+    public T this[double x] => this.GetValue(x);
+
+    public T GetValue(double x)
+    {
+        var key = this.GetKey(x);
+        return spans[key].Value;
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        foreach (var key in keys)
         {
-            var key = this.GetKey(x);
-            return spans[key].Value;
+            yield return this[key];
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    private double GetKey(double value)
+    {
+        int index;
+
+        if (value < Earliest)
+        {
+            return keys.First();
+        }
+        else if (value > Latest)
+        {
+            return keys.Last();
+        }
+        else
+        {
+            index = keys.BinarySearch(value);
         }
 
-        public IEnumerator<T> GetEnumerator()
+        if (index < 0)
         {
-            foreach (var key in keys)
-            {
-                yield return this[key];
-            }
+            // Bitwise complement
+            index = -index - 1;
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        if (spans[keys[index]].Contains(value))
         {
-            return GetEnumerator();
+            return keys[index];
         }
 
-        private double GetKey(double value)
+        if (index > 0 && spans[keys[index - 1]].Contains(value))
         {
-            int index;
-
-            if (value < Earliest)
-            {
-                return keys.First();
-            }
-            else if (value > Latest)
-            {
-                return keys.Last();
-            }
-            else
-            {
-                index = keys.BinarySearch(value);
-            }
-
-            if (index < 0)
-            {
-                // Bitwise complement
-                index = -index - 1;
-            }
-
-            if (spans[keys[index]].Contains(value))
-            {
-                return keys[index];
-            }
-
-            if (index > 0 && spans[keys[index - 1]].Contains(value))
-            {
-                return keys[index - 1];
-            }
-
-            if (index < (keys.Count - 1) && spans[keys[index]].Contains(value))
-            {
-                return keys[index];
-            }
-
-            throw new Exception("Invalid Span Value Requested");
+            return keys[index - 1];
         }
+
+        if (index < (keys.Count - 1) && spans[keys[index]].Contains(value))
+        {
+            return keys[index];
+        }
+
+        throw new Exception("Invalid Span Value Requested");
     }
 }

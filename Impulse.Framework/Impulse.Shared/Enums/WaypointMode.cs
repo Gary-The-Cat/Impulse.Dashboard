@@ -2,11 +2,10 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Enums
+namespace Impulse.Shared.Enums;
+
+public enum WaypointMode
 {
-    public enum WaypointMode
-    {
-        PLACE_ID,
-        ADDRESS,
-    }
+    PLACE_ID,
+    ADDRESS,
 }

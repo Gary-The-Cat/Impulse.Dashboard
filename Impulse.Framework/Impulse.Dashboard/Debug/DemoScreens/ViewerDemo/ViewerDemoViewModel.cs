@@ -10,51 +10,50 @@ using Ninject.Parameters;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView
+namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView;
+
+public class ViewerDemoViewModel : DocumentBase
 {
-    public class ViewerDemoViewModel : DocumentBase
+    private ViewerControlViewModel viewerControlViewModel;
+
+    private IKernel kernel;
+
+    public ViewerDemoViewModel(IKernel kernel) : base(kernel)
     {
-        private ViewerControlViewModel viewerControlViewModel;
+        DisplayName = "Viewer";
 
-        private IKernel kernel;
+        this.kernel = kernel;
 
-        public ViewerDemoViewModel(IKernel kernel) : base(kernel)
-        {
-            DisplayName = "Viewer";
+        ViewerViewModel = kernel.Get<ViewerViewModel>();
 
-            this.kernel = kernel;
+        // Create the view for our tool window and attach its DataContext
+        viewerControlViewModel = this.kernel.Get<ViewerControlViewModel>(
+            new ConstructorArgument("viewer", ViewerViewModel));
 
-            ViewerViewModel = kernel.Get<ViewerViewModel>();
+        viewerControlViewModel.DisplayName = "Viewer Control 1";
 
-            // Create the view for our tool window and attach its DataContext
-            viewerControlViewModel = this.kernel.Get<ViewerControlViewModel>(
-                new ConstructorArgument("viewer", ViewerViewModel));
+        // Ask the document service to show the panel
+        AddToolWindow(viewerControlViewModel);
+    }
 
-            viewerControlViewModel.DisplayName = "Viewer Control 1";
+    public ViewerViewModel ViewerViewModel { get; private set; }
 
-            // Ask the document service to show the panel
-            AddToolWindow(viewerControlViewModel);
-        }
+    public override async Task TryCloseAsync(bool? dialogResult = null)
+    {
+        await base.TryCloseAsync(dialogResult);
 
-        public ViewerViewModel ViewerViewModel { get; private set; }
+        ViewerViewModel.OnClosing();
+    }
 
-        public override async Task TryCloseAsync(bool? dialogResult = null)
-        {
-            await base.TryCloseAsync(dialogResult);
+    protected async override Task OnActivateAsync(CancellationToken cancellationToken)
+    {
+        await base.OnActivateAsync(cancellationToken);
+        ViewerViewModel.OnSelected();
+    }
 
-            ViewerViewModel.OnClosing();
-        }
-
-        protected async override Task OnActivateAsync(CancellationToken cancellationToken)
-        {
-            await base.OnActivateAsync(cancellationToken);
-            ViewerViewModel.OnSelected();
-        }
-
-        protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
-        {
-            await base.OnDeactivateAsync(close, cancellationToken);
-            ViewerViewModel.OnDeselected();
-        }
+    protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+    {
+        await base.OnDeactivateAsync(close, cancellationToken);
+        ViewerViewModel.OnDeselected();
     }
 }

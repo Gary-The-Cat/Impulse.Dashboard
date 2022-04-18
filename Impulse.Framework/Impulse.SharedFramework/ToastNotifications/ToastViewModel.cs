@@ -4,14 +4,13 @@
 
 using Caliburn.Micro;
 
-namespace Impulse.SharedFramework.ToastNotifications
+namespace Impulse.SharedFramework.ToastNotifications;
+
+public class ToastViewModel : Screen
 {
-    public class ToastViewModel : Screen
-    {
-        public string Title { get; set; }
+    public string Title { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        public ToastType Type { get; set; }
-    }
+    public ToastType Type { get; set; }
 }

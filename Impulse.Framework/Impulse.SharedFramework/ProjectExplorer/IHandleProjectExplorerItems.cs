@@ -8,14 +8,13 @@ using Impulse.SharedFramework.Services.Layout;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Impulse.Shared.ProjectExplorer
+namespace Impulse.Shared.ProjectExplorer;
+
+public interface IHandleProjectExplorerItems : IAmKernelInjected
 {
-    public interface IHandleProjectExplorerItems : IAmKernelInjected
-    {
-        bool CanHandle<T>(T t) where T : ProjectExplorerItemBase;
+    bool CanHandle<T>(T t) where T : ProjectExplorerItemBase;
 
-        Task Open<T>(T t) where T : ProjectExplorerItemBase;
+    Task Open<T>(T t) where T : ProjectExplorerItemBase;
 
-        IEnumerable<ProjectExplorerContextMenuItem> GetContextMenuItems<T>(T t) where T : ProjectExplorerItemBase;
-    }
+    IEnumerable<ProjectExplorerContextMenuItem> GetContextMenuItems<T>(T t) where T : ProjectExplorerItemBase;
 }

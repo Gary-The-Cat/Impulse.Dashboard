@@ -4,13 +4,12 @@
 
 using Impulse.Shared.ReactiveUI;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.UserControlDemo;
+
+public class UserControlDemoViewModel : ReactiveScreen
 {
-    public class UserControlDemoViewModel : ReactiveScreen
+    public UserControlDemoViewModel()
     {
-        public UserControlDemoViewModel()
-        {
-            DisplayName = "User Control Demo";
-        }
+        DisplayName = "User Control Demo";
     }
 }

@@ -4,15 +4,14 @@
 
 using System;
 
-namespace Impulse.Dashboard.Themes
+namespace Impulse.Dashboard.Themes;
+
+internal class DockLightTheme : AvalonDock.Themes.Theme
 {
-    internal class DockLightTheme : AvalonDock.Themes.Theme
+    public override Uri GetResourceUri()
     {
-        public override Uri GetResourceUri()
-        {
-            return new Uri(
-                "pack://application:,,,/Impulse.Dashboard;component/Theme/Theme.xaml",
-                UriKind.Absolute);
-        }
+        return new Uri(
+            "pack://application:,,,/Impulse.Dashboard;component/Theme/Theme.xaml",
+            UriKind.Absolute);
     }
 }

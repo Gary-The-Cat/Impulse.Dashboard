@@ -2,22 +2,21 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.GeneticAlgorithm
+namespace Impulse.Shared.GeneticAlgorithm;
+
+public interface IIndividual<T>
 {
-    public interface IIndividual<T>
-    {
-        double[] Fitness { get; }
+    double[] Fitness { get; }
 
-        double ConstraintViolation { get; }
+    double ConstraintViolation { get; }
 
-        int Rank { get; set; }
+    int Rank { get; set; }
 
-        double CrowdingDistance { get; set; }
+    double CrowdingDistance { get; set; }
 
-        void SetFitness(double[] fitness);
+    void SetFitness(double[] fitness);
 
-        T GetGenome();
+    T GetGenome();
 
-        IIndividual<T> Clone();
-    }
+    IIndividual<T> Clone();
 }

@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.GoogleApiDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.GoogleApiDemo;
+
+/// <summary>
+/// Interaction logic for GoogleApiDemoView.xaml
+/// </summary>
+public partial class GoogleApiDemoView
 {
-    /// <summary>
-    /// Interaction logic for GoogleApiDemoView.xaml
-    /// </summary>
-    public partial class GoogleApiDemoView
+    public GoogleApiDemoView()
     {
-        public GoogleApiDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

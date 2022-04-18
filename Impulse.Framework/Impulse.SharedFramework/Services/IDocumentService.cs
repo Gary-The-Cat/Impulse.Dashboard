@@ -5,14 +5,13 @@
 using System;
 using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.Services
+namespace Impulse.SharedFramework.Services;
+
+public interface IDocumentService
 {
-    public interface IDocumentService
-    {
-        void OpenDocument(DocumentBase document);
+    void OpenDocument(DocumentBase document);
 
-        void CloseDocument(Guid documentId);
+    void CloseDocument(Guid documentId);
 
-        void CloseAllDocuments();
-    }
+    void CloseAllDocuments();
 }

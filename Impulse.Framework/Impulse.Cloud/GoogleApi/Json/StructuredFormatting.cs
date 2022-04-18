@@ -4,16 +4,15 @@
 
 using System.Collections.Generic;
 
-namespace Impulse.Cloud.GoogleApi.Json
+namespace Impulse.Cloud.GoogleApi.Json;
+
+public class StructuredFormatting
 {
-    public class StructuredFormatting
-    {
-        // Contains the main text of a prediction, usually the name of the place.
-        public string MainText { get; set; }
+    // Contains the main text of a prediction, usually the name of the place.
+    public string MainText { get; set; }
 
-        public List<MatchedSubstrings> MainTextMatchedSubstrings { get; set; }
+    public List<MatchedSubstrings> MainTextMatchedSubstrings { get; set; }
 
-        // Contains the secondary text of a prediction, usually the location of the place
-        public string SecondaryText { get; set; }
-    }
+    // Contains the secondary text of a prediction, usually the location of the place
+    public string SecondaryText { get; set; }
 }

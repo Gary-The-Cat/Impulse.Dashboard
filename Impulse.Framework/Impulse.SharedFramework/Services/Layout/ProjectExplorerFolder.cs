@@ -2,13 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.SharedFramework.Services.Layout
+namespace Impulse.SharedFramework.Services.Layout;
+
+public class ProjectExplorerFolder : ProjectExplorerItemBase
 {
-    public class ProjectExplorerFolder : ProjectExplorerItemBase
+    public ProjectExplorerFolder() : base()
     {
-        public ProjectExplorerFolder() : base()
-        {
-            Icon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Folder.png";
-        }
+        Icon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Folder.png";
     }
 }

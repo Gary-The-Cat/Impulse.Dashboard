@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.DirectionsDemo
+namespace Impulse.Dashboard.Debug.DemoScreens.DirectionsDemo;
+
+/// <summary>
+/// Interaction logic for DirectionsDemoView.xaml
+/// </summary>
+public partial class DirectionsDemoView
 {
-    /// <summary>
-    /// Interaction logic for DirectionsDemoView.xaml
-    /// </summary>
-    public partial class DirectionsDemoView
+    public DirectionsDemoView()
     {
-        public DirectionsDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

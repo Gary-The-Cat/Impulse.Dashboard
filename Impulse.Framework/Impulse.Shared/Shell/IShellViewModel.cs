@@ -4,10 +4,9 @@
 
 using Impulse.Shared.Application;
 
-namespace Impulse.SharedFramework.Shell
+namespace Impulse.SharedFramework.Shell;
+
+public interface IShellViewModel
 {
-    public interface IShellViewModel
-    {
-        IApplication ActiveApplication { get; set; }
-    }
+    IApplication ActiveApplication { get; set; }
 }

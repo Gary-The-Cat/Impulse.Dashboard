@@ -13,76 +13,75 @@ using Impulse.Shared.Services;
 using Impulse.Shared.ReactiveUI;
 using ReactiveUI;
 
-namespace Impulse.SharedFramework.Controls.AddressCompletion
+namespace Impulse.SharedFramework.Controls.AddressCompletion;
+
+public class AddressCompletionViewModel : ReactiveScreen
 {
-    public class AddressCompletionViewModel : ReactiveScreen
+    private IGoogleApiService googleApiService;
+
+    public AddressCompletionViewModel(IGoogleApiService googleApiService)
     {
-        private IGoogleApiService googleApiService;
+        this.googleApiService = googleApiService;
 
-        public AddressCompletionViewModel(IGoogleApiService googleApiService)
+        SuggestedAddresses = new ObservableCollection<Address>();
+
+        this.WhenAnyValue(i => i.CurrentAddress).Where(a => a != null).Subscribe(async address =>
         {
-            this.googleApiService = googleApiService;
+            await UpdateSuggestedAddresses(address);
+        });
 
-            SuggestedAddresses = new ObservableCollection<Address>();
-
-            this.WhenAnyValue(i => i.CurrentAddress).Where(a => a != null).Subscribe(async address =>
-            {
-                await UpdateSuggestedAddresses(address);
-            });
-
-            this.WhenAnyValue(i => i.SelectedSuggestedAddress).Subscribe(SelectedSuggestedAddress =>
-            {
-                if (SelectedSuggestedAddress != null)
-                {
-                    CurrentAddress = SelectedSuggestedAddress.FormattedAddress;
-                    CurrentAddressId = SelectedSuggestedAddress.PlaceId;
-                }
-            });
-        }
-
-        public ObservableCollection<Address> SuggestedAddresses { get; set; }
-
-        public string CurrentAddress { get; set; }
-
-        public string CurrentAddressId { get; set; }
-
-        public Address SelectedSuggestedAddress { get; set; }
-
-        public bool IsListBoxVisible =>
-            !SuggestedAddresses.Any(a => a.FormattedAddress.Equals(CurrentAddress)) &&
-            CurrentAddress != null;
-
-        public async Task<bool> IsAddressValid()
+        this.WhenAnyValue(i => i.SelectedSuggestedAddress).Subscribe(SelectedSuggestedAddress =>
         {
-            var suggestions = await CalculateSuggestedAddresses(CurrentAddress);
-            return suggestions.Any(s => s.Equals(CurrentAddress));
-        }
-
-        private async Task UpdateSuggestedAddresses(string address)
-        {
-            var tempSuggestedAddresses = await CalculateSuggestedAddresses(address);
-
-            foreach (var suggestedAddress in SuggestedAddresses.ToList())
+            if (SelectedSuggestedAddress != null)
             {
-                if (!tempSuggestedAddresses.Any(a => a.PlaceId.Equals(suggestedAddress.PlaceId)))
-                {
-                    SuggestedAddresses.Remove(suggestedAddress);
-                }
+                CurrentAddress = SelectedSuggestedAddress.FormattedAddress;
+                CurrentAddressId = SelectedSuggestedAddress.PlaceId;
             }
+        });
+    }
 
-            // Remove old
-            foreach (var tempAddress in tempSuggestedAddresses)
+    public ObservableCollection<Address> SuggestedAddresses { get; set; }
+
+    public string CurrentAddress { get; set; }
+
+    public string CurrentAddressId { get; set; }
+
+    public Address SelectedSuggestedAddress { get; set; }
+
+    public bool IsListBoxVisible =>
+        !SuggestedAddresses.Any(a => a.FormattedAddress.Equals(CurrentAddress)) &&
+        CurrentAddress != null;
+
+    public async Task<bool> IsAddressValid()
+    {
+        var suggestions = await CalculateSuggestedAddresses(CurrentAddress);
+        return suggestions.Any(s => s.Equals(CurrentAddress));
+    }
+
+    private async Task UpdateSuggestedAddresses(string address)
+    {
+        var tempSuggestedAddresses = await CalculateSuggestedAddresses(address);
+
+        foreach (var suggestedAddress in SuggestedAddresses.ToList())
+        {
+            if (!tempSuggestedAddresses.Any(a => a.PlaceId.Equals(suggestedAddress.PlaceId)))
             {
-                if (!SuggestedAddresses.Any(a => a.PlaceId.Equals(tempAddress.PlaceId)))
-                {
-                    SuggestedAddresses.Add(tempAddress);
-                }
+                SuggestedAddresses.Remove(suggestedAddress);
             }
         }
 
-        private async Task<IEnumerable<Address>> CalculateSuggestedAddresses(string userInput)
+        // Remove old
+        foreach (var tempAddress in tempSuggestedAddresses)
         {
-            return await googleApiService.ListPlacePredictionAddressesAsync(userInput);
+            if (!SuggestedAddresses.Any(a => a.PlaceId.Equals(tempAddress.PlaceId)))
+            {
+                SuggestedAddresses.Add(tempAddress);
+            }
         }
+    }
+
+    private async Task<IEnumerable<Address>> CalculateSuggestedAddresses(string userInput)
+    {
+        return await googleApiService.ListPlacePredictionAddressesAsync(userInput);
     }
 }

@@ -7,51 +7,50 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.ProjectExplorer
+namespace Impulse.SharedFramework.ProjectExplorer;
+
+/// <summary>
+/// Interaction logic for ProjectExplorerView.xaml
+/// </summary>
+public partial class ProjectExplorerView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ProjectExplorerView.xaml
-    /// </summary>
-    public partial class ProjectExplorerView : UserControl
+    public ProjectExplorerView()
     {
-        public ProjectExplorerView()
+        InitializeComponent();
+    }
+
+    public ProjectExplorerViewModel ViewModel => (ProjectExplorerViewModel)this.DataContext;
+
+    private void OnProjectExplorerItemSelected(object sender, MouseButtonEventArgs e)
+    {
+        if (!(e.Source is MultiSelectTreeViewItem item)
+            || !treeView.SelectedItems.Contains(item.DataContext))
         {
-            InitializeComponent();
+            return;
         }
 
-        public ProjectExplorerViewModel ViewModel => (ProjectExplorerViewModel)this.DataContext;
+        e.Handled = true;
 
-        private void OnProjectExplorerItemSelected(object sender, MouseButtonEventArgs e)
+        OnItemSelected();
+    }
+
+    private void OnProjectExplorerKeyDown(object sender, KeyEventArgs e)
+    {
+        e.Handled = true;
+
+        if (e.Key == Key.Return || e.Key == Key.Enter)
         {
-            if (!(e.Source is MultiSelectTreeViewItem item)
-                || !treeView.SelectedItems.Contains(item.DataContext))
-            {
-                return;
-            }
-
-            e.Handled = true;
-
             OnItemSelected();
         }
+    }
 
-        private void OnProjectExplorerKeyDown(object sender, KeyEventArgs e)
+    private void OnItemSelected()
+    {
+        var item = treeView.SelectedItems.Cast<ProjectExplorerItemBase>().FirstOrDefault();
+
+        if (item != null)
         {
-            e.Handled = true;
-
-            if (e.Key == Key.Return || e.Key == Key.Enter)
-            {
-                OnItemSelected();
-            }
-        }
-
-        private void OnItemSelected()
-        {
-            var item = treeView.SelectedItems.Cast<ProjectExplorerItemBase>().FirstOrDefault();
-
-            if (item != null)
-            {
-                ViewModel.OpenItem(item);
-            }
+            ViewModel.OpenItem(item);
         }
     }
 }

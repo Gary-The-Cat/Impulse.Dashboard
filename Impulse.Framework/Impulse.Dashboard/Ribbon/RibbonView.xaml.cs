@@ -4,18 +4,17 @@
 
 using System.Windows.Controls;
 
-namespace Impulse.Dashboard.Ribbon
-{
-    /// <summary>
-    /// Interaction logic for RibbonView.xaml
-    /// </summary>
-    public partial class RibbonView : UserControl
-    {
-        public RibbonView()
-        {
-            InitializeComponent();
-        }
+namespace Impulse.Dashboard.Ribbon;
 
-        public Fluent.Ribbon FluentRibbon => this.MainRibbon;
+/// <summary>
+/// Interaction logic for RibbonView.xaml
+/// </summary>
+public partial class RibbonView : UserControl
+{
+    public RibbonView()
+    {
+        InitializeComponent();
     }
+
+    public Fluent.Ribbon FluentRibbon => this.MainRibbon;
 }

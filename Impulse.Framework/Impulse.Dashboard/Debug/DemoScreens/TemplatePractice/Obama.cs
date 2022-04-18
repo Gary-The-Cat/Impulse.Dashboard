@@ -2,12 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice
-{
-    public class Obama
-    {
-        public string Name { get; set; }
+namespace Impulse.Dashboard.Debug.DemoScreens.TemplatePractice;
 
-        public string Image { get; set; }
-    }
+public class Obama
+{
+    public string Name { get; set; }
+
+    public string Image { get; set; }
 }

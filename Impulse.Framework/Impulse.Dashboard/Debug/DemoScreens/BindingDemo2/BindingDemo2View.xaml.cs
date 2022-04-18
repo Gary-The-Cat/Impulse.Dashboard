@@ -4,23 +4,22 @@
 
 using System.Windows;
 
-namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo2
+namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo2;
+
+/// <summary>
+/// Interaction logic for BindingDemo2View.xaml
+/// </summary>
+public partial class BindingDemo2View
 {
-    /// <summary>
-    /// Interaction logic for BindingDemo2View.xaml
-    /// </summary>
-    public partial class BindingDemo2View
+    public BindingDemo2View()
     {
-        public BindingDemo2View()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        private BindingDemo2ViewModel ViewModel => (BindingDemo2ViewModel)this.DataContext;
+    private BindingDemo2ViewModel ViewModel => (BindingDemo2ViewModel)this.DataContext;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.Cars.Add(new BindingDemo.Car(ViewModel.Name, string.Empty, ViewModel.SelectedMake, 0));
-        }
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        ViewModel.Cars.Add(new BindingDemo.Car(ViewModel.Name, string.Empty, ViewModel.SelectedMake, 0));
     }
 }

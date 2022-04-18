@@ -2,16 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView
+namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView;
+
+/// <summary>
+/// Interaction logic for MainView.xaml
+/// </summary>
+public partial class ViewerDemoView
 {
-    /// <summary>
-    /// Interaction logic for MainView.xaml
-    /// </summary>
-    public partial class ViewerDemoView
+    public ViewerDemoView()
     {
-        public ViewerDemoView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

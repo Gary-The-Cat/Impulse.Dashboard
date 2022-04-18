@@ -6,26 +6,25 @@ using System.Windows.Controls;
 using Impulse.Shared.ReactiveUI;
 using Impulse.SharedFramework.Ribbon;
 
-namespace Impulse.SharedFramework.Services
+namespace Impulse.SharedFramework.Services;
+
+public interface IRibbonService
 {
-    public interface IRibbonService
-    {
-        UserControl GetRibbonControl();
+    UserControl GetRibbonControl();
 
-        // Example: ApplicationName.Home
-        void AddTab(string tabId, string title);
+    // Example: ApplicationName.Home
+    void AddTab(string tabId, string title);
 
-        // Example: (0, "ApplicationName.Home", "Home")
-        void InsertTab(int index, string tabId, string title);
+    // Example: (0, "ApplicationName.Home", "Home")
+    void InsertTab(int index, string tabId, string title);
 
-        // Example: ApplicationName.Home.Project
-        void AddGroup(string groupId, string title);
+    // Example: ApplicationName.Home.Project
+    void AddGroup(string groupId, string title);
 
-        // Example: ApplicationName.Home.Project.NewProject
-        void AddButton(RibbonButton button);
+    // Example: ApplicationName.Home.Project.NewProject
+    void AddButton(RibbonButton button);
 
-        void SetButtonEnabledState(string buttonId, bool isEnabled);
+    void SetButtonEnabledState(string buttonId, bool isEnabled);
 
-        void SetButtonContext(string buttonId, ReactiveScreen context, string property);
-    }
+    void SetButtonContext(string buttonId, ReactiveScreen context, string property);
 }

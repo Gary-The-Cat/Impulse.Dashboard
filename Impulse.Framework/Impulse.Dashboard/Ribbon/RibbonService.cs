@@ -11,129 +11,128 @@ using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
 using ReactiveUI;
 
-namespace Impulse.Dashboard.Ribbon
+namespace Impulse.Dashboard.Ribbon;
+
+public class RibbonService : IRibbonService
 {
-    public class RibbonService : IRibbonService
+    private readonly Dictionary<string, Fluent.RibbonTabItem> tabLookup;
+
+    private readonly Dictionary<string, Fluent.RibbonGroupBox> groupLookup;
+
+    private readonly Dictionary<string, Fluent.Button> buttonLookup;
+
+    private readonly Dictionary<string, RibbonButton> ribbonButtonLookup;
+
+    private readonly RibbonView ribbonView;
+
+    public RibbonService()
     {
-        private readonly Dictionary<string, Fluent.RibbonTabItem> tabLookup;
+        ribbonView = new RibbonView();
+        Ribbon = ribbonView.FluentRibbon;
 
-        private readonly Dictionary<string, Fluent.RibbonGroupBox> groupLookup;
+        tabLookup = new Dictionary<string, Fluent.RibbonTabItem>();
+        groupLookup = new Dictionary<string, Fluent.RibbonGroupBox>();
+        buttonLookup = new Dictionary<string, Fluent.Button>();
 
-        private readonly Dictionary<string, Fluent.Button> buttonLookup;
+        ribbonButtonLookup = new Dictionary<string, RibbonButton>();
+    }
 
-        private readonly Dictionary<string, RibbonButton> ribbonButtonLookup;
+    public Fluent.Ribbon Ribbon { get; }
 
-        private readonly RibbonView ribbonView;
+    public void AddTab(string tabId, string title)
+    {
+        InsertTab(Ribbon.Tabs.Count(), tabId, title);
+    }
 
-        public RibbonService()
+    public void InsertTab(int index, string tabId, string title)
+    {
+        var tab = new Fluent.RibbonTabItem()
         {
-            ribbonView = new RibbonView();
-            Ribbon = ribbonView.FluentRibbon;
+            Header = title
+        };
 
-            tabLookup = new Dictionary<string, Fluent.RibbonTabItem>();
-            groupLookup = new Dictionary<string, Fluent.RibbonGroupBox>();
-            buttonLookup = new Dictionary<string, Fluent.Button>();
+        tabLookup.Add(tabId, tab);
 
-            ribbonButtonLookup = new Dictionary<string, RibbonButton>();
+        Ribbon.Tabs.Insert(index, tab);
+
+        Ribbon.SelectedTabItem = tab;
+    }
+
+    public void AddGroup(string groupId, string title)
+    {
+        var tabId = GetParentIdFromChildId(groupId);
+
+        if (!tabLookup.TryGetValue(tabId, out var tab))
+        {
+            throw new Exception($"A tab with Id '{tabId}' could not be found");
         }
 
-        public Fluent.Ribbon Ribbon { get; }
-
-        public void AddTab(string tabId, string title)
+        var group = new Fluent.RibbonGroupBox()
         {
-            InsertTab(Ribbon.Tabs.Count(), tabId, title);
+            Header = title
+        };
+
+        groupLookup.Add(groupId, group);
+
+        tab.Groups.Add(group);
+    }
+
+    public void AddButton(RibbonButton ribbonButton)
+    {
+        var groupId = GetParentIdFromChildId(ribbonButton.Id);
+
+        if (!groupLookup.TryGetValue(groupId, out var group))
+        {
+            throw new Exception($"A group with Id '{groupId}' could not be found.");
         }
 
-        public void InsertTab(int index, string tabId, string title)
+        var template = ribbonView.FindResource("LargeRibbonButton") as ControlTemplate;
+
+        var button = new Fluent.Button()
         {
-            var tab = new Fluent.RibbonTabItem()
-            {
-                Header = title
-            };
+            Header = ribbonButton.Title,
+            Icon = ribbonButton.Icon,
+            LargeIcon = ribbonButton.Icon,
+            IsEnabled = ribbonButton.IsEnabled,
+            Template = template,
+        };
 
-            tabLookup.Add(tabId, tab);
+        button.DataContext = ribbonButton;
 
-            Ribbon.Tabs.Insert(index, tab);
-
-            Ribbon.SelectedTabItem = tab;
-        }
-
-        public void AddGroup(string groupId, string title)
+        ribbonButton.WhenAnyValue(b => b.IsEnabled).Subscribe(e =>
         {
-            var tabId = GetParentIdFromChildId(groupId);
+            button.IsEnabled = e;
+        });
+        button.Click += (_, __) => ribbonButton.Callback();
 
-            if (!tabLookup.TryGetValue(tabId, out var tab))
-            {
-                throw new Exception($"A tab with Id '{tabId}' could not be found");
-            }
+        buttonLookup.Add(ribbonButton.Id, button);
+        ribbonButtonLookup.Add(ribbonButton.Id, ribbonButton);
 
-            var group = new Fluent.RibbonGroupBox()
-            {
-                Header = title
-            };
+        group.Items.Add(button);
+    }
 
-            groupLookup.Add(groupId, group);
+    public void SetButtonContext(string buttonId, ReactiveScreen context, string property)
+    {
+        var button = ribbonButtonLookup[buttonId];
+        button.EnabledPropertyName = property;
+        button.Context = context;
+    }
 
-            tab.Groups.Add(group);
-        }
+    public string GetParentIdFromChildId(string childId)
+    {
+        var lastIndex = childId.LastIndexOf('.');
+        var output = childId.Substring(0, lastIndex);
 
-        public void AddButton(RibbonButton ribbonButton)
-        {
-            var groupId = GetParentIdFromChildId(ribbonButton.Id);
+        return output;
+    }
 
-            if (!groupLookup.TryGetValue(groupId, out var group))
-            {
-                throw new Exception($"A group with Id '{groupId}' could not be found.");
-            }
+    public UserControl GetRibbonControl()
+    {
+        return ribbonView;
+    }
 
-            var template = ribbonView.FindResource("LargeRibbonButton") as ControlTemplate;
-
-            var button = new Fluent.Button()
-            {
-                Header = ribbonButton.Title,
-                Icon = ribbonButton.Icon,
-                LargeIcon = ribbonButton.Icon,
-                IsEnabled = ribbonButton.IsEnabled,
-                Template = template,
-            };
-
-            button.DataContext = ribbonButton;
-
-            ribbonButton.WhenAnyValue(b => b.IsEnabled).Subscribe(e =>
-            {
-                button.IsEnabled = e;
-            });
-            button.Click += (_, __) => ribbonButton.Callback();
-
-            buttonLookup.Add(ribbonButton.Id, button);
-            ribbonButtonLookup.Add(ribbonButton.Id, ribbonButton);
-
-            group.Items.Add(button);
-        }
-
-        public void SetButtonContext(string buttonId, ReactiveScreen context, string property)
-        {
-            var button = ribbonButtonLookup[buttonId];
-            button.EnabledPropertyName = property;
-            button.Context = context;
-        }
-
-        public string GetParentIdFromChildId(string childId)
-        {
-            var lastIndex = childId.LastIndexOf('.');
-            var output = childId.Substring(0, lastIndex);
-
-            return output;
-        }
-
-        public UserControl GetRibbonControl()
-        {
-            return ribbonView;
-        }
-
-        public void SetButtonEnabledState(string buttonId, bool isEnabled)
-        {
-            buttonLookup[buttonId].IsEnabled = isEnabled;
-        }
+    public void SetButtonEnabledState(string buttonId, bool isEnabled)
+    {
+        buttonLookup[buttonId].IsEnabled = isEnabled;
     }
 }

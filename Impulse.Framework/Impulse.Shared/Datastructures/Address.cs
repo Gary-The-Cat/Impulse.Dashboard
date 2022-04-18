@@ -2,12 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Datastructures
-{
-    public class Address
-    {
-        public string FormattedAddress { get; set; }
+namespace Impulse.Shared.Datastructures;
 
-        public string PlaceId { get; set; }
-    }
+public class Address
+{
+    public string FormattedAddress { get; set; }
+
+    public string PlaceId { get; set; }
 }

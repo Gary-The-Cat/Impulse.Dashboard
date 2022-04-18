@@ -2,12 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace Impulse.Shared.Enums
+namespace Impulse.Shared.Enums;
+
+public enum PlaceType
 {
-    public enum PlaceType
-    {
-        any,
-        address,
-        establishment,
-    }
+    any,
+    address,
+    establishment,
 }

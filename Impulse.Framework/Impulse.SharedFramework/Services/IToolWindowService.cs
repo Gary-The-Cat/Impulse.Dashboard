@@ -4,14 +4,13 @@
 
 using Impulse.SharedFramework.Services.Layout;
 
-namespace Impulse.SharedFramework.Services
+namespace Impulse.SharedFramework.Services;
+
+public interface IToolWindowService
 {
-    public interface IToolWindowService
-    {
-        void OpenLeftPaneToolWindow(ToolWindowBase toolWindow);
+    void OpenLeftPaneToolWindow(ToolWindowBase toolWindow);
 
-        void OpenRightPaneToolWindow(ToolWindowBase toolWindow);
+    void OpenRightPaneToolWindow(ToolWindowBase toolWindow);
 
-        void HidePaneToolWindow(ToolWindowBase toolWindow);
-    }
+    void HidePaneToolWindow(ToolWindowBase toolWindow);
 }
