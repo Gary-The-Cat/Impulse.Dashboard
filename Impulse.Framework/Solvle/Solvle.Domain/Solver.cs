@@ -2,13 +2,13 @@
 
 public class Solver
 {
-    private List<string> potentialWords;
+    private List<string> wordleWords;
 
     private List<Guess> guessList;
 
     public Solver(List<string> wordleWords)
     {
-        potentialWords = wordleWords;
+        this.wordleWords = wordleWords;
         guessList = new List<Guess>();
     }
 
@@ -20,17 +20,39 @@ public class Solver
     public List<string> GetRefinedList()
     {
         //get a copy of the potential words
+        var output = new List<string>(wordleWords);
 
         //loop over all guesses
+        ////foreach (var guess in guessList)
+        ////{
+        ////    //for each guess, compare to potential words
+            
 
-        //for each guess, compare to potential words
-        foreach (var guess in guessList)
-        {
-            if (CheckPotentialWord(guess.LetterOne, "works"))
-            {
+        ////    if (CheckPotentialWord(guess.LetterOne, potentialWor))
+        ////    {
 
-            }
-        }
+        ////    }
+            
+        ////    if (CheckPotentialWord(guess.LetterTwo, ))
+        ////    {
+
+        ////    }
+            
+        ////    if (CheckPotentialWord(guess.LetterThree, ))
+        ////    {
+
+        ////    }
+            
+        ////    if (CheckPotentialWord(guess.LetterFour, ))
+        ////    {
+
+        ////    }
+            
+        ////    if (CheckPotentialWord(guess.LetterFive, ))
+        ////    {
+
+        ////    }
+        ////}
 
         //if could be it, leave in the potential words
 
@@ -39,8 +61,53 @@ public class Solver
         return null;
     }
 
-    private bool CheckPotentialWord (GuessLetter guessLetter, string potentialWord)
+    public bool CheckPotentialWord (GuessLetter guessLetter, string potentialWord)
     {
-        return false;
+        //check if the guess letter is in the potential word
+        //if it is, return true
+        var index = guessLetter.Position.ValidLetterInt;
+        var character = potentialWord[index];
+        
+        if (guessLetter.Feedback == Feedback.RightLetterRightPlace)
+        {
+            if (character == guessLetter.Letter.LetterChar)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        if (guessLetter.Feedback == Feedback.WrongLetter)
+        {
+            if (potentialWord.Contains(guessLetter.Letter.LetterChar))
+            {
+                return false;
+            }
+
+            if (!potentialWord.Contains(guessLetter.Letter.LetterChar))
+            {
+                return true;
+            }
+        }
+
+        if (guessLetter.Feedback == Feedback.RightLetterWrongPlace)
+        {
+            if (character == guessLetter.Letter.LetterChar)
+            {
+                return false;
+            }
+
+            if (potentialWord.Contains(guessLetter.Letter.LetterChar))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        throw new Exception("Unexpected case.");
     }
 }

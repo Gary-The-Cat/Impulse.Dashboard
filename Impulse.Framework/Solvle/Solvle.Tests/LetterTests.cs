@@ -30,6 +30,6 @@ public class LetterTests
 
         // Assert
         var errorMessage = "The character '" + nonLetterCharacter + "' is not a letter.";
-        createLetter.Should().Throw<ArgumentException>().WithMessage(errorMessage);
+        createLetter.Should().Throw<ArgumentException>().WithMessage(errorMessage); 
     }
 }
