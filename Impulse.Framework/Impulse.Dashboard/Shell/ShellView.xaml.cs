@@ -25,7 +25,7 @@ public partial class ShellView : IShellView
 
     private void Dock_DocumentClosing(object sender, DocumentClosingEventArgs e)
     {
-        if (e.Document.Content is DocumentBase document)
+        if (e.Document.Content is ToolWindowDocumentBase document)
         {
             e.Cancel = true;
 

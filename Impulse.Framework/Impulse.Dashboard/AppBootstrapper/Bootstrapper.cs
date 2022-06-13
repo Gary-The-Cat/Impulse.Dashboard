@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -22,6 +23,7 @@ using Impulse.Shared.Application;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 using Impulse.Shared.Services;
+using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Shell;
@@ -36,6 +38,16 @@ public class Bootstrapper : BootstrapperBase
 {
     public Bootstrapper()
     {
+        var args = Environment.GetCommandLineArgs();
+
+        ApplicationPaths = GetPathsFromIndices(GetIndicesForTag(args, "--application"), args);
+        PluginPaths = GetPathsFromIndices(GetIndicesForTag(args, "--plugin"), args);
+
+        var currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
+        var applicationPathsString = string.Join(';', ApplicationPaths);
+        var pluginPathsString = string.Join(';', PluginPaths);
+        var allString = string.Join(';', new[] { currentPath, applicationPathsString, pluginPathsString });
+        Environment.SetEnvironmentVariable("PATH", allString, EnvironmentVariableTarget.Process);
         Initialize();
     }
 
@@ -46,6 +58,10 @@ public class Bootstrapper : BootstrapperBase
     public IEnumerable<Type> Applications { get; private set; }
 
     public IRibbonService RibbonService { get; private set; }
+
+    public List<string> ApplicationPaths { get; }
+
+    public List<string> PluginPaths { get; }
 
     public new void Initialize()
     {
@@ -60,6 +76,9 @@ public class Bootstrapper : BootstrapperBase
 
         // Load all of the plugins (supports 0 -> n applications)
         InitializeApplications();
+
+        // Load all of the plugins (supports 0 -> n applications)
+        InitializePlugins();
 
         // Load the theme
         InitializeTheme();
@@ -124,10 +143,35 @@ public class Bootstrapper : BootstrapperBase
 
     protected override IEnumerable<Assembly> SelectAssemblies()
     {
-        return new[]
+        var types = PluginLoader.GetAllTypes(Directory.GetCurrentDirectory());
+        types.AddRange(PluginLoader.GetAllInstances<IPlugin>(PluginPaths));
+        types.AddRange(PluginLoader.GetAllInstances<IApplication>(ApplicationPaths));
+
+        return new[] { Assembly.GetExecutingAssembly() }.Concat(types.Select(i => i.assembly)).Distinct();
+    }
+
+    private IEnumerable<int> GetIndicesForTag(string[] args, string tag)
+    {
+        return args.IndicesWhere(a => a.Equals(tag)).Select(i => i + 1);
+    }
+
+    private List<string> GetPathsFromIndices(IEnumerable<int> indices, string[] args)
+    {
+        var output = new List<string>();
+
+        foreach (var index in indices)
         {
-            Assembly.GetExecutingAssembly()
-        }.Concat(PluginLoader.GetAllTypes().Select(i => i.assembly)).Where(Filter).Distinct();
+            if (index < args.Length)
+            {
+                var path = args[index];
+                if (Directory.Exists(path))
+                {
+                    output.Add(path);
+                }
+            }
+        }
+
+        return output;
     }
 
     private void InitializeCaliburnMicro()
@@ -148,7 +192,7 @@ public class Bootstrapper : BootstrapperBase
         lightTheme.Source = new Uri("pack://application:,,,/Impulse.SharedFramework;Component/Themes/LightThemeColours.xaml");
 
         Application.Current.Resources.MergedDictionaries.Add(lightTheme);
-        ThemeManager.Current.ChangeTheme(RibbonService.GetRibbonControl(), "Light.Blue");
+        ThemeManager.Current.ChangeTheme(((RibbonService)RibbonService).GetRibbonControl(), "Light.Blue");
 
         var shellViewModel = (ShellViewModel)Kernel.Get<IShellViewModel>();
         shellViewModel.Theme = new DockLightTheme();
@@ -158,7 +202,7 @@ public class Bootstrapper : BootstrapperBase
     private void InitializeApplications()
     {
         // Get the plugins from the local plugin folder
-        var applications = PluginLoader.GetApplicationsInstances();
+        var applications = PluginLoader.GetAllInstances<IApplication>(this.ApplicationPaths);
 
         // Launch without setting the active application
         if (!applications.Any())
@@ -177,6 +221,24 @@ public class Bootstrapper : BootstrapperBase
         }
     }
 
+    private void InitializePlugins()
+    {
+        // Get the plugins from the local plugin folder
+        var plugins = PluginLoader.GetAllInstances<IPlugin>(this.PluginPaths);
+
+        var ribbonService = Kernel.Get<IRibbonService>();
+        var documentService = Kernel.Get<IDocumentService>();
+
+        foreach (var plugin in plugins)
+        {
+            var instance = (IPlugin)plugin.type.GetMethod("Create").Invoke(
+                plugin,
+                new object[] { ribbonService, documentService });
+
+            instance.Initialize();
+        }
+    }
+
     private bool Filter(Assembly s)
     {
         return s.FullName.StartsWith("Impulse.");
@@ -187,8 +249,6 @@ public class Bootstrapper : BootstrapperBase
         Kernel = new StandardKernel();
         var assemblies = SelectAssemblies();
         Kernel.Load(assemblies);
-
-        var types = assemblies.SelectMany(s => s.GetExportedTypes());
 
         // Bind the shell to the kernel in singleton scope.
         Kernel.Bind<IShellView>().To<ShellView>().InSingletonScope();

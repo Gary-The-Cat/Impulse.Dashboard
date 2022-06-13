@@ -1,5 +1,4 @@
 ﻿using Impulse.SharedFramework.Services.Layout;
-using Ninject;
 using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
@@ -13,7 +12,7 @@ public class SfmlViewerViewModel : DocumentBase
 
     private static Color ClearColor = new Color(0xe1, 0xe1, 0xe1);
 
-    public SfmlViewerViewModel(IKernel kernel) : base(kernel)
+    public SfmlViewerViewModel()
     {
         timer = new Clock();
     }
@@ -46,5 +45,4 @@ public class SfmlViewerViewModel : DocumentBase
         this.RenderWindow = new RenderWindow(renderTargetPtr);
         this.RenderWindow.MouseButtonPressed += MouseClickEvent;
     }
-
 }

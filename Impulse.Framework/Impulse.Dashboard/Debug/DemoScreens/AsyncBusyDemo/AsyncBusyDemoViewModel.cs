@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Impulse.SharedFramework.Services.Layout;
-using Ninject;
 using ReactiveUI;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.AsyncBusyDemo;
@@ -15,7 +14,7 @@ public class AsyncBusyDemoViewModel : DocumentBase
 {
     private CancellationTokenSource cancellaitonTokenSource;
 
-    public AsyncBusyDemoViewModel(IKernel kernel) : base(kernel)
+    public AsyncBusyDemoViewModel()
     {
         DisplayName = "Async Busy Demo";
 

@@ -42,7 +42,7 @@ public static class DebugTabLoader
 
         ribbonService.AddGroup(DebugRibbonIds.DemosGroup, "Functionality Demos");
 
-        var taylorDemo = new RibbonButton()
+        var taylorDemo = new RibbonButtonViewModel()
         {
             Title = "SFML Demo",
             Id = DebugRibbonIds.TaylorDemo,
@@ -52,7 +52,7 @@ public static class DebugTabLoader
             Callback = () => OpenSfmlDemo(kernel)
         };
 
-        var bindingDemo = new RibbonButton()
+        var bindingDemo = new RibbonButtonViewModel()
         {
             Title = "Binding Demo",
             Id = DebugRibbonIds.BindingDemo,
@@ -62,7 +62,7 @@ public static class DebugTabLoader
             Callback = () => OpenBindingDemo(kernel)
         };
 
-        var bindingDemo2 = new RibbonButton()
+        var bindingDemo2 = new RibbonButtonViewModel()
         {
             Title = "Binding Demo 2",
             Id = DebugRibbonIds.BindingDemo2,
@@ -72,7 +72,7 @@ public static class DebugTabLoader
             Callback = () => OpenBindingDemo2(kernel)
         };
 
-        var bindingDemo3 = new RibbonButton()
+        var bindingDemo3 = new RibbonButtonViewModel()
         {
             Title = "Binding Demo 3",
             Id = DebugRibbonIds.BindingDemo3,
@@ -82,7 +82,7 @@ public static class DebugTabLoader
             Callback = () => OpenBindingDemo3(kernel)
         };
 
-        var userControlDemo = new RibbonButton()
+        var userControlDemo = new RibbonButtonViewModel()
         {
             Title = "User Control Demo",
             Id = DebugRibbonIds.UserControlDemo,
@@ -92,7 +92,7 @@ public static class DebugTabLoader
             Callback = () => OpenUserControlDemo(kernel)
         };
 
-        var templatePractice = new RibbonButton()
+        var templatePractice = new RibbonButtonViewModel()
         {
             Title = "Template Practice",
             Id = DebugRibbonIds.TemplatePractice,
@@ -102,7 +102,7 @@ public static class DebugTabLoader
             Callback = () => OpenTemplatePractice(kernel)
         };
 
-        var exceptionDemo = new RibbonButton()
+        var exceptionDemo = new RibbonButtonViewModel()
         {
             Title = "Throw Exception",
             Id = DebugRibbonIds.ExceptionDemo,
@@ -112,7 +112,7 @@ public static class DebugTabLoader
             Callback = () => throw new System.Exception("You click the exception button")
         };
 
-        var rendererDemo = new RibbonButton()
+        var rendererDemo = new RibbonButtonViewModel()
         {
             Title = "Veldrid Renderer",
             Id = DebugRibbonIds.RendererDemo,
@@ -122,7 +122,7 @@ public static class DebugTabLoader
             Callback = () => OpenRendererDemo(kernel)
         };
 
-        var monoRendererDemo = new RibbonButton()
+        var monoRendererDemo = new RibbonButtonViewModel()
         {
             Title = "Mono Renderer",
             Id = DebugRibbonIds.MonoRendererDemo,
@@ -132,7 +132,7 @@ public static class DebugTabLoader
             Callback = () => OpenMonoRendererDemo(kernel)
         };
 
-        var workflowDemo = new RibbonButton()
+        var workflowDemo = new RibbonButtonViewModel()
         {
             Title = "Workflow",
             Id = DebugRibbonIds.WorkflowDemo,
@@ -142,7 +142,7 @@ public static class DebugTabLoader
             Callback = () => OpenWorkflowDemo(kernel)
         };
 
-        var asyncBusyDemo = new RibbonButton()
+        var asyncBusyDemo = new RibbonButtonViewModel()
         {
             Title = "Async Busy",
             Id = DebugRibbonIds.AsyncBusyDemo,
@@ -152,7 +152,7 @@ public static class DebugTabLoader
             Callback = () => OpenAsyncBusyDemo(kernel)
         };
 
-        var wordCheckerDemo = new RibbonButton()
+        var wordCheckerDemo = new RibbonButtonViewModel()
         {
             Title = "Word Checker",
             Id = DebugRibbonIds.WordCheckerDemo,
@@ -162,7 +162,7 @@ public static class DebugTabLoader
             Callback = () => OpenWordCheckerDemo(kernel)
         };
 
-        var googleApiDemo = new RibbonButton()
+        var googleApiDemo = new RibbonButtonViewModel()
         {
             Title = "Google Api Demo",
             Id = DebugRibbonIds.GoogleApiDemo,
@@ -172,7 +172,7 @@ public static class DebugTabLoader
             Callback = () => OpenGoogleApiDemo(kernel)
         };
 
-        var googlePlacesApiDemo = new RibbonButton()
+        var googlePlacesApiDemo = new RibbonButtonViewModel()
         {
             Title = "Google Suggestion Api",
             Id = DebugRibbonIds.GooglePlacesApiDemo,
@@ -182,7 +182,7 @@ public static class DebugTabLoader
             Callback = () => OpenGoogleSuggestionApiDemo(kernel)
         };
 
-        var routePlannerDemo = new RibbonButton()
+        var routePlannerDemo = new RibbonButtonViewModel()
         {
             Title = "Route Planner Demo",
             Id = DebugRibbonIds.RoutePlannerDemo,
@@ -192,7 +192,7 @@ public static class DebugTabLoader
             Callback = () => OpenRoutePlannerDemo(kernel)
         };
 
-        var directionsDemo = new RibbonButton()
+        var directionsDemo = new RibbonButtonViewModel()
         {
             Title = "Direction Api Demo",
             Id = DebugRibbonIds.DirectionsDemo,
@@ -202,7 +202,7 @@ public static class DebugTabLoader
             Callback = () => OpenDirectionsDemo(kernel)
         };
 
-        var jiraDemo = new RibbonButton()
+        var jiraDemo = new RibbonButtonViewModel()
         {
             Title = "Jira Api Demo",
             Id = DebugRibbonIds.JiraDemo,

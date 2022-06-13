@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Impulse.SharedFramework.Services.Layout;
-using NetSpell.SpellChecker.Dictionary;
-using Ninject;
 using ReactiveUI;
 
 namespace Impulse.Framework.Dashboard.Debug.DemoScreens.WordChecker;
@@ -14,14 +12,12 @@ public class WordCheckerViewModel : DocumentBase
 {
     private List<string> fiveLetterWords;
 
-
-    public WordCheckerViewModel(IKernel kernel) : base(kernel)
+    public WordCheckerViewModel()
     {
         DisplayName = "Word Checker";
 
         fiveLetterWords = new List<string>();
         WordSuggestions = new ObservableCollection<string>();
-
 
         foreach (var word in WordDictionary.Words)
         {
@@ -30,6 +26,32 @@ public class WordCheckerViewModel : DocumentBase
 
         UpdateCommand = ReactiveCommand.CreateFromTask(this.Update);
     }
+
+    public string One { get; set; } = string.Empty;
+
+    public string Two { get; set; } = string.Empty;
+
+    public string Three { get; set; } = string.Empty;
+
+    public string Four { get; set; } = string.Empty;
+
+    public string Five { get; set; } = string.Empty;
+
+    public string NotOne { get; set; } = string.Empty;
+
+    public string NotTwo { get; set; } = string.Empty;
+
+    public string NotThree { get; set; } = string.Empty;
+
+    public string NotFour { get; set; } = string.Empty;
+
+    public string NotFive { get; set; } = string.Empty;
+
+    public string DoesntContain { get; set; } = string.Empty;
+
+    public ICommand UpdateCommand { get; set; }
+
+    public ObservableCollection<string> WordSuggestions { get; set; }
 
     private async Task Update()
     {
@@ -71,25 +93,21 @@ public class WordCheckerViewModel : DocumentBase
         {
             tempLookup = tempLookup.Where(w => w[0] != character && w.Contains(character)).ToList();
         }
-        
 
         foreach (var character in NotTwo)
         {
             tempLookup = tempLookup.Where(w => w[1] != character && w.Contains(character)).ToList();
         }
-        
 
         foreach (var character in NotThree)
         {
             tempLookup = tempLookup.Where(w => w[2] != character && w.Contains(character)).ToList();
         }
-        
 
         foreach (var character in NotFour)
         {
             tempLookup = tempLookup.Where(w => w[3] != character && w.Contains(character)).ToList();
         }
-        
 
         foreach (var character in NotFive)
         {
@@ -101,22 +119,4 @@ public class WordCheckerViewModel : DocumentBase
             WordSuggestions.Add(word);
         }
     }
-
-    public string One { get; set; } = string.Empty;
-    public string Two { get; set; } = string.Empty;
-    public string Three { get; set; } = string.Empty;
-    public string Four { get; set; } = string.Empty;
-    public string Five { get; set; } = string.Empty;
-
-    public string NotOne { get; set; } = string.Empty;
-    public string NotTwo { get; set; } = string.Empty;
-    public string NotThree { get; set; } = string.Empty;
-    public string NotFour { get; set; } = string.Empty;
-    public string NotFive { get; set; } = string.Empty;
-
-    public string DoesntContain { get; set; } = string.Empty;
-
-    public ICommand UpdateCommand { get; set; }
-
-    public ObservableCollection<string> WordSuggestions { get; set; }
 }

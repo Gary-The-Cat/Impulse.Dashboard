@@ -5,13 +5,12 @@
 using System.Collections.ObjectModel;
 using Impulse.Dashboard.Debug.DemoScreens.BindingDemo;
 using Impulse.SharedFramework.Services.Layout;
-using Ninject;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo3;
 
 public class BindingDemo3ViewModel : DocumentBase
 {
-    public BindingDemo3ViewModel(IKernel kernel) : base(kernel)
+    public BindingDemo3ViewModel()
     {
         DisplayName = "Taylors second binding demo";
 

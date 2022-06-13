@@ -12,7 +12,7 @@ namespace Impulse.Dashboard.Debug.DemoScreens.TaylorDemo;
 
 public class TaylorDemoViewModel : DocumentBase
 {
-    public TaylorDemoViewModel(IDialogService dialogService, IKernel kernel) : base(kernel)
+    public TaylorDemoViewModel(IDialogService dialogService)
     {
         DisplayName = "Taylor Demo";
 

@@ -1,6 +1,8 @@
-﻿namespace Solvle.Domain;
+﻿using System.Collections;
 
-public class Guess
+namespace Solvle.Domain;
+
+public class Guess : IEnumerable<GuessLetter>
 {
     // contains 5 characters with feedback
     public GuessLetter LetterOne;
@@ -17,4 +19,15 @@ public class Guess
         LetterFour = letterFour;
         LetterFive = letterFive;
     }
+
+    public IEnumerator<GuessLetter> GetEnumerator()
+    {
+        yield return LetterOne;
+        yield return LetterTwo;
+        yield return LetterThree;
+        yield return LetterFour;
+        yield return LetterFive;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => this.GetEnumerator();
 }

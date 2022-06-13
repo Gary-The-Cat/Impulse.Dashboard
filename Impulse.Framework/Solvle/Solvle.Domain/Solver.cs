@@ -19,46 +19,29 @@ public class Solver
 
     public List<string> GetRefinedList()
     {
-        //get a copy of the potential words
-        var output = new List<string>(wordleWords);
+        var output = new List<string>();
+        // Iterate through all potential words out of Wordlewords list
+        foreach (var word in wordleWords)
+        {
+            // for each guess in guesslist 
+            bool isValidWord = true;
+            foreach (var guess in guessList)
+            {
+                // Checking if a guess means that this potential word cant be the solution for todays wordle
+                foreach (var guessLetter in guess)
+                {
+                    isValidWord &= CheckPotentialWord(guessLetter, word);
+                }
+            }
 
-        //loop over all guesses
-        ////foreach (var guess in guessList)
-        ////{
-        ////    //for each guess, compare to potential words
-            
+            if (isValidWord == true)
+            {
+                output.Add(word);
+            }
+        }
 
-        ////    if (CheckPotentialWord(guess.LetterOne, potentialWor))
-        ////    {
 
-        ////    }
-            
-        ////    if (CheckPotentialWord(guess.LetterTwo, ))
-        ////    {
-
-        ////    }
-            
-        ////    if (CheckPotentialWord(guess.LetterThree, ))
-        ////    {
-
-        ////    }
-            
-        ////    if (CheckPotentialWord(guess.LetterFour, ))
-        ////    {
-
-        ////    }
-            
-        ////    if (CheckPotentialWord(guess.LetterFive, ))
-        ////    {
-
-        ////    }
-        ////}
-
-        //if could be it, leave in the potential words
-
-        //else remove from potential words
-
-        return null;
+        return output;
     }
 
     public bool CheckPotentialWord (GuessLetter guessLetter, string potentialWord)

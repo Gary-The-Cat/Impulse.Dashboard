@@ -12,21 +12,16 @@ using Ninject;
 
 namespace Impulse.SharedFramework.Services.Layout;
 
-public class DocumentBase : ReactiveScreen
+public class ToolWindowDocumentBase : DocumentBase
 {
     private readonly List<ToolWindowBase> toolWindows;
     private readonly WeakReference<IToolWindowService> toolWindowServiceReference;
-    private readonly WeakReference<IKernel> kernelReference;
 
-    public DocumentBase(IKernel kernel)
+    public ToolWindowDocumentBase(IToolWindowService toolWindowService)
     {
         toolWindows = new List<ToolWindowBase>();
-        toolWindowServiceReference =
-            new WeakReference<IToolWindowService>(kernel.Get<IToolWindowService>());
-        this.kernelReference = new WeakReference<IKernel>(kernel);
+        toolWindowServiceReference = new WeakReference<IToolWindowService>(toolWindowService);
     }
-
-    public IKernel Kernel => kernelReference.Value();
 
     private IToolWindowService ToolWindowService => toolWindowServiceReference.Value();
 

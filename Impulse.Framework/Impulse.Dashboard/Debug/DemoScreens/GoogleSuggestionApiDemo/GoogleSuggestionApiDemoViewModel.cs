@@ -18,7 +18,7 @@ public class GoogleSuggestionApiDemoViewModel : DocumentBase
 {
     private readonly IGoogleApiService googleApiService;
 
-    public GoogleSuggestionApiDemoViewModel(IKernel kernel, IGoogleApiService googleApiService) : base(kernel)
+    public GoogleSuggestionApiDemoViewModel(IGoogleApiService googleApiService)
     {
         // Set the documents display name
         DisplayName = "Google Api Demo";

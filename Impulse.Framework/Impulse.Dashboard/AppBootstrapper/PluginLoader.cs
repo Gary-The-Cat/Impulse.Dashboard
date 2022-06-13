@@ -8,20 +8,24 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Impulse.Dashboard.ExtensionMethods;
-using Impulse.Shared.Application;
 
 namespace Impulse.Dashboard.AppBootstrapper;
 
 public static class PluginLoader
 {
-    public static List<(Assembly assembly, Type type)> GetApplicationsInstances()
+    public static List<(Assembly assembly, Type type)> GetAllInstances<T>(IEnumerable<string> searchDirectories)
     {
-        return GetAllTypes().Where(t => t.type.Implements(typeof(IApplication))).ToList();
+        var types = new List<(Assembly assembly, Type type)>();
+        foreach (var dir in searchDirectories)
+        {
+            types.AddRange(GetAllTypes(dir).Where(t => t.type.Implements(typeof(T))));
+        }
+
+        return types;
     }
 
-    public static List<(Assembly assembly, Type type)> GetAllTypes()
+    public static List<(Assembly assembly, Type type)> GetAllTypes(string directory)
     {
-        var directory = GetRelativeApplicationDirectory();
         var applicationDllPaths = Directory.GetFiles(directory, "*.dll");
 
         var instances = new List<(Assembly, Type)>();

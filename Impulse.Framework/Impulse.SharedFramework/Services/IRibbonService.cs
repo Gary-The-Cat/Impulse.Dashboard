@@ -2,16 +2,12 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System.Windows.Controls;
-using Impulse.Shared.ReactiveUI;
 using Impulse.SharedFramework.Ribbon;
 
 namespace Impulse.SharedFramework.Services;
 
 public interface IRibbonService
 {
-    UserControl GetRibbonControl();
-
     // Example: ApplicationName.Home
     void AddTab(string tabId, string title);
 
@@ -22,9 +18,7 @@ public interface IRibbonService
     void AddGroup(string groupId, string title);
 
     // Example: ApplicationName.Home.Project.NewProject
-    void AddButton(RibbonButton button);
+    void AddButton(RibbonButtonViewModel button);
 
     void SetButtonEnabledState(string buttonId, bool isEnabled);
-
-    void SetButtonContext(string buttonId, ReactiveScreen context, string property);
 }

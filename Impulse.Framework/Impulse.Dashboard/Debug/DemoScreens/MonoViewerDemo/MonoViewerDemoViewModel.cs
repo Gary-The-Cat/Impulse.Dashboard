@@ -10,7 +10,7 @@ namespace Impulse.Dashboard.Debug.DemoScreens.MonoViewerDemo;
 
 public class MonoViewerDemoViewModel : DocumentBase
 {
-    public MonoViewerDemoViewModel(IKernel kernel) : base(kernel)
+    public MonoViewerDemoViewModel()
     {
         MonoViewerViewModel = new MonoViewerViewModel();
 

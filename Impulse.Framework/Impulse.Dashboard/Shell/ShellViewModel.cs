@@ -7,7 +7,9 @@ using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows.Controls;
 using Caliburn.Micro;
+using Impulse.Dashboard.Ribbon;
 using Impulse.Shared.Application;
+using Impulse.Shared.ReactiveUI;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
@@ -16,7 +18,7 @@ using ReactiveUI;
 
 namespace Impulse.Dashboard.Shell;
 
-public class ShellViewModel : Conductor<DocumentBase>.Collection.OneActive, IShellViewModel
+public class ShellViewModel : Conductor<ReactiveScreen>.Collection.OneActive, IShellViewModel
 {
     public ShellViewModel(IKernel kernel)
     {
@@ -26,7 +28,7 @@ public class ShellViewModel : Conductor<DocumentBase>.Collection.OneActive, IShe
 
         var ribbonService = kernel.Get<IRibbonService>();
 
-        RibbonContent = ribbonService.GetRibbonControl();
+        RibbonContent = ((RibbonService)ribbonService).GetRibbonControl();
 
         this.WhenAnyValue(v => v.ActiveItem).Where(i => i != null).Subscribe(item =>
         {

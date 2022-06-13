@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <AssemblyName>Impulse.SharedFramework</AssemblyName>
     <RootNamespace>Impulse.SharedFramework</RootNamespace>
+	  <LangVersion>Preview</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

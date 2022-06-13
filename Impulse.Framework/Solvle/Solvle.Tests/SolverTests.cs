@@ -7,6 +7,34 @@ using Solvle.Domain;
 public class SolverTests
 {
     [Fact]
+    public void LukesFirstSolvleUse()
+    {
+        // Make a solver using our reduced set of potential words
+        var solver = new Solver(Wordle.Words);
+
+        var guess = MakeGuess(
+            ('w', Feedback.WrongLetter),
+            ('a', Feedback.RightLetterRightPlace),
+            ('t', Feedback.WrongLetter),
+            ('e', Feedback.WrongLetter),
+            ('r', Feedback.RightLetterWrongPlace));
+
+        var guess2 = MakeGuess(
+            ('l', Feedback.RightLetterRightPlace),
+            ('o', Feedback.WrongLetter),
+            ('u', Feedback.WrongLetter),
+            ('s', Feedback.WrongLetter),
+            ('y', Feedback.WrongLetter));
+
+        // Act
+        solver.MakeGuess(guess);
+        solver.MakeGuess(guess2);
+
+        // Assert
+        var refinedList = solver.GetRefinedList();
+    }
+
+    [Fact]
     public void GetRefinedList_ShouldRefineList_WhenGuessesProvided()
     {
         // Arrange
@@ -18,34 +46,13 @@ public class SolverTests
         // Make a solver using our reduced set of potential words
         var solver = new Solver(words);
 
-
-        // Construct a guess
-        var letterOne = new Letter('s');
-        var letterTwo = new Letter('o');
-        var letterThree = new Letter('u');
-        var letterFour = new Letter('n');
-        var letterFive = new Letter('d');
-
-        var letterOnePosition = new LetterPosition(0);
-        var letterTwoPosition = new LetterPosition(1);
-        var letterThreePosition = new LetterPosition(2);
-        var letterFourPosition = new LetterPosition(3);
-        var letterFivePosition = new LetterPosition(4);
-
-
-        var guessLetterOne = new GuessLetter(letterOne, Feedback.RightLetterWrongPlace, letterOnePosition);
-        var guessLetterTwo = new GuessLetter(letterTwo, Feedback.RightLetterRightPlace, letterTwoPosition);
-        var guessLetterThree = new GuessLetter(letterThree, Feedback.WrongLetter, letterThreePosition);
-        var guessLetterFour = new GuessLetter(letterFour, Feedback.WrongLetter, letterFourPosition);
-        var guessLetterFive = new GuessLetter(letterFive, Feedback.WrongLetter, letterFivePosition);
-
-        var guess = new Guess(
-            guessLetterOne,
-            guessLetterTwo,
-            guessLetterThree,
-            guessLetterFour,
-            guessLetterFive);
-
+        var guess = MakeGuess(
+            ('s', Feedback.RightLetterRightPlace),
+            ('o', Feedback.RightLetterRightPlace),
+            ('u', Feedback.RightLetterRightPlace),
+            ('n', Feedback.RightLetterRightPlace),
+            ('d', Feedback.RightLetterRightPlace));
+        
         // Act
         solver.MakeGuess(guess);
 
@@ -54,6 +61,36 @@ public class SolverTests
         refinedList.Should().HaveCount(1);
         refinedList.Should().Contain(worksString);
         refinedList.Should().NotContain(steamString);
+    }
+
+    private Guess MakeGuess(
+        (char, Feedback) p1,
+        (char, Feedback) p2,
+        (char, Feedback) p3,
+        (char, Feedback) p4,
+        (char, Feedback) p5)
+    {
+        var letterOnePosition = new LetterPosition(0);
+        var letterTwoPosition = new LetterPosition(1);
+        var letterThreePosition = new LetterPosition(2);
+        var letterFourPosition = new LetterPosition(3);
+        var letterFivePosition = new LetterPosition(4);
+
+
+        var guessLetterOne = new GuessLetter(new Letter(p1.Item1), p1.Item2, letterOnePosition);
+        var guessLetterTwo = new GuessLetter(new Letter(p2.Item1), p2.Item2, letterTwoPosition);
+        var guessLetterThree = new GuessLetter(new Letter(p3.Item1), p3.Item2, letterThreePosition);
+        var guessLetterFour = new GuessLetter(new Letter(p4.Item1), p4.Item2, letterFourPosition);
+        var guessLetterFive = new GuessLetter(new Letter(p5.Item1), p5.Item2, letterFivePosition);
+
+        var guess = new Guess(
+            guessLetterOne,
+            guessLetterTwo,
+            guessLetterThree,
+            guessLetterFour,
+            guessLetterFive);
+
+        return guess;
     }
 
     [Fact]

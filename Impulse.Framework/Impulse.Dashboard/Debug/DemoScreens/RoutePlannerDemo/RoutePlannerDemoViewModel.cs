@@ -28,7 +28,7 @@ public class RoutePlannerDemoViewModel : DocumentBase
     public RoutePlannerDemoViewModel(
         IKernel kernel,
         IGoogleApiService googleApiService,
-        IDialogService dialogService) : base(kernel)
+        IDialogService dialogService)
     {
         // Set the documents display name
         DisplayName = "Route Planner Demo";

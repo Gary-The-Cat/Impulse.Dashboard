@@ -9,23 +9,23 @@ using System.Windows.Input;
 
 namespace Impulse.SharedFramework.Ribbon;
 
-public class RibbonButton : ReactiveViewModelBase
+public class RibbonButtonViewModel : ReactiveViewModelBase
 {
     private ReactiveScreen context;
 
-    public RibbonButton()
+    public RibbonButtonViewModel()
     {
     }
 
-    public string Title { get; set; } = "Not Set";
+    public string Title { get; init; } = "Not Set";
 
     public string Id { get; set; }
 
     public string Icon => IsEnabled ? EnabledIcon : DisabledIcon;
 
-    public string DisabledIcon { get; set; }
+    public string DisabledIcon { get; init; }
 
-    public string EnabledIcon { get; set; }
+    public string EnabledIcon { get; init; }
 
     public bool IsEnabled { get; set; } = true;
 

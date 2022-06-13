@@ -10,7 +10,7 @@ namespace Impulse.Dashboard.Debug.DemoScreens.BindingDemo;
 
 public class BindingDemoViewModel : DocumentBase
 {
-    public BindingDemoViewModel(IKernel kernel) : base(kernel)
+    public BindingDemoViewModel(IKernel kernel)
     {
         People = new ObservableCollection<Person>()
         {

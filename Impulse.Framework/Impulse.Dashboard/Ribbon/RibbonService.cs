@@ -21,7 +21,7 @@ public class RibbonService : IRibbonService
 
     private readonly Dictionary<string, Fluent.Button> buttonLookup;
 
-    private readonly Dictionary<string, RibbonButton> ribbonButtonLookup;
+    private readonly Dictionary<string, RibbonButtonViewModel> ribbonButtonLookup;
 
     private readonly RibbonView ribbonView;
 
@@ -34,7 +34,7 @@ public class RibbonService : IRibbonService
         groupLookup = new Dictionary<string, Fluent.RibbonGroupBox>();
         buttonLookup = new Dictionary<string, Fluent.Button>();
 
-        ribbonButtonLookup = new Dictionary<string, RibbonButton>();
+        ribbonButtonLookup = new Dictionary<string, RibbonButtonViewModel>();
     }
 
     public Fluent.Ribbon Ribbon { get; }
@@ -77,7 +77,7 @@ public class RibbonService : IRibbonService
         tab.Groups.Add(group);
     }
 
-    public void AddButton(RibbonButton ribbonButton)
+    public void AddButton(RibbonButtonViewModel ribbonButton)
     {
         var groupId = GetParentIdFromChildId(ribbonButton.Id);
 
@@ -109,13 +109,6 @@ public class RibbonService : IRibbonService
         ribbonButtonLookup.Add(ribbonButton.Id, ribbonButton);
 
         group.Items.Add(button);
-    }
-
-    public void SetButtonContext(string buttonId, ReactiveScreen context, string property)
-    {
-        var button = ribbonButtonLookup[buttonId];
-        button.EnabledPropertyName = property;
-        button.Context = context;
     }
 
     public string GetParentIdFromChildId(string childId)

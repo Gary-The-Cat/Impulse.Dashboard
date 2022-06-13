@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Impulse.Dashboard": {
+      "commandName": "Project",
+      "commandLineArgs": "--plugin C:\\GitHub\\code\\WordleSolver\\Application\\Debug\\net6.0-windows"
+    }
+  }
+}

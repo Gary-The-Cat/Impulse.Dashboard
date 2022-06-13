@@ -14,7 +14,7 @@ public class LayoutItemTemplateSelector : DataTemplateSelector
 
     public override DataTemplate SelectTemplate(object item, DependencyObject container)
     {
-        if (item is DocumentBase)
+        if (item is ToolWindowDocumentBase)
         {
             return Template;
         }

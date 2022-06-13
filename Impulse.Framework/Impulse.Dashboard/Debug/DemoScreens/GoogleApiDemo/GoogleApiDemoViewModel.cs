@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Impulse.Shared.Datastructures;
 using Impulse.Shared.Services;
 using Impulse.SharedFramework.Services.Layout;
-using Ninject;
 using ReactiveUI;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.GoogleApiDemo;
@@ -18,7 +17,7 @@ public class GoogleApiDemoViewModel : DocumentBase
 {
     private readonly IGoogleApiService googleApiService;
 
-    public GoogleApiDemoViewModel(IKernel kernel, IGoogleApiService googleApiService) : base(kernel)
+    public GoogleApiDemoViewModel(IGoogleApiService googleApiService)
     {
         // Set the documents display name
         DisplayName = "Google Api Demo";

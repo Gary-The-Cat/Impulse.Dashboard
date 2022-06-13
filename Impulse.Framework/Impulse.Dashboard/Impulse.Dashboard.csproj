@@ -69,6 +69,7 @@
     <None Remove="Icons\Export\Save_GS.png" />
     <None Remove="Icons\Export\Skull.png" />
     <None Remove="Icons\Export\Skull_GS.png" />
+    <None Remove="Icons\Export\Solvle.png" />
     <None Remove="Icons\Export\Spider.png" />
     <None Remove="Icons\Export\Spider_GS.png" />
     <None Remove="Icons\Export\Tombstone.png" />
@@ -136,6 +137,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="FSharp.Core" Version="6.0.0" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
@@ -216,6 +218,7 @@
     <Resource Include="Icons\Export\Save_GS.png" />
     <Resource Include="Icons\Export\Skull.png" />
     <Resource Include="Icons\Export\Skull_GS.png" />
+    <Resource Include="Icons\Export\Solvle.png" />
     <Resource Include="Icons\Export\Spider.png" />
     <Resource Include="Icons\Export\Spider_GS.png" />
     <Resource Include="Icons\Export\Tombstone.png" />

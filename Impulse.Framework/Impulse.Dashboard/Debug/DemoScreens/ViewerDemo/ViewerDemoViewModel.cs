@@ -3,6 +3,7 @@
 // </copyright>
 
 using Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ViewerToolbar;
+using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.Viewer.ViewerControl;
 using Ninject;
@@ -12,22 +13,18 @@ using System.Threading.Tasks;
 
 namespace Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView;
 
-public class ViewerDemoViewModel : DocumentBase
+public class ViewerDemoViewModel : ToolWindowDocumentBase
 {
     private ViewerControlViewModel viewerControlViewModel;
 
-    private IKernel kernel;
-
-    public ViewerDemoViewModel(IKernel kernel) : base(kernel)
+    public ViewerDemoViewModel(IKernel kernel) : base(kernel.Get<IToolWindowService>())
     {
         DisplayName = "Viewer";
-
-        this.kernel = kernel;
 
         ViewerViewModel = kernel.Get<ViewerViewModel>();
 
         // Create the view for our tool window and attach its DataContext
-        viewerControlViewModel = this.kernel.Get<ViewerControlViewModel>(
+        viewerControlViewModel = kernel.Get<ViewerControlViewModel>(
             new ConstructorArgument("viewer", ViewerViewModel));
 
         viewerControlViewModel.DisplayName = "Viewer Control 1";

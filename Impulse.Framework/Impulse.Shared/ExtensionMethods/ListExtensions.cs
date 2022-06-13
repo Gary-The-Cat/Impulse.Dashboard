@@ -43,4 +43,18 @@ public static class ListExtensions
             }
         }
     }
+
+    public static IEnumerable<int> IndicesWhere<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+    {
+        int index = 0;
+        foreach (T element in source)
+        {
+            if (predicate(element))
+            {
+                yield return index;
+            }
+
+            index++;
+        }
+    }
 }
