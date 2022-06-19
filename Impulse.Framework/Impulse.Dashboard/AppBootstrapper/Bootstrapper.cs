@@ -43,6 +43,8 @@ public class Bootstrapper : BootstrapperBase
         ApplicationPaths = GetPathsFromIndices(GetIndicesForTag(args, "--application"), args);
         PluginPaths = GetPathsFromIndices(GetIndicesForTag(args, "--plugin"), args);
 
+        ApplicationPaths.Add(@"C:\GitHub\code\Impulse.Dashboard\Impulse.Framework\Impulse.Dashboard\bin\Debug\net6.0-windows");
+        PluginPaths.Add(@"C:\GitHub\code\Impulse.Dashboard\Impulse.Framework\Impulse.Dashboard\bin\Debug\net6.0-windows");
         var currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
         var applicationPathsString = string.Join(';', ApplicationPaths);
         var pluginPathsString = string.Join(';', PluginPaths);
