@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Impulse.Shared.Application;
 using Impulse.Shared.ReactiveUI;
 
@@ -23,8 +24,8 @@ public class ApplicationSelectViewModel : ReactiveScreen
 
     public IApplication SelectedApplication { get; set; }
 
-    public async void Close()
+    public async Task CloseAsync()
     {
-        this.TryCloseAsync(true);
+        await this.TryCloseAsync(true);
     }
 }

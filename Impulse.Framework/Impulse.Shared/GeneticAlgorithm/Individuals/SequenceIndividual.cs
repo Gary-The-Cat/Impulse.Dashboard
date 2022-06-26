@@ -51,4 +51,9 @@ public class SequenceIndividual : IIndividual<List<int>>
     {
         Fitness = fitness;
     }
+
+    public override int GetHashCode()
+    {
+        return this.Sequence.GetHashCode();
+    }
 }
