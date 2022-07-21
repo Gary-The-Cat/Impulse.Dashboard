@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<PackageId>Impulse.Dashboard</PackageId>
+	<Version>1.0.0</Version>
+	<Authors>Luke Berry</Authors>
+	<Company>Tutorials With Gary</Company>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Impulse.Framework\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
+    <ProjectReference Include="..\Impulse.Framework\Impulse.Shared\Impulse.Shared.csproj" />
+    <ProjectReference Include="..\Impulse.Shared.UI\Impulse.Shared.UI.csproj" />
+  </ItemGroup>
+
+</Project>
