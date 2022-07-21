@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Impulse.Shared.Application;
@@ -12,6 +13,8 @@ public interface IApplication
     string DisplayName { get; }
 
     Uri Icon { get; }
+
+    IEnumerable<Type> GetRequiredServices();
 
     Task LaunchApplication();
 

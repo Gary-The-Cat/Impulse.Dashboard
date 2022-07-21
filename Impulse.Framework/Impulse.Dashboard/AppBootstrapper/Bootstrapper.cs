@@ -18,7 +18,6 @@ using Impulse.Dashboard.Services;
 using Impulse.Dashboard.Services.Workflow;
 using Impulse.Dashboard.Shell;
 using Impulse.Dashboard.Themes;
-using Impulse.Jira;
 using Impulse.Shared.Application;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
@@ -43,8 +42,9 @@ public class Bootstrapper : BootstrapperBase
         ApplicationPaths = GetPathsFromIndices(GetIndicesForTag(args, "--application"), args);
         PluginPaths = GetPathsFromIndices(GetIndicesForTag(args, "--plugin"), args);
 
-        ApplicationPaths.Add(@"C:\GitHub\code\Impulse.Dashboard\Impulse.Framework\Impulse.Dashboard\bin\Debug\net6.0-windows");
-        PluginPaths.Add(@"C:\GitHub\code\Impulse.Dashboard\Impulse.Framework\Impulse.Dashboard\bin\Debug\net6.0-windows");
+        var defaultPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        ApplicationPaths.Add(defaultPath);
+        PluginPaths.Add(defaultPath);
         var currentPath = Environment.GetEnvironmentVariable("PATH", EnvironmentVariableTarget.Process);
         var applicationPathsString = string.Join(';', ApplicationPaths);
         var pluginPathsString = string.Join(';', PluginPaths);
@@ -258,7 +258,6 @@ public class Bootstrapper : BootstrapperBase
 
         // Bind all services to the kernel
         Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
-        Kernel.Bind<IJiraApiService>().To<JiraApiService>().InSingletonScope();
         Kernel.Bind<IRibbonService>().To<RibbonService>().InSingletonScope();
         Kernel.Bind<IDocumentService>().To<DocumentService>().InSingletonScope();
         Kernel.Bind<IToolWindowService>().To<ToolWindowService>().InSingletonScope();
@@ -267,7 +266,8 @@ public class Bootstrapper : BootstrapperBase
         Kernel.Bind<IDialogService>().To<DialogService>().InSingletonScope()
             .WithConstructorArgument("notifier", CreateDefaultNotifier())
             .WithConstructorArgument("shell", Kernel.Get<IShellViewModel>());
-        Kernel.Bind<IGoogleApiService>().To<GoogleApiService>().InSingletonScope();
+
+        //Kernel.Bind<IGoogleApiService>().To<GoogleApiService>().InSingletonScope();
 
         BindKernelInjectedTypes();
     }

@@ -168,14 +168,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Impulse.Cloud\Impulse.Cloud.csproj" />
-    <ProjectReference Include="..\Impulse.Jira\Impulse.Jira.csproj" />
-    <ProjectReference Include="..\Impulse.Mono.Viewer\Impulse.Mono.Viewer.csproj" />
-    <ProjectReference Include="..\Impulse.Renderer\Impulse.Renderer.csproj" />
-    <ProjectReference Include="..\Impulse.SFML.Viewer\Impulse.SFML.Viewer.csproj" />
+    <ProjectReference Include="..\..\Impulse.Shared.UI\Impulse.Shared.UI.csproj" />
     <ProjectReference Include="..\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
     <ProjectReference Include="..\Impulse.Shared\Impulse.Shared.csproj" />
-    <ProjectReference Include="..\Impulse.Viewer\Impulse.Viewer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -264,9 +259,6 @@
     <Resource Include="Theme\Images\VTabGroup.png" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="Debug\DemoScreens\WorkflowDemo\ProvideAgeWorkflowTabView.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -285,19 +277,6 @@
     <None Update="Icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Update="Debug\DemoScreens\RoutePlannerDemo\RoutePlannerDemoView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Debug\DemoScreens\GoogleSuggestionApiDemo\GoogleSuggestionApiDemoView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-    </Page>
-    <Page Update="Debug\DemoScreens\WorkflowDemo\ProvideAgeWorkflowTabView.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
 
 </Project>

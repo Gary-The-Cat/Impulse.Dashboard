@@ -10,16 +10,8 @@ using Impulse.Dashboard.Debug.DemoScreens.BindingDemo;
 using Impulse.Dashboard.Debug.DemoScreens.BindingDemo2;
 using Impulse.Dashboard.Debug.DemoScreens.BindingDemo3;
 using Impulse.Dashboard.Debug.DemoScreens.DirectionsDemo;
-using Impulse.Dashboard.Debug.DemoScreens.GoogleApiDemo;
-using Impulse.Dashboard.Debug.DemoScreens.GoogleSuggestionApiDemo;
-using Impulse.Dashboard.Debug.DemoScreens.MonoViewerDemo;
-using Impulse.Dashboard.Debug.DemoScreens.RoutePlannerDemo;
 using Impulse.Dashboard.Debug.DemoScreens.TemplatePractice;
 using Impulse.Dashboard.Debug.DemoScreens.UserControlDemo;
-using Impulse.Dashboard.Debug.DemoScreens.ViewerDemo.ResidentialView;
-using Impulse.Dashboard.Debug.DemoScreens.WorkflowDemo;
-using Impulse.Framework.Dashboard.Debug.DemoScreens.WordChecker;
-using Impulse.SFML.Viewer.Viewer;
 using Impulse.Shared.Services;
 using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
@@ -41,16 +33,6 @@ public static class DebugTabLoader
         ribbonService.AddGroup(DebugRibbonIds.TestGroup, "Tests");
 
         ribbonService.AddGroup(DebugRibbonIds.DemosGroup, "Functionality Demos");
-
-        var taylorDemo = new RibbonButtonViewModel()
-        {
-            Title = "SFML Demo",
-            Id = DebugRibbonIds.TaylorDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Bat.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Bat_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenSfmlDemo(kernel)
-        };
 
         var bindingDemo = new RibbonButtonViewModel()
         {
@@ -112,36 +94,6 @@ public static class DebugTabLoader
             Callback = () => throw new System.Exception("You click the exception button")
         };
 
-        var rendererDemo = new RibbonButtonViewModel()
-        {
-            Title = "Veldrid Renderer",
-            Id = DebugRibbonIds.RendererDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Reaper.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Reaper_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenRendererDemo(kernel)
-        };
-
-        var monoRendererDemo = new RibbonButtonViewModel()
-        {
-            Title = "Mono Renderer",
-            Id = DebugRibbonIds.MonoRendererDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Skull.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Skull_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenMonoRendererDemo(kernel)
-        };
-
-        var workflowDemo = new RibbonButtonViewModel()
-        {
-            Title = "Workflow",
-            Id = DebugRibbonIds.WorkflowDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Workflow.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Workflow_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenWorkflowDemo(kernel)
-        };
-
         var asyncBusyDemo = new RibbonButtonViewModel()
         {
             Title = "Async Busy",
@@ -150,46 +102,6 @@ public static class DebugTabLoader
             DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Spider_GS.png",
             IsEnabled = true,
             Callback = () => OpenAsyncBusyDemo(kernel)
-        };
-
-        var wordCheckerDemo = new RibbonButtonViewModel()
-        {
-            Title = "Word Checker",
-            Id = DebugRibbonIds.WordCheckerDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Spider.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Spider_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenWordCheckerDemo(kernel)
-        };
-
-        var googleApiDemo = new RibbonButtonViewModel()
-        {
-            Title = "Google Api Demo",
-            Id = DebugRibbonIds.GoogleApiDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Tombstone.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Tombstone_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenGoogleApiDemo(kernel)
-        };
-
-        var googlePlacesApiDemo = new RibbonButtonViewModel()
-        {
-            Title = "Google Suggestion Api",
-            Id = DebugRibbonIds.GooglePlacesApiDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Tombstone.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Tombstone_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenGoogleSuggestionApiDemo(kernel)
-        };
-
-        var routePlannerDemo = new RibbonButtonViewModel()
-        {
-            Title = "Route Planner Demo",
-            Id = DebugRibbonIds.RoutePlannerDemo,
-            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Tombstone.png",
-            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Tombstone_GS.png",
-            IsEnabled = true,
-            Callback = () => OpenRoutePlannerDemo(kernel)
         };
 
         var directionsDemo = new RibbonButtonViewModel()
@@ -213,7 +125,6 @@ public static class DebugTabLoader
         };
 
         // Desting & Design
-        ribbonService.AddButton(taylorDemo);
         ribbonService.AddButton(bindingDemo);
         ribbonService.AddButton(bindingDemo2);
         ribbonService.AddButton(bindingDemo3);
@@ -223,26 +134,9 @@ public static class DebugTabLoader
         ribbonService.AddButton(exceptionDemo);
 
         // Functionality Demo
-        ribbonService.AddButton(rendererDemo);
-        ribbonService.AddButton(monoRendererDemo);
-        ribbonService.AddButton(workflowDemo);
         ribbonService.AddButton(asyncBusyDemo);
-        ribbonService.AddButton(googleApiDemo);
-        ribbonService.AddButton(googlePlacesApiDemo);
         ribbonService.AddButton(directionsDemo);
         ribbonService.AddButton(jiraDemo);
-
-        ribbonService.AddButton(wordCheckerDemo);
-
-        ribbonService.AddButton(routePlannerDemo);
-    }
-
-    private static void OpenSfmlDemo(IKernel kernel)
-    {
-        var sfmlDemo = kernel.Get<SfmlViewerViewModel>();
-        var documentService = kernel.Get<IDocumentService>();
-
-        documentService.OpenDocument(sfmlDemo);
     }
 
     private static void OpenBindingDemo(IKernel kernel)
@@ -277,67 +171,12 @@ public static class DebugTabLoader
         windowManager.ShowWindowAsync(userControlDemo);
     }
 
-    private static void OpenRendererDemo(IKernel kernel)
-    {
-        var styleDemo = kernel.Get<ViewerDemoViewModel>();
-        var windowManager = kernel.Get<IDocumentService>();
-
-        windowManager.OpenDocument(styleDemo);
-    }
-
-    private static void OpenMonoRendererDemo(IKernel kernel)
-    {
-        var styleDemo = kernel.Get<MonoViewerDemoViewModel>();
-        var windowManager = kernel.Get<IDocumentService>();
-
-        windowManager.OpenDocument(styleDemo);
-    }
-
-    private static void OpenWorkflowDemo(IKernel kernel)
-    {
-        var workflowService = kernel.Get<IWorkflowService>();
-
-        var workflow = workflowService.CreateWorkflow(
-            kernel.Get<ProvideNameWorkflowTabViewModel>(),
-            kernel.Get<ProvideAgeWorkflowTabViewModel>(),
-            kernel.Get<ProvideNameWorkflowTabViewModel>());
-
-        workflowService.ShowWorkflow(workflow);
-
-        var nameValue = workflow.GetValue<string>("Name");
-        var ageValue = workflow.GetValue<int>("Age");
-    }
-
     private static void OpenAsyncBusyDemo(IKernel kernel)
     {
         var asyncBusyDemo = kernel.Get<AsyncBusyDemoViewModel>();
         var documentService = kernel.Get<IDocumentService>();
 
         documentService.OpenDocument(asyncBusyDemo);
-    }
-
-    private static void OpenWordCheckerDemo(IKernel kernel)
-    {
-        var wordChecker = kernel.Get<WordCheckerViewModel>();
-        var documentService = kernel.Get<IDocumentService>();
-
-        documentService.OpenDocument(wordChecker);
-    }
-
-    private static void OpenGoogleApiDemo(IKernel kernel)
-    {
-        var googleApiDemo = kernel.Get<GoogleApiDemoViewModel>();
-        var documentService = kernel.Get<IDocumentService>();
-
-        documentService.OpenDocument(googleApiDemo);
-    }
-
-    private static void OpenRoutePlannerDemo(IKernel kernel)
-    {
-        var routePlannerDemo = kernel.Get<RoutePlannerDemoViewModel>();
-        var documentService = kernel.Get<IDocumentService>();
-
-        documentService.OpenDocument(routePlannerDemo);
     }
 
     private static void OpenDirectionsDemo(IKernel kernel)
@@ -369,14 +208,6 @@ public static class DebugTabLoader
         {
             Console.WriteLine(issue);
         }
-    }
-
-    private static void OpenGoogleSuggestionApiDemo(IKernel kernel)
-    {
-        var googleApiDemo = kernel.Get<GoogleSuggestionApiDemoViewModel>();
-        var documentService = kernel.Get<IDocumentService>();
-
-        documentService.OpenDocument(googleApiDemo);
     }
 
     private static void OpenTemplatePractice(IKernel kernel)
