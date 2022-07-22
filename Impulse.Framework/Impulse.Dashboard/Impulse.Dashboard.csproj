@@ -43,6 +43,7 @@
     <None Remove="Icons\Export\Configuration_GS.png" />
     <None Remove="Icons\Export\Couldren.png" />
     <None Remove="Icons\Export\Couldren_GS.png" />
+    <None Remove="Icons\Export\DefaultIcon.png" />
     <None Remove="Icons\Export\Folder.png" />
     <None Remove="Icons\Export\Ghost.png" />
     <None Remove="Icons\Export\Ghost_GS.png" />
@@ -153,7 +154,7 @@
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
     <PackageReference Include="NetSpell" Version="2.1.7" />
-    <PackageReference Include="Ninject" Version="3.3.4" />
+    <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="13.1.1" />
     <PackageReference Include="ReactiveUI.WPF" Version="13.1.1" />
@@ -187,6 +188,7 @@
     <Resource Include="Icons\Export\Configuration_GS.png" />
     <Resource Include="Icons\Export\Couldren.png" />
     <Resource Include="Icons\Export\Couldren_GS.png" />
+    <Resource Include="Icons\Export\DefaultIcon.png" />
     <Resource Include="Icons\Export\Folder.png" />
     <Resource Include="Icons\Export\Ghost.png" />
     <Resource Include="Icons\Export\Ghost_GS.png" />

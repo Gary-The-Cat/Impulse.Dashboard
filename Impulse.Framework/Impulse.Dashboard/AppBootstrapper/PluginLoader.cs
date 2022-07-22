@@ -50,7 +50,7 @@ public static class PluginLoader
             {
                 types = assembly.GetExportedTypes();
             }
-            catch
+            catch (Exception e)
             {
                 continue;
             }

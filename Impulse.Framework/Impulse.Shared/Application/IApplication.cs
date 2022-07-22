@@ -14,8 +14,6 @@ public interface IApplication
 
     Uri Icon { get; }
 
-    IEnumerable<Type> GetRequiredServices();
-
     Task LaunchApplication();
 
     Task Initialize();
