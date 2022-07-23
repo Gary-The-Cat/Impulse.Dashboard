@@ -57,4 +57,9 @@ public static class ListExtensions
             index++;
         }
     }
+
+    public static bool None<T>(this IEnumerable<T> list)
+    {
+        return !list.Any();
+    }
 }

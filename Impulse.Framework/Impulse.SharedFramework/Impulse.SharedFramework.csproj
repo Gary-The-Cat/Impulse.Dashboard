@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.173" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
     <PackageReference Include="Ninject" Version="3.3.6" />
