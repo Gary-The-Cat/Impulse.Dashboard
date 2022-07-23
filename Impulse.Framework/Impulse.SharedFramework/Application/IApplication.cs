@@ -3,16 +3,18 @@
 // </copyright>
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Impulse.SharedFramework.Plugin;
 
-namespace Impulse.Shared.Application;
+namespace Impulse.SharedFramework.Application;
 
 public interface IApplication
 {
     string DisplayName { get; }
 
     Uri Icon { get; }
+
+    IDashboardProvider Dashboard { get; set; }
 
     Task LaunchApplication();
 

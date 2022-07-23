@@ -18,10 +18,11 @@ using Impulse.Dashboard.Services;
 using Impulse.Dashboard.Services.Workflow;
 using Impulse.Dashboard.Shell;
 using Impulse.Dashboard.Themes;
-using Impulse.Shared.Application;
+using Impulse.Framework.Dashboard.AppBootstrapper;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 using Impulse.Shared.Services;
+using Impulse.SharedFramework.Application;
 using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
@@ -35,6 +36,8 @@ namespace Impulse.Dashboard.AppBootstrapper;
 
 public class Bootstrapper : BootstrapperBase
 {
+    private IDashboardProvider dashboard;
+
     public Bootstrapper()
     {
         var args = Environment.GetCommandLineArgs();
@@ -70,7 +73,7 @@ public class Bootstrapper : BootstrapperBase
         // Initialize Caliburn Micro
         InitializeCaliburnMicro();
 
-        // Initialize outr Kernel
+        // Initialize our Kernel
         InitializeKernel();
 
         // Initialize the Ribbon
@@ -101,13 +104,29 @@ public class Bootstrapper : BootstrapperBase
         // Create the startup window
         var shellViewModel = Kernel.Get<IShellViewModel>();
         var windowManager = Kernel.Get<IWindowManager>();
-        var documentService = Kernel.Get<IDocumentService>();
 
         await windowManager.ShowWindowAsync(shellViewModel);
 
         if (ActiveApplication == null && Applications != null)
         {
-            var applicationInstances = Applications.Select(a => (IApplication)this.Kernel.Get(a));
+            var applicationInstances = new List<IApplication>();
+            foreach (var applicationType in Applications)
+            {
+                IApplication applicationInstance = null;
+
+                try
+                {
+                    applicationInstance = (IApplication)Activator.CreateInstance(applicationType);
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+
+                applicationInstance.Dashboard = this.dashboard;
+                applicationInstances.Add(applicationInstance);
+            }
+
             var applicationSelectView = new ApplicationSelectView();
             var applicationSelectViewModel = new ApplicationSelectViewModel(applicationInstances);
             applicationSelectView.DataContext = applicationSelectViewModel;
@@ -270,6 +289,8 @@ public class Bootstrapper : BootstrapperBase
         //Kernel.Bind<IGoogleApiService>().To<GoogleApiService>().InSingletonScope();
 
         BindKernelInjectedTypes();
+
+        this.dashboard = new DashboardProvider(Kernel);
     }
 
     private void BindKernelInjectedTypes()

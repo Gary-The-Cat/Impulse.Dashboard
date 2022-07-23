@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using CSharpFunctionalExtensions;
-using Impulse.Shared.Application;
 using Impulse.Shared.Exceptions;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.SharedFramework.Plugin;

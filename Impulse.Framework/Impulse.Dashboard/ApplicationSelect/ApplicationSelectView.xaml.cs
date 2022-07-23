@@ -4,7 +4,7 @@
 
 using System.Windows;
 using System.Windows.Controls;
-using Impulse.Shared.Application;
+using Impulse.SharedFramework.Application;
 
 namespace Impulse.Dashboard.ApplicaitonSelect;
 

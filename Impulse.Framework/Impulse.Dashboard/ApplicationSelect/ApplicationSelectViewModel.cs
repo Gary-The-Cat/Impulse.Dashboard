@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Impulse.Shared.Application;
 using Impulse.Shared.ReactiveUI;
+using Impulse.SharedFramework.Application;
 
 namespace Impulse.Dashboard.ApplicaitonSelect;
 

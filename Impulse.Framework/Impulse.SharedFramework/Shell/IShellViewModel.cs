@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Impulse.Shared.Application;
+using Impulse.SharedFramework.Application;
 
 namespace Impulse.SharedFramework.Shell;
 

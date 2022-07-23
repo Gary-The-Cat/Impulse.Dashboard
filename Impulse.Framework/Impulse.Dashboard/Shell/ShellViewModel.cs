@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using Impulse.Dashboard.Ribbon;
-using Impulse.Shared.Application;
+using Impulse.SharedFramework.Application;
 using Impulse.Shared.ReactiveUI;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;

@@ -131,7 +131,7 @@
             Content="{Binding RibbonContent}"/>
 
         <Grid
-            Grid.Row="2"
+            Grid.Row="3"
             VerticalAlignment="Bottom"
             Panel.ZIndex="1000"
             MinHeight="20"
