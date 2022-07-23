@@ -238,7 +238,8 @@ public class Bootstrapper : BootstrapperBase
         }
         else
         {
-            ActiveApplication = (IApplication)this.Kernel.Get(applications.First().type);
+            ActiveApplication = (IApplication)Activator.CreateInstance(applications.First().type);
+            ActiveApplication.Dashboard = this.dashboard;
         }
     }
 

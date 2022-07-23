@@ -128,7 +128,7 @@
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.173" />
     <PackageReference Include="ControlzEx" Version="4.4.0" />
-    <PackageReference Include="CSharpFunctionalExtensions" Version="2.14.3" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.29.0" />
     <PackageReference Include="Dirkster.AvalonDock" Version="4.50.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.50.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.50.1" />

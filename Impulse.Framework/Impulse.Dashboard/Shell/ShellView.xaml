@@ -121,8 +121,6 @@
                     Margin="4,0"
                     Text="{Binding ActiveApplication.DisplayName}"/>
             </DockPanel>
-
-            <ContentControl Content="{Binding CurrentPage}" />
         </DockPanel>
         
         <!--Ribbon-->
@@ -133,7 +131,6 @@
         <Grid
             Grid.Row="3"
             VerticalAlignment="Bottom"
-            Panel.ZIndex="1000"
             MinHeight="20"
             Background="{DynamicResource PrimaryAccentBrush}">
 
@@ -146,7 +143,6 @@
         </Grid>
         
         <Grid
-            Panel.ZIndex="1"
             Grid.Row="2">
             <!-- NOTE: Bind to the DocumentsSource here -->
             <xcad:DockingManager
