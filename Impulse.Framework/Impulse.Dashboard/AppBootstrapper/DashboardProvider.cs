@@ -25,33 +25,19 @@ internal class DashboardProvider : IDashboardProvider
     private IKernel Kernel => kernelReference.Value();
 
     // Core services
-    public IWindowManager WindowManager => this.registeredServices.Contains(typeof(IWindowManager))
-        ? this.Kernel.Get<IWindowManager>()
-        : throw new UnregisteredServiceException(nameof(IWindowManager));
+    public IWindowManager WindowManager => this.Kernel.Get<IWindowManager>();
 
-    public IRibbonService RibbonService => this.registeredServices.Contains(typeof(IRibbonService))
-        ? this.Kernel.Get<IRibbonService>()
-        : throw new UnregisteredServiceException(nameof(IRibbonService));
+    public IRibbonService RibbonService => this.Kernel.Get<IRibbonService>();
 
-    public IDocumentService DocumentService => this.registeredServices.Contains(typeof(IDocumentService))
-        ? this.Kernel.Get<IDocumentService>()
-        : throw new UnregisteredServiceException(nameof(IDocumentService));
+    public IDocumentService DocumentService => this.Kernel.Get<IDocumentService>();
 
-    public IToolWindowService ToolWindowService => this.registeredServices.Contains(typeof(IToolWindowService))
-        ? this.Kernel.Get<IToolWindowService>()
-        : throw new UnregisteredServiceException(nameof(IToolWindowService));
+    public IToolWindowService ToolWindowService => this.Kernel.Get<IToolWindowService>();
 
-    public IWorkflowService WorkflowService => this.registeredServices.Contains(typeof(IWorkflowService))
-        ? this.Kernel.Get<IWorkflowService>()
-        : throw new UnregisteredServiceException(nameof(IWorkflowService));
+    public IWorkflowService WorkflowService => this.Kernel.Get<IWorkflowService>();
 
-    public IProjectExplorerService ProjectExplorerService => this.registeredServices.Contains(typeof(IProjectExplorerService))
-        ? this.Kernel.Get<IProjectExplorerService>()
-        : throw new UnregisteredServiceException(nameof(IProjectExplorerService));
+    public IProjectExplorerService ProjectExplorerService => this.Kernel.Get<IProjectExplorerService>();
 
-    public IDialogService DialogService => this.registeredServices.Contains(typeof(IDialogService))
-        ? this.Kernel.Get<IDialogService>()
-        : throw new UnregisteredServiceException(nameof(IDialogService));
+    public IDialogService DialogService => this.Kernel.Get<IDialogService>();
 
     public Result RegisterRequiredService<T>()
     {

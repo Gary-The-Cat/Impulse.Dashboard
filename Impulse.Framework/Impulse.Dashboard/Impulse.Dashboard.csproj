@@ -123,8 +123,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AssimpNet" Version="4.1.0" />
-    <PackageReference Include="Atlassian.SDK" Version="12.4.0" />
     <PackageReference Include="Caliburn.Micro" Version="4.0.173" />
     <PackageReference Include="Caliburn.Micro.Core" Version="4.0.173" />
     <PackageReference Include="ControlzEx" Version="4.4.0" />
@@ -157,7 +155,7 @@
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="13.1.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="13.1.1" />
+    <PackageReference Include="ReactiveUI.WPF" Version="18.3.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

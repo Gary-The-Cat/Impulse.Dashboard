@@ -21,7 +21,6 @@ using Impulse.Dashboard.Themes;
 using Impulse.Framework.Dashboard.AppBootstrapper;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
-using Impulse.Shared.Services;
 using Impulse.SharedFramework.Application;
 using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
@@ -253,10 +252,8 @@ public class Bootstrapper : BootstrapperBase
 
         foreach (var plugin in plugins)
         {
-            var instance = (IPlugin)plugin.type.GetMethod("Create").Invoke(
-                plugin,
-                new object[] { ribbonService, documentService });
-
+            var instance = (IPlugin)Activator.CreateInstance(plugin.type);
+            instance.Dashboard = this.dashboard;
             instance.Initialize();
         }
     }

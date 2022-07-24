@@ -6,16 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
+using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.Services;
 
 namespace Impulse.SharedFramework.Application;
 
 public interface IPlugin
 {
-    [RequiresPreviewFeatures]
-    public static abstract IPlugin Create(IRibbonService ribbonService, IDocumentService documentService);
-
-    IEnumerable<Type> GetRequiredServices();
+    IDashboardProvider Dashboard { get; set; }
 
     public Task Initialize();
 
