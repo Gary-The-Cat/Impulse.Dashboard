@@ -13,6 +13,11 @@
     <NoWarn>1701;1702;NU1701;1998;SA1600;SA1101;SA0001;SA1127;SA1402;SA1313;SA1128;SA1629;SA1413;SA1502;SA1601;SA1611</NoWarn>
   </PropertyGroup>
 
+  <!-- Avalon Dock, if no langauage is selected, all are included and the bin folder is flooded.-->
+  <PropertyGroup>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
   <ItemGroup>
     <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\CppNet.dll" />
     <Content Remove="C:\Users\lukeb\.nuget\packages\monogame.framework.content.pipeline\3.8.0.1641\contentFiles\any\netstandard2.0\libmojoshader_64.dll" />
@@ -147,10 +152,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.0.1641" />
-    <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
     <PackageReference Include="MultiSelectTreeView" Version="1.0.9" />
-    <PackageReference Include="NetSpell" Version="2.1.7" />
     <PackageReference Include="Ninject" Version="3.3.6" />
     <PackageReference Include="PropertyChanged.Fody" Version="3.3.1" PrivateAssets="All" />
     <PackageReference Include="ReactiveUI.Events.WPF" Version="13.1.1" />
