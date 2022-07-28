@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="B9A8BE2A-E422-494B-B6C3-9D0E1238165E" Name="Impulse Dashboard" Language="1033" Version="1.0.0.0" Manufacturer="TutorialsByGary" UpgradeCode="8c97e2aa-1256-4792-a6e2-c8167895badb">
-		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+	
+	<?define BuildVersion = 1.0.0.420 ?>
+	<?define UpgradeCode = {1C2B5971-9F44-49DC-8F5E-A8E9B0DDCABA} ?>
+	
+	<Product
+		Id="{FC105510-DD11-423F-A2C1-224D5238AEFB}"
+		Name="!(loc.ProductName_x64)"
+		Language="!(loc.Language)"
+		Version="$(var.BuildVersion)"
+		Manufacturer="!(loc.CompanyName)"
+		UpgradeCode="$(var.UpgradeCode)">
+		<Package
+			InstallerVersion="200"
+			Compressed="yes"
+			InstallScope="perMachine"
+			Platform="$(var.Platform)"
+			Manufacturer="!(loc.CompanyName)"
+			Description="!(loc.Description)"
+			Comments="!(loc.Comments)"
+			Keywords="!(loc.Keywords)"/>
 		
-    <Property Id="ARPPRODUCTICON" Value="icon.ico" />
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes" />
 	</Product>
@@ -18,7 +36,7 @@
             </Directory>
             <Directory Id="DesktopFolder" Name="Desktop" />
 		</Directory>
-  </Fragment>
+    </Fragment>
 
   <Fragment>
     <DirectoryRef Id="ApplicationProgramsFolder">
