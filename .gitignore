@@ -40,3 +40,7 @@ bin/
 obj/
 Debug/
 *.pdb
+
+# Dashboard
+Impulse.Framework/Impulse.Installer/GeneratedComponents.wxs
+/Artifacts/

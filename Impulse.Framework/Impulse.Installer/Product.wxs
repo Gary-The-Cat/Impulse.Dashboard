@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	
-	<?define BuildVersion = 1.0.0.420 ?>
 	<?define UpgradeCode = {1C2B5971-9F44-49DC-8F5E-A8E9B0DDCABA} ?>
 	
 	<Product
@@ -11,6 +10,7 @@
 		Version="$(var.BuildVersion)"
 		Manufacturer="!(loc.CompanyName)"
 		UpgradeCode="$(var.UpgradeCode)">
+		
 		<Package
 			InstallerVersion="200"
 			Compressed="yes"
@@ -18,33 +18,29 @@
 			Platform="$(var.Platform)"
 			Manufacturer="!(loc.CompanyName)"
 			Description="!(loc.Description)"
-			Comments="!(loc.Comments)"
+			Comments="!(loc.Comment)"
 			Keywords="!(loc.Keywords)"/>
 		
-		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
-		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate EmbedCab="yes" />
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeMessage)" />
+		
+		<!-- Cab file is a zip with the installers contents, not embedding it will produce an msi + cab file. -->
+		<MediaTemplate EmbedCab="yes"/>
+
+		<Icon Id="icon.ico" SourceFile="$(var.Impulse.Dashboard.ProjectDir)\ImpulseIcon.ico"/>
+
+		<!-- Set the icon for our product to be the icon we created above. -->
+		<Property Id="ARPPRODUCTICON">icon.ico</Property>
+		<Property Id="ARPURLINFOABOUT">https://www.youtube.com/channel/UCzvWh64GQm_OfkJXyYo7whQ</Property>
+
+		<!-- Tell the installer to use the basic UI. -->
+		<UIRef Id="WixUI_Minimal"/>
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf"/>
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp"/>
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp"/>
+		
+		<Feature Id="ProductFeature" Title="ImpulseDashboard" Level="1">
+			<ComponentGroupRef Id="ProductComponents"/>			
+			<ComponentGroupRef Id="PublishedComponents"/>			
+		</Feature>
 	</Product>
-
-	<Fragment>
-		<Directory Id="TARGETDIR" Name="SourceDir">
-            <Directory Id="ProgramFilesFolder">
-                <Directory Id="INSTALLFOLDER" Name="Impulse Dashboard"/>
-            </Directory>
-            <Directory Id="ProgramMenuFolder">
-                <Directory Id="ApplicationProgramsFolder" Name="Tutorials By Gary" />
-            </Directory>
-            <Directory Id="DesktopFolder" Name="Desktop" />
-		</Directory>
-    </Fragment>
-
-  <Fragment>
-    <DirectoryRef Id="ApplicationProgramsFolder">
-      <Component Id="ApplicationShortcut" Guid="9bd13330-6540-406f-a3a8-d7f7c69ae7f9">
-        <Shortcut Id="ApplicationStartMenuShortcut" Name="Impulse Dashboard" Description="Impulse Dashboard Description" Target="[INSTALLFOLDER]Impulse.Dashboard.exe" WorkingDirectory="INSTALLFOLDER" />
-        <RemoveFolder Id="RemoveApplicationProgramsFolder" Directory="ApplicationProgramsFolder" On="uninstall" />
-        <RegistryValue Root="HKCU" Key="Software\TutorialsByGary" Name="installed" Type="integer" Value="1" KeyPath="yes" />
-      </Component>
-    </DirectoryRef>
-  </Fragment>
 </Wix>

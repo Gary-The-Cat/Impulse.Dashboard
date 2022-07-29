@@ -16,6 +16,7 @@
   <!-- Avalon Dock, if no langauage is selected, all are included and the bin folder is flooded.-->
   <PropertyGroup>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <AssemblyVersion>1.2.3.4</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

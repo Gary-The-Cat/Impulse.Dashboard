@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Impulse.Renderer\Impulse.Renderer.csproj" />
     <ProjectReference Include="..\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
     <ProjectReference Include="..\Impulse.Shared\Impulse.Shared.csproj" />
   </ItemGroup>

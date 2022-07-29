@@ -9,8 +9,6 @@ using Impulse.SharedFramework.Services;
 namespace Impulse.SharedFramework.Plugin;
 public interface IDashboardProvider
 {
-    public IWindowManager WindowManager { get; }
-
     public IRibbonService RibbonService { get; }
 
     public IDocumentService DocumentService { get; }
