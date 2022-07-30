@@ -26,6 +26,7 @@ using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Shell;
+using Microsoft.Win32;
 using Ninject;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
@@ -43,6 +44,18 @@ public class Bootstrapper : BootstrapperBase
 
         ApplicationPaths = GetPathsFromIndices(GetIndicesForTag(args, "--application"), args);
         PluginPaths = GetPathsFromIndices(GetIndicesForTag(args, "--plugin"), args);
+
+        if (!ApplicationPaths.Any() && !PluginPaths.Any())
+        {
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Tutorials With Gary\Applications");
+            if (key != null)
+            {
+                foreach(var applicationKey in key.GetValueNames())
+                {
+                    ApplicationPaths.Add(key.GetValue(applicationKey).ToString());
+                }
+            }
+        }
 
         var defaultPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         ApplicationPaths.Add(defaultPath);
