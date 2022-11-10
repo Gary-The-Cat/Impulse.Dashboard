@@ -23,14 +23,14 @@
                             BorderThickness="1"
                             Margin="8"
                             Click="Button_Click">
-                        <Grid>
-                            <TextBlock 
-                                Grid.Row="0"
-                                Margin="8,4"
-                                HorizontalAlignment="Center"
-                                Text="{Binding DisplayName}"
-                                Style="{StaticResource MinorHeaderTextBlock}"/>
-                        </Grid>
+                    <Grid>
+                        <TextBlock 
+                            Grid.Row="0"
+                            Margin="8,4"
+                            HorizontalAlignment="Center"
+                            Text="{Binding DisplayName}"
+                            Style="{StaticResource MinorHeaderTextBlock}"/>
+                    </Grid>
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>ImpulseIcon.ico</ApplicationIcon>
     <RootNamespace>Impulse.Framework.Dashboard</RootNamespace>
@@ -218,8 +218,6 @@
     <Resource Include="Icons\Export\Solvle.png" />
     <Resource Include="Icons\Export\Spider.png" />
     <Resource Include="Icons\Export\Spider_GS.png" />
-    <Resource Include="Icons\Export\Tombstone.png" />
-    <Resource Include="Icons\Export\Tombstone_GS.png" />
     <Resource Include="Icons\Maximize.png" />
     <Resource Include="Icons\Maximize2.png" />
     <Resource Include="Icons\Minimise.png" />
