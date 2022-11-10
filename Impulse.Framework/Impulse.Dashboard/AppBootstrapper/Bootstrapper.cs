@@ -36,6 +36,9 @@ namespace Impulse.Dashboard.AppBootstrapper;
 
 public class Bootstrapper : BootstrapperBase
 {
+    private const string ApplicationRegistryPath = @"SOFTWARE\Tutorials With Gary\Applications";
+    private const string PluginRegistryPath = @"SOFTWARE\Tutorials With Gary\Plugins";
+
     private IDashboardProvider dashboard;
 
     public Bootstrapper()
@@ -45,15 +48,23 @@ public class Bootstrapper : BootstrapperBase
         ApplicationPaths = GetPathsFromIndices(GetIndicesForTag(args, "--application"), args);
         PluginPaths = GetPathsFromIndices(GetIndicesForTag(args, "--plugin"), args);
 
-        if (!ApplicationPaths.Any() && !PluginPaths.Any())
+        // When launching from debug, command arguments are used to launch the application being debugged.
+        // If no paths are provided, the app selection window should be shown to the user.
+        bool isAppSelectionLaunch = !ApplicationPaths.Any() && !PluginPaths.Any();
+        if (isAppSelectionLaunch)
         {
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Tutorials With Gary\Applications");
-            if (key != null)
+            var applicationKey = Registry.CurrentUser.OpenSubKey(ApplicationRegistryPath);
+            if (applicationKey != null)
             {
-                foreach(var applicationKey in key.GetValueNames())
-                {
-                    ApplicationPaths.Add(key.GetValue(applicationKey).ToString());
-                }
+                ApplicationPaths.AddRange(applicationKey.GetValueNames().Select(applicationSubKey =>
+                    applicationKey.GetValue(applicationSubKey).ToString()));
+            }
+
+            var pluginKey = Registry.CurrentUser.OpenSubKey(PluginRegistryPath);
+            if (pluginKey != null)
+            {
+                PluginPaths.AddRange(pluginKey.GetValueNames().Select(pluginSubKey =>
+                    pluginKey.GetValue(pluginSubKey).ToString()));
             }
         }
 
