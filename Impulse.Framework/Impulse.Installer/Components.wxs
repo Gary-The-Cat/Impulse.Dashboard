@@ -6,7 +6,7 @@
 			<ComponentRef Id="MainAppShortcut" />
 		</ComponentGroup>
 
-		<DirectoryRef Id="INSTALLFOLDER" FileSource="$(var.Impulse.Dashboard.ProjectDir)\bin\Debug\net6.0-windows\win-x64\publish\">
+		<DirectoryRef Id="INSTALLFOLDER" FileSource="$(var.Impulse.Dashboard.ProjectDir)\bin\Debug\net7.0-windows\win-x64\publish\">
 			<Component Id="MainAppShortcut" Guid="{665DE33E-5C29-4B95-B21D-462D085FD184}">
 				<Shortcut
 					Id="MainAppShortcut"

@@ -2,9 +2,9 @@
   "profiles": {
     "Impulse.Dashboard": {
       "commandName": "Project",
-      "commandLineArgs": "--plugin C:\\GitHub\\code\\WordleSolver\\Application\\Debug\\net6.0-windows",
+      "commandLineArgs": "--plugin C:\\GitHub\\code\\WordleSolver\\Application\\Debug\\net7.0-windows",
       "environmentVariables": {
-        "PATH": "C:\\GitHub\\code\\Impulse.Dashboard\\Impulse.Framework\\Impulse.Dashboard\\bin\\Debug\\net6.0-windows"
+        "PATH": "C:\\GitHub\\code\\Impulse.Dashboard\\Impulse.Framework\\Impulse.Dashboard\\bin\\Debug\\net7.0-windows"
       }
     }
   }
