@@ -38,6 +38,7 @@ public class Bootstrapper : BootstrapperBase
 {
     private const string ApplicationRegistryPath = @"SOFTWARE\Tutorials With Gary\Applications";
     private const string PluginRegistryPath = @"SOFTWARE\Tutorials With Gary\Plugins";
+    private const string DebugPluginPath = @"C:\Users\luke.berry\Documents\GitHub\Wordle.Solver\Application\Debug\net7.0-windows";
 
     private IDashboardProvider dashboard;
 
@@ -59,6 +60,8 @@ public class Bootstrapper : BootstrapperBase
                 ApplicationPaths.AddRange(applicationKey.GetValueNames().Select(applicationSubKey =>
                     applicationKey.GetValue(applicationSubKey).ToString()));
             }
+
+            PluginPaths.Add(DebugPluginPath);
 
             var pluginKey = Registry.CurrentUser.OpenSubKey(PluginRegistryPath);
             if (pluginKey != null)
@@ -270,9 +273,6 @@ public class Bootstrapper : BootstrapperBase
     {
         // Get the plugins from the local plugin folder
         var plugins = PluginLoader.GetAllInstances<IPlugin>(this.PluginPaths);
-
-        var ribbonService = Kernel.Get<IRibbonService>();
-        var documentService = Kernel.Get<IDocumentService>();
 
         foreach (var plugin in plugins)
         {

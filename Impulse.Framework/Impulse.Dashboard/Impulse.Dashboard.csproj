@@ -169,6 +169,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Impulse.ErrorReporting\Impulse.ErrorReporting.csproj" />
     <ProjectReference Include="..\..\Impulse.Shared.UI\Impulse.Shared.UI.csproj" />
     <ProjectReference Include="..\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
     <ProjectReference Include="..\Impulse.Shared\Impulse.Shared.csproj" />
