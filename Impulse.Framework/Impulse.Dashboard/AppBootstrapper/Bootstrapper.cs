@@ -352,6 +352,8 @@ public class Bootstrapper : BootstrapperBase
     {
         RibbonService = Kernel.Get<IRibbonService>();
 
+
+
 #if DEBUG
         DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
 #endif

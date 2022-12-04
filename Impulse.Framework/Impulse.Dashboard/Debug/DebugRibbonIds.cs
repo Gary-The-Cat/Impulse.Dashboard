@@ -6,31 +6,27 @@ namespace Impulse.Dashboard.Debug;
 
 public class DebugRibbonIds
 {
-    public const string DebugTab = "Developer.Debug";
+    public static string Dashboard => "Dashboard";
 
-    public const string TaylorGroup = DebugTab + "." + "Taylor";
-    public const string DemosGroup = DebugTab + "." + "Demos";
-    public const string TestGroup = DebugTab + "." + "Test";
+    public static string Tab_Debug => Concatenate(Dashboard, "Debug");
 
-    // Taylor
-    public const string TaylorDemo = TaylorGroup + "." + "TaylorDemo";
-    public const string BindingDemo = TaylorGroup + "." + "BindingDemo";
-    public const string BindingDemo2 = TaylorGroup + "." + "BindingDemo2";
-    public const string BindingDemo3 = TaylorGroup + "." + "BindingDemo3";
-    public const string UserControlDemo = TaylorGroup + "." + "UserControlDemo";
-    public const string TemplatePractice = TaylorGroup + "." + "TemplatePractice";
+    public static string Tab_Settings => Concatenate(Dashboard, "Settings");
 
-    public const string ExceptionDemo = TestGroup + "." + "Exception";
+    // Debug Demos
+    public static string Group_Demos => Concatenate(Tab_Debug, "Demos");
 
-    public const string RendererDemo = DemosGroup + "." + "Renderer";
-    public const string MonoRendererDemo = DemosGroup + "." + "MonoRenderer";
-    public const string WorkflowDemo = DemosGroup + "." + "Workflow";
-    public const string AsyncBusyDemo = DemosGroup + "." + "AsyncBusy";
-    public const string GoogleApiDemo = DemosGroup + "." + "GoogleApiDemo";
-    public const string GooglePlacesApiDemo = DemosGroup + "." + "GooglePlacesApiDemo";
-    public const string RoutePlannerDemo = DemosGroup + "." + "RoutePlannerDemo";
-    public const string DirectionsDemo = DemosGroup + "." + "DirectionsDemo";
-    public const string JiraDemo = DemosGroup + "." + "JiraDemo";
+    public static string Group_Test => Concatenate(Tab_Debug, "Test");
 
-    public const string WordCheckerDemo = DemosGroup + "." + "WordCheckerDemo";
+    public static string Button_Exception => Concatenate(Group_Test, "Exception");
+
+    public static string Button_AsyncBusy => Concatenate(Group_Demos, "AsyncBusy");
+
+    public static string Button_Directions => Concatenate(Group_Demos, "DirectionsDemo");
+
+    public static string Button_Jira => Concatenate(Group_Demos, "JiraDemo");
+
+    // Settings
+    public static string Group_Logs => Concatenate(Tab_Settings, "Logs");
+
+    public static string Concatenate(string a, string b) => $"{a}.{b}";
 }
