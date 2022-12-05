@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
@@ -19,6 +20,9 @@ using Impulse.Dashboard.Services.Workflow;
 using Impulse.Dashboard.Shell;
 using Impulse.Dashboard.Themes;
 using Impulse.Framework.Dashboard.AppBootstrapper;
+using Impulse.Framework.Dashboard.Configuration.Ribbon;
+using Impulse.Repository.Persistent;
+using Impulse.Repository.Session;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 using Impulse.SharedFramework.Application;
@@ -26,6 +30,7 @@ using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Shell;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using Ninject;
 using ToastNotifications;
@@ -96,6 +101,9 @@ public class Bootstrapper : BootstrapperBase
 
     public new void Initialize()
     {
+        // Initialize persistent and transient databases
+        InitializeDatabase();
+
         // Initialize Caliburn Micro
         InitializeCaliburnMicro();
 
@@ -105,7 +113,7 @@ public class Bootstrapper : BootstrapperBase
         // Initialize the Ribbon
         InitializeRibbon();
 
-        // Load all of the plugins (supports 0 -> n applications)
+        // Load all of the plugins (supports 0 -> 1 applications)
         InitializeApplications();
 
         // Load all of the plugins (supports 0 -> n applications)
@@ -190,7 +198,7 @@ public class Bootstrapper : BootstrapperBase
 
     protected override IEnumerable<Assembly> SelectAssemblies()
     {
-        var types = PluginLoader.GetAllTypes(Directory.GetCurrentDirectory());
+        var types = PluginLoader.GetAllTypes(Directory.GetCurrentDirectory()).ToList();
         types.AddRange(PluginLoader.GetAllInstances<IPlugin>(PluginPaths));
         types.AddRange(PluginLoader.GetAllInstances<IApplication>(ApplicationPaths));
 
@@ -220,6 +228,8 @@ public class Bootstrapper : BootstrapperBase
 
         return output;
     }
+
+    private void InitializeDatabase() => ConfigurationRepository.Initialize();
 
     private void InitializeCaliburnMicro()
     {
@@ -282,11 +292,6 @@ public class Bootstrapper : BootstrapperBase
         }
     }
 
-    private bool Filter(Assembly s)
-    {
-        return s.FullName.StartsWith("Impulse.");
-    }
-
     private void InitializeKernel()
     {
         Kernel = new StandardKernel();
@@ -307,8 +312,6 @@ public class Bootstrapper : BootstrapperBase
         Kernel.Bind<IDialogService>().To<DialogService>().InSingletonScope()
             .WithConstructorArgument("notifier", CreateDefaultNotifier())
             .WithConstructorArgument("shell", Kernel.Get<IShellViewModel>());
-
-        //Kernel.Bind<IGoogleApiService>().To<GoogleApiService>().InSingletonScope();
 
         BindKernelInjectedTypes();
 
@@ -332,19 +335,19 @@ public class Bootstrapper : BootstrapperBase
 
     private object CreateDefaultNotifier()
     {
-        return new Notifier(cfg =>
+        return new Notifier(config =>
         {
-            cfg.PositionProvider = new WindowPositionProvider(
+            config.PositionProvider = new WindowPositionProvider(
                 parentWindow: Application.Current.MainWindow,
                 corner: Corner.BottomRight,
                 offsetX: 10,
                 offsetY: 10);
 
-            cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
+            config.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(
                 notificationLifetime: TimeSpan.FromSeconds(3),
                 maximumNotificationCount: MaximumNotificationCount.FromCount(5));
 
-            cfg.Dispatcher = Application.Current.Dispatcher;
+            config.Dispatcher = Application.Current.Dispatcher;
         });
     }
 
@@ -352,8 +355,7 @@ public class Bootstrapper : BootstrapperBase
     {
         RibbonService = Kernel.Get<IRibbonService>();
 
-
-
+        ConfigurationRibbon.LoadConfigTab(Kernel, RibbonService);
 #if DEBUG
         DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
 #endif

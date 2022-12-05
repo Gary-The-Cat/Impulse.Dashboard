@@ -10,6 +10,7 @@
                 <ResourceDictionary>
                     <bootstrapper:Bootstrapper x:Key="Bootstrapper"/>
                 </ResourceDictionary>
+                
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 

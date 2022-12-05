@@ -49,14 +49,6 @@ public static class DebugTabLoader
         ribbonService.AddButton(asyncBusyDemo);
     }
 
-    private static void OpenUserControlDemo(IKernel kernel)
-    {
-        var userControlDemo = kernel.Get<UserControlDemoViewModel>();
-        var windowManager = kernel.Get<IWindowManager>();
-
-        windowManager.ShowWindowAsync(userControlDemo);
-    }
-
     private static void OpenAsyncBusyDemo(IKernel kernel)
     {
         var asyncBusyDemo = kernel.Get<AsyncBusyDemoViewModel>();

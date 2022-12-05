@@ -13,66 +13,46 @@ namespace Impulse.Dashboard.AppBootstrapper;
 
 public static class PluginLoader
 {
-    public static List<(Assembly assembly, Type type)> GetAllInstances<T>(IEnumerable<string> searchDirectories)
-    {
-        var types = new List<(Assembly assembly, Type type)>();
-        foreach (var dir in searchDirectories)
-        {
-            types.AddRange(GetAllTypes(dir).Where(t => t.type.Implements(typeof(T))));
-        }
+    public static IEnumerable<(Assembly assembly, Type type)> GetAllInstances<T>(
+        IEnumerable<string> searchDirectories) =>
+        searchDirectories
+            .Where(Directory.Exists)
+            .SelectMany(GetAllTypes)
+            .Where(t => t.Item2.Implements(typeof(T)));
 
-        return types;
+    public static IEnumerable<(Assembly assembly, Type type)> GetAllTypes(string searchDirectory) =>
+            GetFilesWithDllExtension(searchDirectory)
+            .Select(LoadAssemblyFromDll)
+            .Where(CheckObjectNotNull)
+            .Distinct()
+            .SelectMany(GetTypesFromAssembly);
+
+    private static bool CheckObjectNotNull(object obj) => obj is not null;
+
+    private static IEnumerable<string> GetFilesWithDllExtension(string directory) =>
+        Directory.GetFiles(directory, "*.dll");
+
+    private static Assembly? LoadAssemblyFromDll(string dllPath)
+    {
+        try
+        {
+            return Assembly.LoadFrom(dllPath);
+        }
+        catch (Exception e) when (e is BadImageFormatException || e is FileLoadException)
+        {
+            return null;
+        }
     }
 
-    public static List<(Assembly assembly, Type type)> GetAllTypes(string directory)
+    private static IEnumerable<(Assembly, Type)> GetTypesFromAssembly(Assembly assembly)
     {
-        var applicationDllPaths = Directory.GetFiles(directory, "*.dll");
-
-        var instances = new List<(Assembly, Type)>();
-
-        // Loop over every dll in the folder, grab the types from the assembly, and check to see if any
-        // of them implement our ApplicationInstance interface, if they do, grab a copy of the type.
-        foreach (var dllPath in applicationDllPaths)
+        try
         {
-            Assembly assembly;
-            try
-            {
-                assembly = Assembly.LoadFrom(dllPath);
-            }
-            catch
-            {
-                continue;
-            }
-
-            Type[] types;
-
-            try
-            {
-                types = assembly.GetExportedTypes();
-            }
-            catch (Exception e)
-            {
-                continue;
-            }
-
-            foreach (var type in types)
-            {
-                instances.Add((assembly, type));
-            }
+            return assembly.GetExportedTypes().Select(type => (assembly, type));
         }
-
-        return instances;
-    }
-
-    private static string GetRelativeApplicationDirectory()
-    {
-        var directory = Directory.GetCurrentDirectory();
-
-        if (Directory.Exists(directory))
+        catch (Exception e) when (e is BadImageFormatException || e is TypeLoadException)
         {
-            return directory;
+            return Enumerable.Empty<(Assembly, Type)>();
         }
-
-        throw new Exception("Application directory cannot be found.");
     }
 }

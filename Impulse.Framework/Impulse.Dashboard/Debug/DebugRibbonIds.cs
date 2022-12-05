@@ -10,7 +10,7 @@ public class DebugRibbonIds
 
     public static string Tab_Debug => Concatenate(Dashboard, "Debug");
 
-    public static string Tab_Settings => Concatenate(Dashboard, "Settings");
+    public static string Tab_Config => Concatenate(Dashboard, "Config");
 
     // Debug Demos
     public static string Group_Demos => Concatenate(Tab_Debug, "Demos");
@@ -21,12 +21,10 @@ public class DebugRibbonIds
 
     public static string Button_AsyncBusy => Concatenate(Group_Demos, "AsyncBusy");
 
-    public static string Button_Directions => Concatenate(Group_Demos, "DirectionsDemo");
-
-    public static string Button_Jira => Concatenate(Group_Demos, "JiraDemo");
-
     // Settings
-    public static string Group_Logs => Concatenate(Tab_Settings, "Logs");
+    public static string Group_Logs => Concatenate(Tab_Config, "Logs");
+
+    public static string Button_LogSettings => Concatenate(Group_Logs, "Logs");
 
     public static string Concatenate(string a, string b) => $"{a}.{b}";
 }

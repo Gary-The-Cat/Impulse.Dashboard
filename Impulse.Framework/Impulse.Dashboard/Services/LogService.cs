@@ -1,13 +1,9 @@
-﻿using Caliburn.Micro;
-using Impulse.Dashboard.Shell;
+﻿using System;
+using System.Threading.Tasks;
 using Impulse.ErrorReporting;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
-using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.Services;
-using Impulse.SharedFramework.Shell;
-using System;
-using System.Threading.Tasks;
 
 namespace Impulse.Framework.Dashboard.Services;
 public class LogService : ILogService
@@ -21,49 +17,17 @@ public class LogService : ILogService
 
     private IDateTimeProvider DateTimeProvider => this.dateTimeProviderReference.Value();
 
-    public Task LogException(string message, Exception exception)
+    public Task LogException(string message, Exception exception) =>
+        LogError(LogRecord.CreateException(DateTimeProvider.Now, message, exception));
+
+    public Task LogInfo(string message) =>
+         LogError(LogRecord.CreateInfo(DateTimeProvider.Now, message));
+
+    public Task LogWarning(string message) =>
+        LogError(LogRecord.CreateWarning(DateTimeProvider.Now, message));
+
+    private Task LogError(LogRecord error)
     {
-        var error = new Error()
-        {
-            Timestamp = dateTimeProvider.Now,
-            Criticality = Criticality.Error,
-            Message = message,
-            Exception = exception,
-        };
-
-        return LogError(error);
-    }
-
-    public Task LogInfo(string message)
-    {
-        var error = new Error()
-        {
-            Timestamp = dateTimeProvider.Now,
-            Criticality = Criticality.Info,
-            Message = message,
-        };
-
-        return LogError(error);
-    }
-
-    public Task LogWarning(string message)
-    {
-        var error = new Error()
-        {
-            Timestamp = dateTimeProvider.Now,
-            Criticality = Criticality.Info,
-            Message = message,
-        };
-
-        return LogError(error);
-    }
-
-    private Task LogError(Error error)
-    {
-        return Execute.OnUIThreadAsync(() =>
-        {
-            // Do something
-            return Task.CompletedTask;
-        });
+        return Task.CompletedTask;
     }
 }
