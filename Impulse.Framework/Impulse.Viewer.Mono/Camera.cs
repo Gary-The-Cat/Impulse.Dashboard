@@ -4,7 +4,7 @@
 
 using Microsoft.Xna.Framework;
 
-namespace Impulse.Mono.Viewer;
+namespace Impulse.Viewer.Mono;
 
 public class Camera
 {

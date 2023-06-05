@@ -5,7 +5,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Impulse.Mono.Viewer.MonoGameWrapper;
+namespace Impulse.Viewer.Mono.MonoGameWrapper;
 
 public class MonoGameServiceProvider : IServiceProvider
 {

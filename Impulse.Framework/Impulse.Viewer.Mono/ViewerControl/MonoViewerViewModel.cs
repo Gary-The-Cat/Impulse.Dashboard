@@ -2,11 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using Impulse.Mono.Viewer.MonoGameWrapper;
+using Impulse.Viewer.Mono.MonoGameWrapper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Impulse.Mono.Viewer.ViewerControl;
+namespace Impulse.Viewer.Mono.ViewerControl;
 
 public class MonoViewerViewModel : MonoGameViewModel
 {
@@ -24,7 +24,8 @@ public class MonoViewerViewModel : MonoGameViewModel
 
     public override void LoadContent()
     {
-        Content.RootDirectory = "Models";
+        var model = Content.Load<Model>("Icosphere");
+        renderer.AddItem(model);
     }
 
     public override void Update(GameTime gameTime)
@@ -50,6 +51,6 @@ public class MonoViewerViewModel : MonoGameViewModel
 
     public void OnResize()
     {
-        // renderer.OnResize(GraphicsDevice.Viewport.AspectRatio);
+        renderer.OnResize(GraphicsDevice.Viewport.AspectRatio);
     }
 }

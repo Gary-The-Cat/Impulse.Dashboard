@@ -21,6 +21,8 @@ public class DebugRibbonIds
 
     public static string Button_AsyncBusy => Concatenate(Group_Demos, "AsyncBusy");
 
+    public static string Button_MonoDemo => Concatenate(Group_Demos, "MonoDemo");
+
     // Settings
     public static string Group_Logs => Concatenate(Tab_Config, "Logs");
 

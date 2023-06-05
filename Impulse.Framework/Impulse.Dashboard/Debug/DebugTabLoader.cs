@@ -4,6 +4,7 @@
 
 using Caliburn.Micro;
 using Impulse.Dashboard.Debug.DemoScreens.AsyncBusyDemo;
+using Impulse.Framework.Dashboard.Demonstrations;
 using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
 using Ninject;
@@ -42,16 +43,37 @@ public static class DebugTabLoader
             Callback = () => OpenAsyncBusyDemo(kernel)
         };
 
+        var viewerDemo = new RibbonButtonViewModel()
+        {
+            Title = "Mono Demo",
+            Id = DebugRibbonIds.Button_MonoDemo,
+            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Pumpkin.png",
+            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Pumpkin_GS.png",
+            IsEnabled = true,
+            Callback = () => OpenViewerDemo(kernel)
+        };
+
         // Testing & Design
         ribbonService.AddButton(exceptionDemo);
 
         // Functionality Demo
         ribbonService.AddButton(asyncBusyDemo);
+
+        // Viewer Demo
+        ribbonService.AddButton(viewerDemo);
     }
 
     private static void OpenAsyncBusyDemo(IKernel kernel)
     {
         var asyncBusyDemo = kernel.Get<AsyncBusyDemoViewModel>();
+        var documentService = kernel.Get<IDocumentService>();
+
+        documentService.OpenDocument(asyncBusyDemo);
+    }
+
+    private static void OpenViewerDemo(IKernel kernel)
+    {
+        var asyncBusyDemo = kernel.Get<ViewerDemoViewModel>();
         var documentService = kernel.Get<IDocumentService>();
 
         documentService.OpenDocument(asyncBusyDemo);

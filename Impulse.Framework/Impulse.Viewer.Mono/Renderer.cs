@@ -5,7 +5,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Impulse.Mono.Viewer;
+namespace Impulse.Viewer.Mono;
 
 public class Renderer
 {

@@ -8,7 +8,7 @@ using System.Windows.Interop;
 using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
 
-namespace Impulse.Mono.Viewer.MonoGameWrapper;
+namespace Impulse.Viewer.Mono.MonoGameWrapper;
 
 public class MonoGameGraphicsDeviceService : IGraphicsDeviceService, IDisposable
 {

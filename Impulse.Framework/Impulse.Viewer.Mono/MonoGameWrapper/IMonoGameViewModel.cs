@@ -7,7 +7,7 @@ using System.Windows;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Impulse.Mono.Viewer.MonoGameWrapper;
+namespace Impulse.Viewer.Mono.MonoGameWrapper;
 
 public interface IMonoGameViewModel : IDisposable
 {

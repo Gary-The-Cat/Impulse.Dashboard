@@ -9,11 +9,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-using Impulse.Mono.Viewer.MonoGameWrapper;
+using Impulse.Viewer.Mono.MonoGameWrapper;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Impulse.Mono.Viewer.ViewerControl;
+namespace Impulse.Viewer.Mono.ViewerControl;
 
 public class MonoViewerView : ContentControl, IDisposable
 {
@@ -118,25 +118,8 @@ public class MonoViewerView : ContentControl, IDisposable
             throw new InvalidOperationException("The application must have a MainWindow");
         }
 
-        if (isFirstLoad)
-        {
-            GraphicsDeviceService.StartDirect3D(Application.Current.MainWindow);
-            viewModel?.Initialize();
-            isFirstLoad = false;
-        }
-
         // :TODO: This logic should not be handled by this window but rather the parent that embeds it.
         Application.Current.MainWindow.Closing += (sender, args) => viewModel?.OnExiting(this, EventArgs.Empty);
-        Application.Current.MainWindow.ContentRendered += (sender, args) =>
-        {
-            if (isFirstLoad)
-            {
-                GraphicsDeviceService.StartDirect3D(Application.Current.MainWindow);
-                viewModel?.Initialize();
-                viewModel?.LoadContent();
-                isFirstLoad = false;
-            }
-        };
 
         direct3DImage = new D3DImage();
 
@@ -152,6 +135,14 @@ public class MonoViewerView : ContentControl, IDisposable
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         Start();
+
+        if (isFirstLoad)
+        {
+            GraphicsDeviceService.StartDirect3D(Application.Current.MainWindow);
+            viewModel?.Initialize();
+            viewModel?.LoadContent();
+            isFirstLoad = false;
+        }
     }
 
     private void OnUnloaded(object sender, RoutedEventArgs e)
