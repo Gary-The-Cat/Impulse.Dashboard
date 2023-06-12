@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:cal="http://www.caliburnproject.org"
-             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -19,7 +18,8 @@
                 Width="600"
                 Source="pack://application:,,,/Impulse.Dashboard;Component/Splash.png"/>
         </Grid>
-        <xctk:BusyIndicator
+        <!-- TODO Replace this with some other library. -->
+        <!--<xctk:BusyIndicator
             IsBusy="{Binding IsBusy}">
             <xctk:BusyIndicator.BusyContent>
                 <Grid
@@ -44,13 +44,13 @@
                 </Grid>
             </xctk:BusyIndicator.BusyContent>
             
-            <!-- Remove unnecessary default ProgressBar -->
+            --><!-- Remove unnecessary default ProgressBar --><!--
             <xctk:BusyIndicator.ProgressBarStyle>
                 <Style TargetType="ProgressBar">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
             </xctk:BusyIndicator.ProgressBarStyle>
-        </xctk:BusyIndicator>
+        </xctk:BusyIndicator>-->
 
         <Button
             Grid.Row="1"

@@ -136,7 +136,6 @@
     <PackageReference Include="Dirkster.AvalonDock" Version="4.50.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.Metro" Version="4.50.1" />
     <PackageReference Include="Dirkster.AvalonDock.Themes.VS2013" Version="4.50.1" />
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.2" />
     <PackageReference Include="Fluent.Ribbon" Version="8.0.3" />
     <PackageReference Include="Fody" Version="6.3.0">
       <PrivateAssets>all</PrivateAssets>
