@@ -120,11 +120,11 @@
     <None Remove="Theme\Images\PinRestore_Black.png" />
     <None Remove="Theme\Images\PinRestore_Dark.png" />
     <None Remove="Theme\Images\VTabGroup.png" />
-    <AdditionalFiles Include="..\Configuration\stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\Configuration\FodyWeavers.xml" Link="FodyWeavers.xml" />
+    <None Include="..\..\Configurations\FodyWeavers.xml" Link="FodyWeavers.xml" />
+    <AdditionalFiles Include="..\..\Configurations\stylecop.json" Link="stylecop.json" />
     <Content Include="ImpulseIcon.ico" />
   </ItemGroup>
 

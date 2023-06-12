@@ -2,10 +2,11 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-using System;
-using System.Threading.Tasks;
+namespace Impulse.SharedFramework.Services.Logging;
 
-namespace Impulse.SharedFramework.Services;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public interface ILogService
 {
@@ -14,4 +15,6 @@ public interface ILogService
     Task LogInfo(string message);
 
     Task LogWarning(string message);
+
+    public IEnumerable<LogRecord> GetLogRecordsForCricicality(Criticality criticality);
 }
