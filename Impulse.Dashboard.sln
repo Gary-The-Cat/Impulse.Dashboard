@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Impulse.Repository", "Impul
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Impulse.Viewer.Mono", "Impulse.Framework\Impulse.Viewer.Mono\Impulse.Viewer.Mono.csproj", "{4AE950DA-471E-45D3-A631-AE2429033578}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Impulse.Experimental", "Impulse.Experimental", "{A4875B12-7110-488E-9F67-52A0A80288DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
