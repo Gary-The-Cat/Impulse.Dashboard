@@ -14,8 +14,8 @@
         d:DesignWidth="800"
         WindowStyle="None"
         MinHeight="600"
-        
-        Background="{DynamicResource PrimaryAccentBrush}">
+        Background="{DynamicResource PrimaryAccentBrush}"
+        Loaded="Window_Loaded">
     <shell:WindowChrome.WindowChrome>
         <shell:WindowChrome
             ResizeBorderThickness="6"
@@ -187,11 +187,34 @@
                     </DataTemplate>
                 </xcad:DockingManager.LayoutItemTemplate>
 
+                <xcad:DockingManager.AnchorablePaneTemplate>
+                    <ControlTemplate>
+                        <ContentControl 
+                            cal:View.Model="{Binding Content}" IsTabStop="True">
+                        </ContentControl>
+                    </ControlTemplate>
+                </xcad:DockingManager.AnchorablePaneTemplate>
+
                 <DockingManager.LayoutUpdateStrategy>
                     <local:LayoutInitializer/>
                 </DockingManager.LayoutUpdateStrategy>
 
-                <LayoutRoot>
+                <LayoutRoot x:Name="DockLayoutRoot">
+                    <xcad:LayoutRoot.LeftSide>
+                        <xcad:LayoutAnchorSide>
+                            <xcad:LayoutAnchorGroup />
+                        </xcad:LayoutAnchorSide>
+                    </xcad:LayoutRoot.LeftSide>
+                    <xcad:LayoutRoot.RightSide>
+                        <xcad:LayoutAnchorSide>
+                            <xcad:LayoutAnchorGroup/>
+                        </xcad:LayoutAnchorSide>
+                    </xcad:LayoutRoot.RightSide>
+                    <xcad:LayoutRoot.BottomSide>
+                        <xcad:LayoutAnchorSide>
+                            <xcad:LayoutAnchorGroup/>
+                        </xcad:LayoutAnchorSide>
+                    </xcad:LayoutRoot.BottomSide>
                     <LayoutPanel Orientation="Horizontal">
                         <LayoutDocumentPane/>
                     </LayoutPanel>

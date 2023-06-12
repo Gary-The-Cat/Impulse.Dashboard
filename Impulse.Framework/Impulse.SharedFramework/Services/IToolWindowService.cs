@@ -12,5 +12,7 @@ public interface IToolWindowService
 
     void OpenRightPaneToolWindow(ToolWindowBase toolWindow);
 
+    void OpenBottomPaneToolWindow(ToolWindowBase toolWindow);
+
     void HidePaneToolWindow(ToolWindowBase toolWindow);
 }

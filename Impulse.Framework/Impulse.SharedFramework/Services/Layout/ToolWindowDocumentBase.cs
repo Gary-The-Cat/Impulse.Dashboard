@@ -43,13 +43,19 @@ public class ToolWindowDocumentBase : DocumentBase
 
         toolWindows.ForEach(toolWindow =>
         {
-            if (toolWindow.Placement == Shared.Enums.ToolWindowPlacement.Left)
+            switch (toolWindow.Placement)
             {
-                ToolWindowService.OpenLeftPaneToolWindow(toolWindow);
-            }
-            else
-            {
-                ToolWindowService.OpenRightPaneToolWindow(toolWindow);
+                case Shared.Enums.ToolWindowPlacement.Left:
+                    ToolWindowService.OpenLeftPaneToolWindow(toolWindow);
+                    break;
+                case Shared.Enums.ToolWindowPlacement.Right:
+                    ToolWindowService.OpenRightPaneToolWindow(toolWindow);
+                    break;
+                case Shared.Enums.ToolWindowPlacement.Bottom:
+                    ToolWindowService.OpenBottomPaneToolWindow(toolWindow);
+                    break;
+                default:
+                    throw new InvalidOperationException();
             }
         });
     }

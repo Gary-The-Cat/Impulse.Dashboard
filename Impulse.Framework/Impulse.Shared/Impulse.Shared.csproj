@@ -11,7 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <AdditionalFiles Include="..\Configuration\stylecop.json" />
+    <Content Include="..\..\Configurations\FodyWeavers.xml" Link="FodyWeavers.xml" />
+    <Content Include="..\..\Configurations\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>

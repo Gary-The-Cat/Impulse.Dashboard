@@ -3,10 +3,12 @@
 // </copyright>
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using AvalonDock;
+using AvalonDock.Layout;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
 
@@ -113,5 +115,28 @@ public partial class ShellView : IShellView
     private void ButtonExit_Click(object sender, RoutedEventArgs e)
     {
         Close();
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        LayoutRoot layoutRoot = this.DockLayoutRoot;
+
+        var bottomGroup = LayoutInitializer.GetGroupFromSide(layoutRoot, Shared.Enums.ToolWindowPlacement.Bottom);
+        foreach (var child in bottomGroup.Children)
+        {
+            child.Show();
+        }
+
+        var leftGroup = LayoutInitializer.GetGroupFromSide(layoutRoot, Shared.Enums.ToolWindowPlacement.Left);
+        foreach (var child in leftGroup.Children)
+        {
+            child.Show();
+        }
+
+        var rightGroup = LayoutInitializer.GetGroupFromSide(layoutRoot, Shared.Enums.ToolWindowPlacement.Right);
+        foreach (var child in rightGroup.Children)
+        {
+            child.Show();
+        }
     }
 }

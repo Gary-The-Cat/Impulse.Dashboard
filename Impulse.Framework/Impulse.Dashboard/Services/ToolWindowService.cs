@@ -37,4 +37,13 @@ public class ToolWindowService : IToolWindowService
             shell.Tools.Add(toolWindow);
         }
     }
+
+    public void OpenBottomPaneToolWindow(ToolWindowBase toolWindow)
+    {
+        toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Bottom;
+        if (!shell.Tools.Contains(toolWindow))
+        {
+            shell.Tools.Add(toolWindow);
+        }
+    }
 }

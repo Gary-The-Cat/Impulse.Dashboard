@@ -7,5 +7,6 @@ namespace Impulse.Shared.Enums;
 public enum ToolWindowPlacement
 {
     Left,
-    Right
+    Right,
+    Bottom,
 }

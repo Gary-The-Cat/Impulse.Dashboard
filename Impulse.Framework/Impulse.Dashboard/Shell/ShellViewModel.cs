@@ -3,7 +3,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Controls;
 using Caliburn.Micro;
@@ -45,6 +47,8 @@ public class ShellViewModel : Conductor<ReactiveScreen>.Collection.OneActive, IS
     public IApplication ActiveApplication { get; set; }
 
     public ObservableCollection<ToolWindowBase> Tools { get; set; }
+
+    public IEnumerable<DocumentBase> Documents => this.Items.Except(this.Tools).OfType<DocumentBase>();
 
     public AvalonDock.Themes.Theme Theme { get; set; }
 

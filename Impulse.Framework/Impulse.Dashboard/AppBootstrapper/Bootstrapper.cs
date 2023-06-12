@@ -21,6 +21,9 @@ using Impulse.Dashboard.Shell;
 using Impulse.Dashboard.Themes;
 using Impulse.Framework.Dashboard.AppBootstrapper;
 using Impulse.Framework.Dashboard.Configuration.Ribbon;
+using Impulse.Framework.Dashboard.Providers;
+using Impulse.Framework.Dashboard.Services.Logging;
+using Impulse.Framework.Dashboard.Services.Logging.LogWindow;
 using Impulse.Repository.Persistent;
 using Impulse.Repository.Session;
 using Impulse.Shared.ExtensionMethods;
@@ -29,6 +32,7 @@ using Impulse.SharedFramework.Application;
 using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
+using Impulse.SharedFramework.Services.Logging;
 using Impulse.SharedFramework.Shell;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -305,6 +309,8 @@ public class Bootstrapper : BootstrapperBase
         // Bind all services to the kernel
         Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
         Kernel.Bind<IRibbonService>().To<RibbonService>().InSingletonScope();
+        Kernel.Bind<ILogService>().To<LogService>().InSingletonScope()
+            .WithConstructorArgument("dateTimeProvider", new DateTimeProvider());
         Kernel.Bind<IDocumentService>().To<DocumentService>().InSingletonScope();
         Kernel.Bind<IToolWindowService>().To<ToolWindowService>().InSingletonScope();
         Kernel.Bind<IWorkflowService>().To<WorkflowService>().InSingletonScope();
@@ -316,6 +322,11 @@ public class Bootstrapper : BootstrapperBase
         BindKernelInjectedTypes();
 
         this.dashboard = new DashboardProvider(Kernel);
+
+        var toolWindowService = Kernel.Get<IToolWindowService>();
+        toolWindowService.OpenLeftPaneToolWindow(Kernel.Get<LogWindowViewModel>());
+        toolWindowService.OpenRightPaneToolWindow(Kernel.Get<LogWindowViewModel>());
+        toolWindowService.OpenBottomPaneToolWindow(Kernel.Get<LogWindowViewModel>());
     }
 
     private void BindKernelInjectedTypes()

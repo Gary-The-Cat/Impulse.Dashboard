@@ -16,6 +16,7 @@ internal class LayoutInitializer : ILayoutUpdateStrategy
     private bool initialized;
     private LayoutAnchorablePane leftPane;
     private LayoutAnchorablePane rightPane;
+    private LayoutAnchorablePane bottomPane;
 
     public void AfterInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableShown)
     {
@@ -23,7 +24,7 @@ internal class LayoutInitializer : ILayoutUpdateStrategy
 
     public bool BeforeInsertDocument(LayoutRoot layout, LayoutDocument anchorableToShow, ILayoutContainer destinationContainer)
     {
-        return false;
+        return anchorableToShow.Content is ToolWindowBase;
     }
 
     public void AfterInsertDocument(LayoutRoot layout, LayoutDocument anchorableShown)
@@ -32,53 +33,25 @@ internal class LayoutInitializer : ILayoutUpdateStrategy
 
     public bool BeforeInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableToShow, ILayoutContainer destinationContainer)
     {
-        // Create the left and right panes
-        if (!initialized)
-        {
-            (leftPane, rightPane) = GetPanes();
-            initialized = true;
-        }
+        var toolWindow = anchorableToShow.Content as ToolWindowBase;
+        var group = GetGroupFromSide(layout, toolWindow.Placement);
+        anchorableToShow.Title = toolWindow.DisplayName;
+        group.Children.Add(anchorableToShow);
 
-        // Get a reference to the root layout panel to add our tool windows
-        var panel = layout.Descendents().OfType<LayoutPanel>().First();
-
-        // Add the panels to their appropriate positions
-        if (!panel.Descendents().Contains(leftPane))
-        {
-            // Insert at the start (horizontal orientated)
-            panel.Children.Insert(0, leftPane);
-        }
-
-        if (!panel.Descendents().Contains(rightPane))
-        {
-            // Add to the end (horizontal orientated)
-            panel.Children.Add(rightPane);
-        }
-
-        // Get the pane we want to insert our anchorable into
-        var pane = GetOrCreatePane(((ToolWindowBase)anchorableToShow.Content).Placement);
-        if (pane != null)
-        {
-            pane.Children.Add(anchorableToShow);
-
-            // We have added the visual to the correct pane, mark it as done.
-            return true;
-        }
-
-        // We were unable to find the correct parent pane, so use the default behaviour.
-        return false;
+        return true;
     }
 
-    private (LayoutAnchorablePane leftPane, LayoutAnchorablePane rightPane) GetPanes()
-    {
-        var leftPane = new LayoutAnchorablePane() { DockWidth = new GridLength(200) };
-        var rightPane = new LayoutAnchorablePane() { DockWidth = new GridLength(200) };
-
-        return (leftPane, rightPane);
-    }
-
-    private LayoutAnchorablePane GetOrCreatePane(ToolWindowPlacement placement)
-    {
-        return placement == ToolWindowPlacement.Left ? leftPane : rightPane;
-    }
+    public static LayoutAnchorGroup GetGroupFromSide(LayoutRoot layout, ToolWindowPlacement placement)
+        => placement switch
+        {
+            ToolWindowPlacement.Left => layout.Children.OfType<LayoutAnchorSide>()
+                .First(s => s.Side == AnchorSide.Left)
+                .Children.OfType<LayoutAnchorGroup>().First(),
+            ToolWindowPlacement.Right => layout.Children.OfType<LayoutAnchorSide>()
+                .First(s => s.Side == AnchorSide.Right)
+                .Children.OfType<LayoutAnchorGroup>().First(),
+            ToolWindowPlacement.Bottom => layout.Children.OfType<LayoutAnchorSide>()
+                .First(s => s.Side == AnchorSide.Bottom)
+                .Children.OfType<LayoutAnchorGroup>().First(),
+        };
 }
