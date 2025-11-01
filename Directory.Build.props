@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <NetVersion>net10.0</NetVersion>
+    <NetVersionWindows>$(NetVersion)-windows</NetVersionWindows>
+    <NetVersionAndroid>$(NetVersion)-android</NetVersionAndroid>
+    <NetVersionIos>$(NetVersion)-ios</NetVersionIos>
+  </PropertyGroup>
+</Project>

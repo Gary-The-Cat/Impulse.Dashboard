@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>$(NetVersionWindows)</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>ImpulseIcon.ico</ApplicationIcon>
     <RootNamespace>Impulse.Framework.Dashboard</RootNamespace>

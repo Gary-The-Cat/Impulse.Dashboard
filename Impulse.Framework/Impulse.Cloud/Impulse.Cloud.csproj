@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>$(NetVersion)</TargetFramework>
     <OutputType>Library</OutputType>
     <AssemblyName>Impulse.Cloud</AssemblyName>
     <RootNamespace>Impulse.Cloud</RootNamespace>
