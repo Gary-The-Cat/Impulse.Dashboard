@@ -4,6 +4,7 @@
 
 using Caliburn.Micro;
 using Impulse.Dashboard.Debug.DemoScreens.AsyncBusyDemo;
+using Impulse.Dashboard.Debug.ToolWindows;
 using Impulse.Framework.Dashboard.Demonstrations;
 using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
@@ -22,6 +23,16 @@ public static class DebugTabLoader
         ribbonService.AddGroup(DebugRibbonIds.Group_Test, "Tests");
 
         ribbonService.AddGroup(DebugRibbonIds.Group_Demos, "Functionality Demos");
+
+        var bottomToolWindowButton = new RibbonButtonViewModel()
+        {
+            Title = "Open Bottom Tool",
+            Id = DebugRibbonIds.Button_OpenBottomToolWindow,
+            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Optimize.png",
+            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Optimize_GS.png",
+            IsEnabled = true,
+            Callback = () => OpenBottomToolWindow(kernel)
+        };
 
         var exceptionDemo = new RibbonButtonViewModel()
         {
@@ -54,6 +65,7 @@ public static class DebugTabLoader
         };
 
         // Testing & Design
+        ribbonService.AddButton(bottomToolWindowButton);
         ribbonService.AddButton(exceptionDemo);
 
         // Functionality Demo
@@ -69,6 +81,17 @@ public static class DebugTabLoader
         var documentService = kernel.Get<IDocumentService>();
 
         documentService.OpenDocument(asyncBusyDemo);
+    }
+
+    private static BottomToolWindowViewModel? bottomToolWindow;
+
+    private static void OpenBottomToolWindow(IKernel kernel)
+    {
+        var toolWindowService = kernel.Get<IToolWindowService>();
+
+        bottomToolWindow ??= kernel.Get<BottomToolWindowViewModel>();
+
+        toolWindowService.OpenBottomPaneToolWindow(bottomToolWindow);
     }
 
     private static void OpenViewerDemo(IKernel kernel)

@@ -1,0 +1,26 @@
+<UserControl x:Class="Impulse.Dashboard.Debug.ToolWindows.BottomToolWindowView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="200"
+             d:DesignWidth="300">
+    <Border Padding="12"
+            Background="{DynamicResource SecondaryBackgroundBrush}">
+        <StackPanel>
+            <TextBlock FontWeight="Bold"
+                       Margin="0 0 0 6"
+                       Text="Bottom Pane Debug Tool"
+                       Foreground="{DynamicResource PrimaryForegroundBrush}"/>
+            <ItemsControl ItemsSource="{Binding Messages}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}"
+                                   Foreground="{DynamicResource PrimaryForegroundBrush}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Border>
+</UserControl>

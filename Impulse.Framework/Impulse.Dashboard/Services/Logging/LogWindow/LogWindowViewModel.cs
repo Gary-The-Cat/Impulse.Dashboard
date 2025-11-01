@@ -1,11 +1,17 @@
 ﻿namespace Impulse.Framework.Dashboard.Services.Logging.LogWindow;
 
+using Impulse.Shared.Enums;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Services.Logging;
 using System.Collections.ObjectModel;
 
 internal class LogWindowViewModel : ToolWindowBase
 {
+    public LogWindowViewModel()
+    {
+        Placement = ToolWindowPlacement.Bottom;
+    }
+
     public ObservableCollection<LogRecordViewModel> LogRecords { get; set; } =
         new ObservableCollection<LogRecordViewModel>()
         {

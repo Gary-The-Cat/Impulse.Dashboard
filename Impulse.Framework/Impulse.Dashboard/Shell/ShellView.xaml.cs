@@ -121,20 +121,20 @@ public partial class ShellView : IShellView
     {
         LayoutRoot layoutRoot = this.DockLayoutRoot;
 
-        var bottomGroup = LayoutInitializer.GetGroupFromSide(layoutRoot, Shared.Enums.ToolWindowPlacement.Bottom);
-        foreach (var child in bottomGroup.Children)
+        ShowAnchorables(layoutRoot, Shared.Enums.ToolWindowPlacement.Bottom);
+        ShowAnchorables(layoutRoot, Shared.Enums.ToolWindowPlacement.Left);
+        ShowAnchorables(layoutRoot, Shared.Enums.ToolWindowPlacement.Right);
+    }
+
+    private static void ShowAnchorables(LayoutRoot layoutRoot, Shared.Enums.ToolWindowPlacement placement)
+    {
+        var pane = LayoutInitializer.GetPane(layoutRoot, placement);
+        if (pane == null)
         {
-            child.Show();
+            return;
         }
 
-        var leftGroup = LayoutInitializer.GetGroupFromSide(layoutRoot, Shared.Enums.ToolWindowPlacement.Left);
-        foreach (var child in leftGroup.Children)
-        {
-            child.Show();
-        }
-
-        var rightGroup = LayoutInitializer.GetGroupFromSide(layoutRoot, Shared.Enums.ToolWindowPlacement.Right);
-        foreach (var child in rightGroup.Children)
+        foreach (var child in pane.Children.OfType<LayoutAnchorable>())
         {
             child.Show();
         }

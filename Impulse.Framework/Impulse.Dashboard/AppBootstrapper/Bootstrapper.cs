@@ -33,6 +33,7 @@ using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Logging;
+using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
@@ -324,8 +325,12 @@ public class Bootstrapper : BootstrapperBase
         this.dashboard = new DashboardProvider(Kernel);
 
         var toolWindowService = Kernel.Get<IToolWindowService>();
-        toolWindowService.OpenLeftPaneToolWindow(Kernel.Get<LogWindowViewModel>());
-        toolWindowService.OpenRightPaneToolWindow(Kernel.Get<LogWindowViewModel>());
+
+        if (Kernel.Get<IProjectExplorerService>() is ToolWindowBase projectExplorerToolWindow)
+        {
+            toolWindowService.OpenLeftPaneToolWindow(projectExplorerToolWindow);
+        }
+
         toolWindowService.OpenBottomPaneToolWindow(Kernel.Get<LogWindowViewModel>());
     }
 

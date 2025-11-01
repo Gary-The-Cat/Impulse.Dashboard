@@ -23,6 +23,8 @@ public class DebugRibbonIds
 
     public static string Button_MonoDemo => Concatenate(Group_Demos, "MonoDemo");
 
+    public static string Button_OpenBottomToolWindow => Concatenate(Group_Test, "BottomToolWindow");
+
     // Settings
     public static string Group_Logs => Concatenate(Tab_Config, "Logs");
 

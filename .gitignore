@@ -39,6 +39,8 @@ Thumbs.db
 bin/
 obj/
 Debug/
+!Impulse.Framework/Impulse.Dashboard/Debug/
+!Impulse.Framework/Impulse.Dashboard/Debug/**
 *.pdb
 
 # Dashboard

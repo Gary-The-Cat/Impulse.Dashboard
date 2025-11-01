@@ -5,6 +5,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using AvalonDock.Layout;
 using Impulse.Shared.Enums;
 using Impulse.SharedFramework.Services.Layout;
@@ -13,11 +14,6 @@ namespace Impulse.Dashboard.Shell;
 
 internal class LayoutInitializer : ILayoutUpdateStrategy
 {
-    private bool initialized;
-    private LayoutAnchorablePane leftPane;
-    private LayoutAnchorablePane rightPane;
-    private LayoutAnchorablePane bottomPane;
-
     public void AfterInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableShown)
     {
     }
@@ -33,25 +29,86 @@ internal class LayoutInitializer : ILayoutUpdateStrategy
 
     public bool BeforeInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableToShow, ILayoutContainer destinationContainer)
     {
-        var toolWindow = anchorableToShow.Content as ToolWindowBase;
-        var group = GetGroupFromSide(layout, toolWindow.Placement);
+        if (anchorableToShow.Content is not ToolWindowBase toolWindow)
+        {
+            return false;
+        }
+
+        if (destinationContainer != null && IsAutoHideDestination(destinationContainer))
+        {
+            // Let AvalonDock handle auto-hide transitions.
+            return false;
+        }
+
+        var targetPane = GetPane(layout, toolWindow.Placement);
+        if (targetPane == null)
+        {
+            return false;
+        }
+
         anchorableToShow.Title = toolWindow.DisplayName;
-        group.Children.Add(anchorableToShow);
+
+        if (!targetPane.Children.Contains(anchorableToShow))
+        {
+            targetPane.Children.Add(anchorableToShow);
+        }
 
         return true;
     }
 
-    public static LayoutAnchorGroup GetGroupFromSide(LayoutRoot layout, ToolWindowPlacement placement)
-        => placement switch
+    internal static LayoutAnchorablePane? GetPane(LayoutRoot layout, ToolWindowPlacement placement)
+    {
+        var (leftPane, rightPane, bottomPane) = LocatePanes(layout);
+
+        return placement switch
         {
-            ToolWindowPlacement.Left => layout.Children.OfType<LayoutAnchorSide>()
-                .First(s => s.Side == AnchorSide.Left)
-                .Children.OfType<LayoutAnchorGroup>().First(),
-            ToolWindowPlacement.Right => layout.Children.OfType<LayoutAnchorSide>()
-                .First(s => s.Side == AnchorSide.Right)
-                .Children.OfType<LayoutAnchorGroup>().First(),
-            ToolWindowPlacement.Bottom => layout.Children.OfType<LayoutAnchorSide>()
-                .First(s => s.Side == AnchorSide.Bottom)
-                .Children.OfType<LayoutAnchorGroup>().First(),
+            ToolWindowPlacement.Left => leftPane,
+            ToolWindowPlacement.Right => rightPane,
+            ToolWindowPlacement.Bottom => bottomPane,
+            _ => null,
         };
+    }
+
+    private static (LayoutAnchorablePane? left, LayoutAnchorablePane? right, LayoutAnchorablePane? bottom) LocatePanes(LayoutRoot layout)
+    {
+        if (layout.RootPanel is not LayoutPanel rootPanel)
+        {
+            return (null, null, null);
+        }
+
+        var horizontalPanel = rootPanel.Children.OfType<LayoutPanel>()
+            .FirstOrDefault(panel => panel.Orientation == Orientation.Horizontal);
+
+        var anchorablePanes = horizontalPanel?.Children.OfType<LayoutAnchorablePane>().ToList() ?? new();
+
+        var leftPane = anchorablePanes.ElementAtOrDefault(0);
+        var rightPane = anchorablePanes.Count > 1
+            ? anchorablePanes.ElementAt(anchorablePanes.Count - 1)
+            : anchorablePanes.ElementAtOrDefault(0);
+
+        var bottomPane = rootPanel.Children.OfType<LayoutAnchorablePane>()
+            .FirstOrDefault(pane => pane.DockHeight.Value > 0);
+
+        return (leftPane, rightPane, bottomPane);
+    }
+
+    private static bool IsAutoHideDestination(ILayoutContainer destinationContainer)
+    {
+        if (destinationContainer is not ILayoutElement element)
+        {
+            return false;
+        }
+
+        while (element != null)
+        {
+            if (element is LayoutAnchorSide)
+            {
+                return true;
+            }
+
+            element = element.Parent;
+        }
+
+        return false;
+    }
 }

@@ -25,25 +25,34 @@ public class ToolWindowService : IToolWindowService
 
     public void OpenLeftPaneToolWindow(ToolWindowBase toolWindow)
     {
-        toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Left;
-        shell.Tools.Add(toolWindow);
+        OpenToolWindow(toolWindow, Impulse.Shared.Enums.ToolWindowPlacement.Left);
     }
 
     public void OpenRightPaneToolWindow(ToolWindowBase toolWindow)
     {
-        toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Right;
-        if (!shell.Tools.Contains(toolWindow))
-        {
-            shell.Tools.Add(toolWindow);
-        }
+        OpenToolWindow(toolWindow, Impulse.Shared.Enums.ToolWindowPlacement.Right);
     }
 
     public void OpenBottomPaneToolWindow(ToolWindowBase toolWindow)
     {
-        toolWindow.Placement = Impulse.Shared.Enums.ToolWindowPlacement.Bottom;
-        if (!shell.Tools.Contains(toolWindow))
+        OpenToolWindow(toolWindow, Impulse.Shared.Enums.ToolWindowPlacement.Bottom);
+    }
+
+    private void OpenToolWindow(ToolWindowBase toolWindow, Impulse.Shared.Enums.ToolWindowPlacement placement)
+    {
+        var toolIsOpen = shell.Tools.Contains(toolWindow);
+
+        if (toolIsOpen && toolWindow.Placement == placement)
         {
-            shell.Tools.Add(toolWindow);
+            return;
         }
+
+        if (toolIsOpen)
+        {
+            shell.Tools.Remove(toolWindow);
+        }
+
+        toolWindow.Placement = placement;
+        shell.Tools.Add(toolWindow);
     }
 }

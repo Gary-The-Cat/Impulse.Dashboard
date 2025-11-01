@@ -215,9 +215,14 @@
                             <xcad:LayoutAnchorGroup/>
                         </xcad:LayoutAnchorSide>
                     </xcad:LayoutRoot.BottomSide>
-                    <LayoutPanel Orientation="Horizontal">
-                        <LayoutDocumentPane/>
-                    </LayoutPanel>
+                    <xcad:LayoutPanel Orientation="Vertical">
+                        <xcad:LayoutPanel Orientation="Horizontal">
+                            <xcad:LayoutAnchorablePane DockWidth="280" />
+                            <xcad:LayoutDocumentPane/>
+                            <xcad:LayoutAnchorablePane DockWidth="280" />
+                        </xcad:LayoutPanel>
+                        <xcad:LayoutAnchorablePane DockHeight="240" />
+                    </xcad:LayoutPanel>
                 </LayoutRoot>
 
             </xcad:DockingManager>
