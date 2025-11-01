@@ -36,6 +36,9 @@ public abstract class ReactiveScreen : Screen, IChangeTracking
     [DoNotSetChanged]
     public ICommand LoadCommand { get; set; }
 
+    [DoNotSetChanged]
+    public bool IsSelected { get; set; }
+
     public virtual void AcceptChanges()
     {
         this.IsLoaded = true;

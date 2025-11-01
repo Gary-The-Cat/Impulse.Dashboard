@@ -21,6 +21,9 @@
 
             <!-- Can't work these two out -->
             <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor6" Color="{DynamicResource PrimaryAccentColour}"/>
+            <SolidColorBrush x:Key="LogPanelBackgroundBrush" Color="{DynamicResource NeutralBackgroundLight}" />
+            <SolidColorBrush x:Key="LogPanelBorderBrush" Color="{DynamicResource NeutralBorderLight}" />
+
             <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor2" Color="{DynamicResource ForegroundColour}" />
 
         </ResourceDictionary>

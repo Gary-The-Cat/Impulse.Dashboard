@@ -17,4 +17,6 @@ public class LogRecordViewModel : ReactiveViewModelBase
     public string Message { get; init; }
 
     public string? StackTrace { get; init; }
+
+    public bool HasDetails => !string.IsNullOrWhiteSpace(StackTrace);
 }

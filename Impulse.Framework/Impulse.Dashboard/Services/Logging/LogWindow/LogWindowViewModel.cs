@@ -15,9 +15,27 @@ internal class LogWindowViewModel : ToolWindowBase
     public ObservableCollection<LogRecordViewModel> LogRecords { get; set; } =
         new ObservableCollection<LogRecordViewModel>()
         {
-            new LogRecordViewModel() { Criticality = Criticality.Info, Message = "Just a test..." },
-            new LogRecordViewModel() { Criticality = Criticality.Warning, Message = "Things are breaking." },
-            new LogRecordViewModel() { Criticality = Criticality.Error, Message = "Things are baaad!!" },
+            new LogRecordViewModel()
+            {
+                Timestamp = System.DateTime.Now.AddMinutes(-2),
+                Criticality = Criticality.Info,
+                Message = "Background sync completed successfully."
+            },
+            new LogRecordViewModel()
+            {
+                Timestamp = System.DateTime.Now.AddMinutes(-1),
+                Criticality = Criticality.Warning,
+                Message = "Importer skipped 3 records because of validation errors."
+            },
+            new LogRecordViewModel()
+            {
+                Timestamp = System.DateTime.Now.AddSeconds(-30),
+                Criticality = Criticality.Error,
+                Message = "Unhandled exception while processing dashboard widgets.",
+                StackTrace = @"System.InvalidOperationException: Sequence contains no elements
+   at Impulse.Framework.Dashboard.Services.WidgetService.RefreshAsync()
+   at Impulse.Framework.Dashboard.Services.Logging.LogWindow.LogWindowViewModel.<.ctor>b__4_0()"
+            },
         };
 
     public override string DisplayName => "Log Viewer";

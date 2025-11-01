@@ -46,7 +46,10 @@
         </ControlTemplate>
     </UserControl.Resources>
     <fluent:Ribbon
-        x:Name="MainRibbon">
+        x:Name="MainRibbon"
+        TitleBar="{x:Null}"
+        IsQuickAccessToolBarVisible="False"
+        QuickAccessToolBarHeight="0">
 
         <fluent:Ribbon.Resources>
             <Style TargetType="{x:Type fluent:RibbonTabItem}">

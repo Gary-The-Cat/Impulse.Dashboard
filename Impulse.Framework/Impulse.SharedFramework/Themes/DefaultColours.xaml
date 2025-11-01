@@ -31,4 +31,6 @@
     <Color x:Key="White100">#FFE1E1E1</Color>
     <Color x:Key="White80">#CCE1E1E1</Color>
     <Color x:Key="White60">#99E1E1E1</Color>
+    <Color x:Key="NeutralBackgroundLight">#FFF5F5F5</Color>
+    <Color x:Key="NeutralBorderLight">#FFDDDDDD</Color>
 </ResourceDictionary>
