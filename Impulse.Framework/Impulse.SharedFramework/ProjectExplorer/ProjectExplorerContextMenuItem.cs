@@ -3,6 +3,7 @@
 // </copyright>
 
 using System;
+using System.Threading.Tasks;
 
 namespace Impulse.SharedFramework.ProjectExplorer;
 
@@ -12,5 +13,5 @@ public class ProjectExplorerContextMenuItem
 
     public string Title { get; set; }
 
-    public Action Callback { get; set; }
+    public Func<Task> Callback { get; set; }
 }

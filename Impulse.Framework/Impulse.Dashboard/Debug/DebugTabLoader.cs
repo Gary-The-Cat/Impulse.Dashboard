@@ -8,9 +8,11 @@ using Impulse.Dashboard.Debug.ToolWindows;
 using Impulse.Framework.Dashboard.Demonstrations;
 using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
+using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Services.Logging;
 using Ninject;
 using System;
+using System.Threading.Tasks;
 
 namespace Impulse.Dashboard.Debug;
 
@@ -24,6 +26,7 @@ public static class DebugTabLoader
 
         ribbonService.AddGroup(DebugRibbonIds.Group_Test, "Tests");
         ribbonService.AddGroup(DebugRibbonIds.Group_Demos, "Functionality Demos");
+        ribbonService.AddGroup(DebugRibbonIds.Group_ProjectExplorer, "Project Explorer");
         ribbonService.AddGroup(DebugRibbonIds.Group_Logging, "Logging");
 
         var logService = kernel.Get<ILogService>();
@@ -66,6 +69,16 @@ public static class DebugTabLoader
             DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Pumpkin_GS.png",
             IsEnabled = true,
             Callback = () => OpenViewerDemo(kernel)
+        };
+
+        var seedProjectExplorerButton = new RibbonButtonViewModel()
+        {
+            Title = "Seed Explorer",
+            Id = DebugRibbonIds.Button_SeedProjectExplorer,
+            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Project.png",
+            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Project_GS.png",
+            IsEnabled = true,
+            Callback = async () => await SeedProjectExplorerAsync(kernel)
         };
 
         var infoLogButton = new RibbonButtonViewModel()
@@ -115,6 +128,9 @@ public static class DebugTabLoader
         // Functionality Demo
         ribbonService.AddButton(asyncBusyDemo);
 
+        // Project Explorer Utilities
+        ribbonService.AddButton(seedProjectExplorerButton);
+
         // Viewer Demo
         ribbonService.AddButton(viewerDemo);
 
@@ -150,5 +166,87 @@ public static class DebugTabLoader
         var documentService = kernel.Get<IDocumentService>();
 
         documentService.OpenDocument(asyncBusyDemo);
+    }
+
+    private static async Task SeedProjectExplorerAsync(IKernel kernel)
+    {
+        var explorer = kernel.Get<IProjectExplorerService>();
+        explorer.ClearAllItems();
+
+        var root = new ProjectExplorerFolder
+        {
+            DisplayName = "Sample Solution",
+            Icon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Project.png",
+            IsExpanded = true,
+            IsEditing = false
+        };
+        await explorer.AddItemAsync(root);
+
+        var srcFolder = new ProjectExplorerFolder
+        {
+            DisplayName = "src",
+            ParentId = root.Id,
+            IsExpanded = true,
+            IsEditing = false
+        };
+        await explorer.AddItemAsync(srcFolder);
+
+        var dashboardsFolder = new ProjectExplorerFolder
+        {
+            DisplayName = "Dashboard",
+            ParentId = srcFolder.Id,
+            IsExpanded = true,
+            IsEditing = false
+        };
+        await explorer.AddItemAsync(dashboardsFolder);
+
+        var servicesFolder = new ProjectExplorerFolder
+        {
+            DisplayName = "Services",
+            ParentId = srcFolder.Id,
+            IsExpanded = true,
+            IsEditing = false
+        };
+        await explorer.AddItemAsync(servicesFolder);
+
+        var loggingFolder = new ProjectExplorerFolder
+        {
+            DisplayName = "Logging",
+            ParentId = servicesFolder.Id,
+            IsExpanded = true,
+            IsEditing = false
+        };
+        await explorer.AddItemAsync(loggingFolder);
+
+        await explorer.AddItemAsync(CreateLeaf("ShellView.xaml", dashboardsFolder.Id));
+        await explorer.AddItemAsync(CreateLeaf("ShellViewModel.cs", dashboardsFolder.Id));
+        await explorer.AddItemAsync(CreateLeaf("DialogService.cs", servicesFolder.Id));
+        await explorer.AddItemAsync(CreateLeaf("LogService.cs", loggingFolder.Id));
+        await explorer.AddItemAsync(CreateLeaf("LogWindowViewModel.cs", loggingFolder.Id));
+
+        var testsFolder = new ProjectExplorerFolder
+        {
+            DisplayName = "tests",
+            ParentId = root.Id,
+            IsExpanded = true,
+            IsEditing = false
+        };
+        await explorer.AddItemAsync(testsFolder);
+
+        await explorer.AddItemAsync(CreateLeaf("ProjectExplorerViewModelTests.cs", testsFolder.Id));
+        await explorer.AddItemAsync(CreateLeaf("README.md", root.Id, icon: "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Open.png"));
+    }
+
+    private static ProjectExplorerItemBase CreateLeaf(string name, Guid parentId, string icon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Open.png")
+    {
+        return new ProjectExplorerItemBase
+        {
+            DisplayName = name,
+            ParentId = parentId,
+            Icon = icon,
+            IsEditable = true,
+            IsExpanded = false,
+            IsEditing = false
+        };
     }
 }

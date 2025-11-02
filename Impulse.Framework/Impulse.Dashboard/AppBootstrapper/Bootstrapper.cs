@@ -373,10 +373,9 @@ public class Bootstrapper : BootstrapperBase
     private void InitializeRibbon()
     {
         RibbonService = Kernel.Get<IRibbonService>();
-
-        ConfigurationRibbon.LoadConfigTab(RibbonService);
 #if DEBUG
         DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
 #endif
+        ConfigurationRibbon.LoadConfigTab(RibbonService);
     }
 }

@@ -15,6 +15,12 @@ public interface IProjectExplorerService
 
     Task DeleteItemAsync(Guid itemId);
 
+    Task DeleteItemsAsync(IEnumerable<ProjectExplorerItemBase> items);
+
+    Task<ProjectExplorerFolder> CreateFolderAsync(ProjectExplorerItemBase parent);
+
+    Task BeginRenameAsync(ProjectExplorerItemBase item);
+
     IEnumerable<ProjectExplorerItemBase> GetItems();
 
     IEnumerable<ProjectExplorerItemBase> GetItemsRecursive();

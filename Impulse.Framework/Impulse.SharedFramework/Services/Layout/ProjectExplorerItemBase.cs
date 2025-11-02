@@ -3,7 +3,9 @@
 // </copyright>
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +13,7 @@ using System.Windows.Media.Imaging;
 using Impulse.Shared.Interfaces;
 using Impulse.Shared.ProjectExplorer;
 using Impulse.SharedFramework.ProjectExplorer;
+using ReactiveUI;
 
 namespace Impulse.SharedFramework.Services.Layout;
 
@@ -25,7 +28,8 @@ public class ProjectExplorerItemBase : Caliburn.Micro.Screen, IHaveId
 
         ContextMenu.PreviewMouseUp += MouseUp;
 
-        Callback = () => { };
+        Callback = () => Task.CompletedTask;
+        OriginalDisplayName = string.Empty;
     }
 
     public Guid Id { get; set; }
@@ -36,7 +40,7 @@ public class ProjectExplorerItemBase : Caliburn.Micro.Screen, IHaveId
 
     public ObservableCollection<ProjectExplorerItemBase> Items { get; set; }
 
-    public Action Callback { get; set; }
+    public Func<Task> Callback { get; set; }
 
     public string Icon { get; set; }
 
@@ -44,7 +48,7 @@ public class ProjectExplorerItemBase : Caliburn.Micro.Screen, IHaveId
 
     public bool IsEditable { get; set; } = true;
 
-    public bool IsEditing { get; set; } = true;
+    public bool IsEditing { get; set; } = false;
 
     public bool IsEnabled { get; set; } = true;
 
@@ -54,40 +58,69 @@ public class ProjectExplorerItemBase : Caliburn.Micro.Screen, IHaveId
 
     public ContextMenu ContextMenu { get; private set; }
 
+    public string OriginalDisplayName { get; set; }
+
     internal void PopulateContextMenu(IHandleProjectExplorerItems handler)
     {
+        if (handler == null)
+        {
+            return;
+        }
+
         var items = handler.GetContextMenuItems(this);
 
-        foreach (var item in items)
+        AddContextMenuItems(items);
+    }
+
+    internal void AddContextMenuItems(IEnumerable<ProjectExplorerContextMenuItem> menuItems)
+    {
+        if (menuItems == null)
         {
-            var grid = new Grid();
-            grid.DataContext = item;
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto, MinWidth = 24 });
-            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
+            return;
+        }
 
-            var image = new Image() { Width = 16, Height = 16 };
-
-            if (item.Image != null)
+        foreach (var menuItem in menuItems)
+        {
+            if (menuItem == null)
             {
-                image.Source = new BitmapImage(item.Image);
+                continue;
             }
 
-            var text = new TextBlock() { Text = item.Title };
-
-            Grid.SetColumn(grid, 0);
-            grid.Children.Add(image);
-            Grid.SetColumn(grid, 1);
-            grid.Children.Add(text);
-
-            ContextMenu.Items.Add(grid);
+            ContextMenu.Items.Add(CreateMenuItem(menuItem));
         }
     }
 
-    private void MouseUp(object sender, MouseButtonEventArgs e)
+    private MenuItem CreateMenuItem(ProjectExplorerContextMenuItem menuItem)
     {
-        var textBlock = e.Source as TextBlock;
-        var grid = textBlock?.Parent as Grid ?? e.Source as Grid;
-        var item = grid.DataContext as ProjectExplorerContextMenuItem;
-        item.Callback();
+        var menuItemControl = new MenuItem
+        {
+            DataContext = menuItem,
+            Header = menuItem.Title,
+            Command = menuItem.Callback != null ? ReactiveCommand.CreateFromTask(menuItem.Callback) : null
+        };
+
+        if (menuItem.Image != null)
+        {
+            menuItemControl.Icon = new Image
+            {
+                Width = 16,
+                Height = 16,
+                Source = new BitmapImage(menuItem.Image)
+            };
+        }
+
+        return menuItemControl;
+    }
+
+    private async void MouseUp(object sender, MouseButtonEventArgs e)
+    {
+        var menuItem = e.Source as MenuItem;
+        if (menuItem?.DataContext is ProjectExplorerContextMenuItem contextMenuItem && menuItem.Command == null)
+        {
+            if (contextMenuItem.Callback != null)
+            {
+                await contextMenuItem.Callback();
+            }
+        }
     }
 }

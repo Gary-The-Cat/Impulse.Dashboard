@@ -17,7 +17,11 @@ public class DebugRibbonIds
 
     public static string Group_Test => Concatenate(Tab_Debug, "Test");
 
+    public static string Group_ProjectExplorer => Concatenate(Tab_Debug, "ProjectExplorer");
+
     public static string Button_Exception => Concatenate(Group_Test, "Exception");
+
+    public static string Button_SeedProjectExplorer => Concatenate(Group_ProjectExplorer, "Seed");
 
     public static string Button_AsyncBusy => Concatenate(Group_Demos, "AsyncBusy");
 
