@@ -11,6 +11,10 @@ public record LogRecordModel
 
     public string? StackTrace { get; init; }
 
+    public string? ExceptionType { get; init; }
+
+    public string? ExceptionMessage { get; init; }
+
     public int Criticality { get; init; }
 
     public long TimeStampTicks { get; init; }

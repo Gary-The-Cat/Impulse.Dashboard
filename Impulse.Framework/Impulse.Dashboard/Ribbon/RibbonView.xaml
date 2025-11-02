@@ -9,40 +9,49 @@
              d:DesignHeight="450"
              d:DesignWidth="800">
     <UserControl.Resources>
-        <ControlTemplate
-            x:Key="LargeRibbonButton"
-            TargetType="{x:Type fluent:Button}">
-            <ControlTemplate.Resources>
-                <Style TargetType="{x:Type Button}">
-                    <Style.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter Property="BorderThickness" Value="1"/>
-                            <Setter Property="BorderBrush" Value="Red"/>
-                            <Setter Property="Background" Value="Blue"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </ControlTemplate.Resources>
-            <Button
-                BorderBrush="Transparent"
-                Background="Transparent">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="48"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Image
-                        Grid.Row="0"
-                        Source="{Binding Icon}"/>
-                    <TextBlock
-                        Width="48"
-                        Grid.Row="1"
-                        TextWrapping="Wrap"
-                        HorizontalAlignment="Center"
-                        TextAlignment="Center"
-                        Text="{Binding Title}"/>
-                </Grid>
-            </Button>
+        <ControlTemplate x:Key="LargeRibbonButton"
+                         TargetType="{x:Type fluent:Button}">
+            <Border x:Name="Chrome"
+                    Padding="6"
+                    Margin="0"
+                    CornerRadius="4"
+                    BorderBrush="Transparent"
+                    BorderThickness="1"
+                    Background="Transparent"
+                    SnapsToDevicePixels="True">
+                <StackPanel Width="74"
+                            HorizontalAlignment="Center">
+                    <Image Source="{Binding Icon}"
+                           Width="36"
+                           Height="36"
+                           Margin="0,0,0,6"
+                           Stretch="Uniform"
+                           SnapsToDevicePixels="True"
+                           RenderOptions.BitmapScalingMode="HighQuality" />
+                    <TextBlock Text="{Binding Title}"
+                               TextWrapping="Wrap"
+                               TextAlignment="Center"
+                               FontSize="11"
+                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Chrome" Property="Background" Value="#12000000" />
+                    <Setter TargetName="Chrome" Property="BorderBrush" Value="#33000000" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Chrome" Property="Background" Value="#22000000" />
+                    <Setter TargetName="Chrome" Property="BorderBrush" Value="#44000000" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Chrome" Property="Opacity" Value="0.55" />
+                </Trigger>
+                <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                    <Setter TargetName="Chrome" Property="BorderBrush" Value="#5583B4FF" />
+                </Trigger>
+            </ControlTemplate.Triggers>
         </ControlTemplate>
     </UserControl.Resources>
     <fluent:Ribbon

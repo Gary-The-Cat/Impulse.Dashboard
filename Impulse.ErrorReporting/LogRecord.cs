@@ -1,41 +1,54 @@
 ﻿namespace Impulse.ErrorReporting;
 
-public record LogRecord
+public abstract record LogRecord(int Id, DateTime Timestamp, string Message)
 {
-    private LogRecord() { }
+    public abstract Criticality Criticality { get; }
 
-    required public int Id { get; set; }
+    public static LogRecord CreateInfo(int id, DateTime timestamp, string message) =>
+        new InfoLogRecord(id, timestamp, message);
 
-    required public DateTime Timestamp { get; init; }
+    public static LogRecord CreateWarning(int id, DateTime timestamp, string message) =>
+        new WarningLogRecord(id, timestamp, message);
 
-    required public Criticality Criticality { get; init; }
+    public static LogRecord CreateError(int id, DateTime timestamp, string message) =>
+        new ErrorLogRecord(id, timestamp, message);
 
-    required public string Message { get; init; }
+    public static LogRecord CreateException(int id, DateTime timestamp, string message, Exception exception) =>
+        new ExceptionLogRecord(
+            id,
+            timestamp,
+            message,
+            exception.GetType().FullName ?? exception.GetType().Name,
+            exception.Message,
+            exception.StackTrace ?? string.Empty);
+}
 
-    public string? StackTrace { get; init; }
+public sealed record InfoLogRecord(int Id, DateTime Timestamp, string Message)
+    : LogRecord(Id, Timestamp, Message)
+{
+    public override Criticality Criticality => Criticality.Info;
+}
 
-    public static LogRecord CreateInfo(int id, DateTime timeStamp, string message) => new()
-    {
-        Id = id,
-        Timestamp = timeStamp,
-        Criticality = Criticality.Info,
-        Message = message,
-    };
+public sealed record WarningLogRecord(int Id, DateTime Timestamp, string Message)
+    : LogRecord(Id, Timestamp, Message)
+{
+    public override Criticality Criticality => Criticality.Warning;
+}
 
-    public static LogRecord CreateWarning(int id, DateTime timeStamp, string message) => new()
-    {
-        Id = id,
-        Timestamp = timeStamp,
-        Criticality = Criticality.Warning,
-        Message = message,
-    };
+public sealed record ErrorLogRecord(int Id, DateTime Timestamp, string Message)
+    : LogRecord(Id, Timestamp, Message)
+{
+    public override Criticality Criticality => Criticality.Error;
+}
 
-    public static LogRecord CreateException(int id, DateTime timeStamp, string message, Exception exception) => new()
-    {
-        Id = id,
-        Timestamp = timeStamp,
-        Criticality = Criticality.Info,
-        Message = message,
-        StackTrace = exception.StackTrace,
-    };
+public sealed record ExceptionLogRecord(
+    int Id,
+    DateTime Timestamp,
+    string Message,
+    string ExceptionType,
+    string ExceptionMessage,
+    string StackTrace)
+    : LogRecord(Id, Timestamp, Message)
+{
+    public override Criticality Criticality => Criticality.Error;
 }

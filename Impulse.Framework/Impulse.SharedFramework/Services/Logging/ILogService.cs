@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-public interface ILogService
+public interface ILogService : IObservable<LogRecordBase>
 {
     Task LogException(string message, Exception exception);
 
@@ -16,5 +16,7 @@ public interface ILogService
 
     Task LogWarning(string message);
 
-    public IEnumerable<LogRecord> GetLogRecordsForCricicality(Criticality criticality);
+    Task LogError(string message);
+
+    IEnumerable<LogRecordBase> GetLogRecordsForCricicality(Criticality criticality);
 }

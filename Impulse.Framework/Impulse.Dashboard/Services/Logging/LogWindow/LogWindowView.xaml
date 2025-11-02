@@ -4,17 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Impulse.Framework.Dashboard.Services.Logging.LogWindow"
+             xmlns:logging="clr-namespace:Impulse.SharedFramework.Services.Logging;assembly=Impulse.SharedFramework"
              mc:Ignorable="d"
              d:DesignHeight="450"
-             d:DesignWidth="800"
-             d:DataContext="{d:DesignData local:LogWindowViewModel}">
+             d:DesignWidth="800">
     <UserControl.Resources>
+        <local:LogRecordCriticalityConverter x:Key="LogRecordCriticalityConverter" />
         <SolidColorBrush x:Key="LogDefaultAccentBrush" Color="#FFA0AEC0" />
         <SolidColorBrush x:Key="LogInfoAccentBrush" Color="#FF8AA5C1" />
         <SolidColorBrush x:Key="LogWarningAccentBrush" Color="#FFE8C26A" />
         <SolidColorBrush x:Key="LogErrorAccentBrush" Color="#FFE99898" />
-
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
 
         <Style x:Key="LogListItemBorderStyle" TargetType="Border">
             <Setter Property="Padding" Value="6" />
@@ -25,18 +24,21 @@
             <Setter Property="BorderBrush" Value="{StaticResource LogDefaultAccentBrush}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=(ItemsControl.AlternationIndex)}" Value="1">
-                    <Setter Property="Background" Value="#06000000" />
+                    <Setter Property="Background" Value="#0C000000" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Criticality}" Value="Info">
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordCriticalityConverter}}" Value="{x:Static logging:Criticality.Info}">
                     <Setter Property="BorderBrush" Value="{StaticResource LogInfoAccentBrush}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Criticality}" Value="Warning">
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordCriticalityConverter}}" Value="{x:Static logging:Criticality.Warning}">
                     <Setter Property="BorderBrush" Value="{StaticResource LogWarningAccentBrush}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Criticality}" Value="Error">
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordCriticalityConverter}}" Value="{x:Static logging:Criticality.Error}">
                     <Setter Property="BorderBrush" Value="{StaticResource LogErrorAccentBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                    <Setter Property="Background" Value="#16000000" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsMouseOver}" Value="True">
                     <Setter Property="Background" Value="#12000000" />
                 </DataTrigger>
             </Style.Triggers>
@@ -76,6 +78,72 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+
+        <DataTemplate x:Key="DefaultLogDetailsTemplate" DataType="{x:Type logging:LogRecordBase}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Converter={StaticResource LogRecordCriticalityConverter}}"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryForegroundBrush}" />
+                    <TextBlock Text=" • "
+                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                               Opacity="0.4"
+                               Margin="6,0" />
+                    <TextBlock Text="{Binding Timestamp, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"
+                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                               Opacity="0.7" />
+                </StackPanel>
+                <TextBlock Text="{Binding Message}"
+                           Foreground="{DynamicResource PrimaryForegroundBrush}"
+                           Margin="0,4,0,0"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ExceptionLogDetailsTemplate" DataType="{x:Type logging:ExceptionLogRecord}">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{Binding Converter={StaticResource LogRecordCriticalityConverter}}"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource PrimaryForegroundBrush}" />
+                    <TextBlock Text=" • "
+                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                               Opacity="0.4"
+                               Margin="6,0" />
+                    <TextBlock Text="{Binding Timestamp, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"
+                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                               Opacity="0.7" />
+                </StackPanel>
+                <TextBlock Text="{Binding Message}"
+                           Foreground="{DynamicResource PrimaryForegroundBrush}"
+                           Margin="0,4,0,0"
+                           TextWrapping="Wrap" />
+                <TextBlock Text="{Binding ExceptionType}"
+                           Foreground="{DynamicResource PrimaryForegroundBrush}"
+                           Margin="0,6,0,0" />
+                <TextBlock Text="{Binding ExceptionMessage}"
+                           Foreground="{DynamicResource PrimaryForegroundBrush}"
+                           Margin="0,2,0,0"
+                           TextWrapping="Wrap" />
+                <Border Margin="0,6,0,0"
+                        Background="#08000000"
+                        CornerRadius="4"
+                        Padding="8">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"
+                                  MaxHeight="240">
+                        <TextBlock Text="{Binding StackTrace}"
+                                   TextWrapping="Wrap"
+                                   FontFamily="Consolas"
+                                   Foreground="{DynamicResource PrimaryForegroundBrush}" />
+                    </ScrollViewer>
+                </Border>
+            </StackPanel>
+        </DataTemplate>
+
+        <local:LogRecordDetailsTemplateSelector x:Key="LogRecordDetailsTemplateSelector"
+                                                DefaultTemplate="{StaticResource DefaultLogDetailsTemplate}"
+                                                ExceptionTemplate="{StaticResource ExceptionLogDetailsTemplate}" />
     </UserControl.Resources>
 
     <Border Background="{DynamicResource LogPanelBackgroundBrush}"
@@ -110,7 +178,6 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -136,14 +203,15 @@
                                            Foreground="{DynamicResource PrimaryForegroundBrush}"
                                            Opacity="0.4"
                                            Margin="4,0" />
-                                <TextBlock Text="{Binding Criticality}"
+                                <TextBlock Text="{Binding Converter={StaticResource LogRecordCriticalityConverter}}"
                                            Foreground="{DynamicResource PrimaryForegroundBrush}"
                                            Opacity="0.7" />
                             </StackPanel>
 
-                            <Button Grid.Column="2"
+                            <Button Grid.Column="1"
                                     Grid.Row="0"
                                     Grid.RowSpan="2"
+                                    Margin="12,0,0,0"
                                     HorizontalAlignment="Right"
                                     Content="Copy"
                                     Style="{StaticResource CopyButtonStyle}"
@@ -158,55 +226,23 @@
                                     CornerRadius="6"
                                     Padding="10"
                                     BorderThickness="1"
-                                    BorderBrush="#1A000000"
-                                    Visibility="Collapsed">
+                                    BorderBrush="#1A000000">
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
+                                                    <Condition Binding="{Binding HasDetails}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
                                                 <Setter Property="Visibility" Value="Visible" />
-                                            </DataTrigger>
+                                            </MultiDataTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </Border.Style>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <StackPanel Grid.Row="0"
-                                                Orientation="Horizontal"
-                                                VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Criticality}"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource PrimaryForegroundBrush}" />
-                                        <TextBlock Text=" • "
-                                                   Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                                   Opacity="0.4"
-                                                   Margin="6,0" />
-                                        <TextBlock Text="{Binding Timestamp, StringFormat={}{0:yyyy-MM-dd HH:mm:ss}}"
-                                                   Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                                   Opacity="0.7" />
-                                    </StackPanel>
-
-                                    <TextBlock Grid.Row="1"
-                                               Margin="0,8,0,0"
-                                               Text="{Binding Message}"
-                                               TextWrapping="Wrap"
-                                               Foreground="{DynamicResource PrimaryForegroundBrush}" />
-
-                                    <TextBlock Grid.Row="2"
-                                               Margin="0,8,0,0"
-                                               Text="{Binding StackTrace}"
-                                               TextWrapping="Wrap"
-                                               FontFamily="Consolas"
-                                               Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                               Opacity="0.85"
-                                               Visibility="{Binding HasDetails, Converter={StaticResource BooleanToVisibility}}" />
-                                </Grid>
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplateSelector="{StaticResource LogRecordDetailsTemplateSelector}" />
                             </Border>
                         </Grid>
                     </Border>

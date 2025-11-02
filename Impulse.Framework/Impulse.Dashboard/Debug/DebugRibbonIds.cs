@@ -25,6 +25,16 @@ public class DebugRibbonIds
 
     public static string Button_OpenBottomToolWindow => Concatenate(Group_Test, "BottomToolWindow");
 
+    public static string Group_Logging => Concatenate(Tab_Debug, "Logging");
+
+    public static string Button_LogInfo => Concatenate(Group_Logging, "Info");
+
+    public static string Button_LogWarning => Concatenate(Group_Logging, "Warning");
+
+    public static string Button_LogError => Concatenate(Group_Logging, "Error");
+
+    public static string Button_LogException => Concatenate(Group_Logging, "Exception");
+
     // Settings
     public static string Group_Logs => Concatenate(Tab_Config, "Logs");
 

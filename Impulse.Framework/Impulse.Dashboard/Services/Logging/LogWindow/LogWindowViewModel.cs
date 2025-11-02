@@ -1,42 +1,72 @@
 ﻿namespace Impulse.Framework.Dashboard.Services.Logging.LogWindow;
 
+using System;
+using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
+using Caliburn.Micro;
 using Impulse.Shared.Enums;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Services.Logging;
-using System.Collections.ObjectModel;
 
 internal class LogWindowViewModel : ToolWindowBase
 {
-    public LogWindowViewModel()
+    private readonly ILogService logService;
+    private IDisposable? subscription;
+
+    public LogWindowViewModel(ILogService logService)
     {
+        this.logService = logService;
+
         Placement = ToolWindowPlacement.Bottom;
+        LogRecords = new ObservableCollection<LogRecordBase>();
+
+        subscription = logService.Subscribe(new LogRecordObserver(this));
     }
 
-    public ObservableCollection<LogRecordViewModel> LogRecords { get; set; } =
-        new ObservableCollection<LogRecordViewModel>()
-        {
-            new LogRecordViewModel()
-            {
-                Timestamp = System.DateTime.Now.AddMinutes(-2),
-                Criticality = Criticality.Info,
-                Message = "Background sync completed successfully."
-            },
-            new LogRecordViewModel()
-            {
-                Timestamp = System.DateTime.Now.AddMinutes(-1),
-                Criticality = Criticality.Warning,
-                Message = "Importer skipped 3 records because of validation errors."
-            },
-            new LogRecordViewModel()
-            {
-                Timestamp = System.DateTime.Now.AddSeconds(-30),
-                Criticality = Criticality.Error,
-                Message = "Unhandled exception while processing dashboard widgets.",
-                StackTrace = @"System.InvalidOperationException: Sequence contains no elements
-   at Impulse.Framework.Dashboard.Services.WidgetService.RefreshAsync()
-   at Impulse.Framework.Dashboard.Services.Logging.LogWindow.LogWindowViewModel.<.ctor>b__4_0()"
-            },
-        };
+    public ObservableCollection<LogRecordBase> LogRecords { get; }
 
     public override string DisplayName => "Log Viewer";
+
+    protected override async Task OnDeactivateAsync(bool close, CancellationToken cancellationToken)
+    {
+        if (close)
+        {
+            subscription?.Dispose();
+            subscription = null;
+        }
+
+        await base.OnDeactivateAsync(close, cancellationToken);
+    }
+
+    private void OnRecordReceived(LogRecordBase record)
+    {
+        Execute.OnUIThread(() =>
+        {
+            LogRecords.Add(record);
+        });
+    }
+
+    private sealed class LogRecordObserver : IObserver<LogRecordBase>
+    {
+        private readonly LogWindowViewModel owner;
+
+        public LogRecordObserver(LogWindowViewModel owner)
+        {
+            this.owner = owner;
+        }
+
+        public void OnCompleted()
+        {
+        }
+
+        public void OnError(Exception error)
+        {
+        }
+
+        public void OnNext(LogRecordBase value)
+        {
+            owner.OnRecordReceived(value);
+        }
+    }
 }
