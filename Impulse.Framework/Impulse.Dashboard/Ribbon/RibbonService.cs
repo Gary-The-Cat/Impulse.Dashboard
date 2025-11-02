@@ -86,15 +86,12 @@ public class RibbonService : IRibbonService
             throw new Exception($"A group with Id '{groupId}' could not be found.");
         }
 
-        var template = ribbonView.FindResource("LargeRibbonButton") as ControlTemplate;
-
         var button = new Fluent.Button()
         {
             Header = ribbonButton.Title,
             Icon = ribbonButton.Icon,
             LargeIcon = ribbonButton.Icon,
             IsEnabled = ribbonButton.IsEnabled,
-            Template = template,
         };
 
         button.DataContext = ribbonButton;

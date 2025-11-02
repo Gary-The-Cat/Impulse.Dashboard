@@ -14,6 +14,8 @@
                 <ResourceDictionary Source="pack://application:,,,/Fluent;Component/Themes/Generic.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/ToastNotifications.Messages;component/Themes/Default.xaml" />
                 
+                <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Theme/Brushes.xaml" />
+                
                 <!-- Collection of styles that can be applied using the {DynamicResource x} convention -->
                 <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Styles/TextBlockStyles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Impulse.Dashboard;component/Styles/ButtonStyles.xaml" />

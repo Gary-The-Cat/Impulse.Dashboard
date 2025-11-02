@@ -19,6 +19,18 @@
             <Color x:Key="BackgroundColour60">#99e1e1e1</Color>
             <Color x:Key="BackgroundColour">#FFEAEAEA</Color>
             <Color x:Key="HighlightBackgroundColour">#FFF1F1F1</Color>
+
+            <!-- Ribbon specific palette -->
+            <Color x:Key="RibbonContentBackgroundColour">#55F0F0F0</Color>
+            <Color x:Key="RibbonTabStripBackgroundColour">#FF405CAA</Color>
+            <Color x:Key="RibbonTabStripForegroundColour">#FFf0f0f0</Color>
+            <Color x:Key="RibbonTabSelectedForegroundColour">#FF1F1D1C</Color>
+            <Color x:Key="RibbonTabHoverBackgroundColour">#FFF0F0F0</Color>
+            <Color x:Key="RibbonGroupSeparatorColour">#661F1D1C</Color>
+
+            <!-- Only seen if the ribbon content background is transparent -->
+            <Color x:Key="RibbonBackgroundColour">#FFF5F5F5</Color>
+
         </ResourceDictionary>
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

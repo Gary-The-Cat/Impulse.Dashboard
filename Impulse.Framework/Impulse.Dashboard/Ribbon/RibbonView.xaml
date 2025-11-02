@@ -9,134 +9,41 @@
              d:DesignHeight="450"
              d:DesignWidth="800">
     <UserControl.Resources>
-        <ControlTemplate x:Key="LargeRibbonButton"
-                         TargetType="{x:Type fluent:Button}">
-            <Border x:Name="Chrome"
-                    Padding="0,2"
-                    Margin="0"
-                    CornerRadius="2"
-                    BorderBrush="Transparent"
-                    BorderThickness="1"
-                    Background="Transparent"
-                    SnapsToDevicePixels="True">
-                <Grid MinWidth="60"
-                      MinHeight="72"
-                      HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Image Source="{Binding Icon}"
-                           Width="36"
-                           Height="36"
-                          Margin="0,0,0,6"
-                          Stretch="Uniform"
-                          SnapsToDevicePixels="True"
-                          RenderOptions.BitmapScalingMode="HighQuality" />
-                    <TextBlock 
-                        Text="{Binding Title}"
-                        Grid.Row="1"
-                        TextWrapping="Wrap"
-                        TextAlignment="Center"
-                        FontSize="11"
-                        Foreground="{DynamicResource PrimaryForegroundBrush}"
-                        TextTrimming="CharacterEllipsis" />
-                </Grid>
-            </Border>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="Chrome" Property="Background" Value="#12000000" />
-                    <Setter TargetName="Chrome" Property="BorderBrush" Value="#33000000" />
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="Chrome" Property="Background" Value="#22000000" />
-                    <Setter TargetName="Chrome" Property="BorderBrush" Value="#44000000" />
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="Chrome" Property="Opacity" Value="0.55" />
-                </Trigger>
-                <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                    <Setter TargetName="Chrome" Property="BorderBrush" Value="#5583B4FF" />
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+        <SolidColorBrush x:Key="RibbonBackgroundBrush" Color="{DynamicResource RibbonBackgroundColour}" />
+        <SolidColorBrush x:Key="RibbonContentBackgroundBrush" Color="{DynamicResource RibbonContentBackgroundColour}" />
+        <SolidColorBrush x:Key="RibbonTabStripBackgroundBrush" Color="{DynamicResource RibbonTabStripBackgroundColour}" />
+        <SolidColorBrush x:Key="RibbonTabStripForegroundBrush" Color="{DynamicResource RibbonTabStripForegroundColour}" />
+        <SolidColorBrush x:Key="RibbonTabSelectedForegroundBrush" Color="{DynamicResource RibbonTabSelectedForegroundColour}" />
+        <SolidColorBrush x:Key="RibbonTabHoverBackgroundBrush" Color="{DynamicResource RibbonTabHoverBackgroundColour}" />
+        <SolidColorBrush x:Key="RibbonGroupSeparatorBrush" Color="{DynamicResource RibbonGroupSeparatorColour}" />
     </UserControl.Resources>
     <fluent:Ribbon
         x:Name="MainRibbon"
         TitleBar="{x:Null}"
-        IsQuickAccessToolBarVisible="False"
-        QuickAccessToolBarHeight="0">
-
+        Background="{DynamicResource RibbonBackgroundBrush}">
         <fluent:Ribbon.Resources>
-            <Style TargetType="{x:Type fluent:RibbonTabItem}">
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-                <Style.Triggers>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsSelected" Value="True" />
-                            <Condition Property="IsMouseOver" Value="True" />
-                        </MultiTrigger.Conditions>
-                        <MultiTrigger.Setters>
-                            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
-                            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
-                        </MultiTrigger.Setters>
-                    </MultiTrigger>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsSelected" Value="True" />
-                            <Condition Property="IsMouseOver" Value="False" />
-                        </MultiTrigger.Conditions>
-                        <MultiTrigger.Setters>
-                            <Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
-                            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
-                        </MultiTrigger.Setters>
-                    </MultiTrigger>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsSelected" Value="false" />
-                            <Condition Property="IsMouseOver" Value="true" />
-                        </MultiTrigger.Conditions>
-                        <MultiTrigger.Setters>
-                            <Setter Property="Foreground" Value="White" />
-                        </MultiTrigger.Setters>
-                    </MultiTrigger>
-                    <MultiTrigger>
-                        <MultiTrigger.Conditions>
-                            <Condition Property="IsSelected" Value="false" />
-                            <Condition Property="IsMouseOver" Value="false" />
-                        </MultiTrigger.Conditions>
-                        <MultiTrigger.Setters>
-                            <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
-                        </MultiTrigger.Setters>
-                    </MultiTrigger>
-                </Style.Triggers>
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Background"
+                            ResourceKey="RibbonBackgroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Background"
+                            ResourceKey="RibbonContentBackgroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Background"
+                            ResourceKey="RibbonTabStripBackgroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Foreground"
+                            ResourceKey="RibbonTabStripForegroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabItem.Selected.Background"
+                            ResourceKey="RibbonTabSelectedBackgroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabItem.Selected.Foreground"
+                            ResourceKey="RibbonTabSelectedForegroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonTabItem.MouseOver.Background"
+                            ResourceKey="RibbonTabHoverBackgroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.RibbonGroupBox.Background"
+                            ResourceKey="RibbonGroupBackgroundBrush" />
+            <StaticResource x:Key="Fluent.Ribbon.Brushes.GroupSeparator.Background"
+                            ResourceKey="RibbonGroupSeparatorBrush" />
+            <Style TargetType="{x:Type fluent:Button}"
+                   BasedOn="{StaticResource {x:Type fluent:Button}}">
+                <Setter Property="MinWidth" Value="64" />
             </Style>
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabItem.Foreground" Color="{DynamicResource ForegroundColour}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabItem.Background" Color="{DynamicResource BackgroundColour}"  />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Foreground" Color="{DynamicResource ForegroundColour}"/>
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Background" Color="{DynamicResource BackgroundColour}" />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Background" Color="{DynamicResource BackgroundColour}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.Content.Foreground" Color="{DynamicResource ForegroundColour}" />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Background" Color="{DynamicResource PrimaryAccentColour}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabControl.TabsGrid.Foreground" Color="{DynamicResource ForegroundColour}" />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.WindowCommands.CaptionButton.Background" Color="{DynamicResource BackgroundColour80}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.WindowCommands.CaptionButton.Foreground" Color="{DynamicResource ForegroundColour}" />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.WindowCommands.CaptionButton.MouseOver.Background" Color="{DynamicResource SecondaryAccentColour}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.WindowCommands.CaptionButton.Pressed.Background" Color="{DynamicResource BackgroundClour80}" />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.WindowCommands.CloseButton.MouseOver.Background" Color="{DynamicResource PrimaryAccentColour80}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.WindowCommands.CloseButton.Pressed.Background" Color="{DynamicResource PrimaryAccentColour}" />
-
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.GroupSeparator.Background" Color="{DynamicResource ForegroundColour40}" />
-            <SolidColorBrush x:Key="Fluent.Ribbon.Brushes.RibbonTabItem.BorderBrush" Color="{DynamicResource BackgroundColour}" />
         </fluent:Ribbon.Resources>
-
     </fluent:Ribbon>
 </UserControl>
