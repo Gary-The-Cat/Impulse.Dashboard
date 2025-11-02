@@ -12,29 +12,36 @@
         <ControlTemplate x:Key="LargeRibbonButton"
                          TargetType="{x:Type fluent:Button}">
             <Border x:Name="Chrome"
-                    Padding="6"
+                    Padding="0,2"
                     Margin="0"
-                    CornerRadius="4"
+                    CornerRadius="2"
                     BorderBrush="Transparent"
                     BorderThickness="1"
                     Background="Transparent"
                     SnapsToDevicePixels="True">
-                <StackPanel Width="74"
-                            HorizontalAlignment="Center">
+                <Grid MinWidth="60"
+                      MinHeight="72"
+                      HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
                     <Image Source="{Binding Icon}"
                            Width="36"
                            Height="36"
-                           Margin="0,0,0,6"
-                           Stretch="Uniform"
-                           SnapsToDevicePixels="True"
-                           RenderOptions.BitmapScalingMode="HighQuality" />
-                    <TextBlock Text="{Binding Title}"
-                               TextWrapping="Wrap"
-                               TextAlignment="Center"
-                               FontSize="11"
-                               Foreground="{DynamicResource PrimaryForegroundBrush}"
-                               TextTrimming="CharacterEllipsis" />
-                </StackPanel>
+                          Margin="0,0,0,6"
+                          Stretch="Uniform"
+                          SnapsToDevicePixels="True"
+                          RenderOptions.BitmapScalingMode="HighQuality" />
+                    <TextBlock 
+                        Text="{Binding Title}"
+                        Grid.Row="1"
+                        TextWrapping="Wrap"
+                        TextAlignment="Center"
+                        FontSize="11"
+                        Foreground="{DynamicResource PrimaryForegroundBrush}"
+                        TextTrimming="CharacterEllipsis" />
+                </Grid>
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">

@@ -132,6 +132,9 @@ public class Bootstrapper : BootstrapperBase
 
     protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
+        var logService = Kernel.Get<ILogService>();
+        logService.LogException($"Unhandled exception captured at {DateTime.Now:T}", e.Exception);
+
         var dialogService = Kernel.Get<IDialogService>();
         dialogService.ShowException("Unhandled Exception", e.Exception.Message);
 
@@ -371,7 +374,7 @@ public class Bootstrapper : BootstrapperBase
     {
         RibbonService = Kernel.Get<IRibbonService>();
 
-        ConfigurationRibbon.LoadConfigTab(Kernel, RibbonService);
+        ConfigurationRibbon.LoadConfigTab(RibbonService);
 #if DEBUG
         DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
 #endif

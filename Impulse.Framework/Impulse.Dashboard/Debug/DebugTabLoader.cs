@@ -105,7 +105,7 @@ public static class DebugTabLoader
             EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Results.png",
             DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Results_GS.png",
             IsEnabled = true,
-            Callback = () => _ = logService.LogException("Debug exception generated for testing", new InvalidOperationException("Debug exception with stack trace"))
+            Callback = () => _ = logService.LogException($"Debug exception logged at {DateTime.Now:T}", new InvalidOperationException("Debug exception with stack trace"))
         };
 
         // Testing & Design

@@ -9,11 +9,12 @@
              d:DesignHeight="450"
              d:DesignWidth="800">
     <UserControl.Resources>
-        <local:LogRecordCriticalityConverter x:Key="LogRecordCriticalityConverter" />
+        <local:LogRecordTypeConverter x:Key="LogRecordTypeConverter" />
         <SolidColorBrush x:Key="LogDefaultAccentBrush" Color="#FFA0AEC0" />
         <SolidColorBrush x:Key="LogInfoAccentBrush" Color="#FF8AA5C1" />
         <SolidColorBrush x:Key="LogWarningAccentBrush" Color="#FFE8C26A" />
         <SolidColorBrush x:Key="LogErrorAccentBrush" Color="#FFE99898" />
+        <SolidColorBrush x:Key="LogExceptionAccentBrush" Color="#FFBAA4F8" />
 
         <Style x:Key="LogListItemBorderStyle" TargetType="Border">
             <Setter Property="Padding" Value="6" />
@@ -26,14 +27,17 @@
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=(ItemsControl.AlternationIndex)}" Value="1">
                     <Setter Property="Background" Value="#0C000000" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordCriticalityConverter}}" Value="{x:Static logging:Criticality.Info}">
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordTypeConverter}}" Value="Info">
                     <Setter Property="BorderBrush" Value="{StaticResource LogInfoAccentBrush}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordCriticalityConverter}}" Value="{x:Static logging:Criticality.Warning}">
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordTypeConverter}}" Value="Warning">
                     <Setter Property="BorderBrush" Value="{StaticResource LogWarningAccentBrush}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordCriticalityConverter}}" Value="{x:Static logging:Criticality.Error}">
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordTypeConverter}}" Value="Error">
                     <Setter Property="BorderBrush" Value="{StaticResource LogErrorAccentBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Converter={StaticResource LogRecordTypeConverter}}" Value="Exception">
+                    <Setter Property="BorderBrush" Value="{StaticResource LogExceptionAccentBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
                     <Setter Property="Background" Value="#16000000" />
@@ -82,7 +86,7 @@
         <DataTemplate x:Key="DefaultLogDetailsTemplate" DataType="{x:Type logging:LogRecordBase}">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Converter={StaticResource LogRecordCriticalityConverter}}"
+                    <TextBlock Text="{Binding Converter={StaticResource LogRecordTypeConverter}}"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryForegroundBrush}" />
                     <TextBlock Text=" • "
@@ -103,7 +107,7 @@
         <DataTemplate x:Key="ExceptionLogDetailsTemplate" DataType="{x:Type logging:ExceptionLogRecord}">
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding Converter={StaticResource LogRecordCriticalityConverter}}"
+                    <TextBlock Text="{Binding Converter={StaticResource LogRecordTypeConverter}}"
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource PrimaryForegroundBrush}" />
                     <TextBlock Text=" • "
@@ -149,105 +153,138 @@
     <Border Background="{DynamicResource LogPanelBackgroundBrush}"
             BorderBrush="{DynamicResource LogPanelBorderBrush}"
             BorderThickness="1"
-            CornerRadius="8"
+            CornerRadius="2"
             Padding="6">
-        <ListBox ItemsSource="{Binding LogRecords}"
-                 BorderThickness="0"
-                 Background="Transparent"
-                 Padding="4"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 AlternationCount="2"
-                 VirtualizingStackPanel.IsVirtualizing="True"
-                 VirtualizingStackPanel.VirtualizationMode="Recycling">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="Margin" Value="0" />
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="Background" Value="Transparent" />
-                    <Setter Property="Focusable" Value="False" />
-                    <Setter Property="IsTabStop" Value="False" />
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListBox.ItemContainerStyle>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Style="{StaticResource LogListItemBorderStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="0,0,0,6">
+                <TextBlock Text="Severity"
+                           Foreground="{DynamicResource PrimaryForegroundBrush}"
+                           VerticalAlignment="Center"
+                           Margin="0,0,8,0"
+                           Opacity="0.7" />
+                <ComboBox ItemsSource="{Binding SeverityOptions}"
+                          SelectedItem="{Binding SelectedSeverity}"
+                          Width="100"
+                          HorizontalAlignment="Right"
+                          DisplayMemberPath="DisplayName"
+                          Margin="0,0,12,0" />
+                <Button Content="Copy Visible"
+                        Style="{StaticResource CopyButtonStyle}"
+                        Padding="10,2"
+                        Margin="0,0,8,0"
+                        Click="CopyVisibleButton_Click" />
+                <Button Content="Clear"
+                        Style="{StaticResource CopyButtonStyle}"
+                        Padding="10,2"
+                        Click="ClearButton_Click" />
+            </StackPanel>
 
-                            <TextBlock Text="{Binding Message}"
-                                       Grid.Column="0"
-                                       FontWeight="SemiBold"
-                                       Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                       TextTrimming="CharacterEllipsis"
-                                       Margin="0,0,8,0" />
+            <ListBox Grid.Row="1"
+                     ItemsSource="{Binding LogRecords}"
+                     BorderThickness="0"
+                     Background="White"
+                     Padding="2"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     AlternationCount="2"
+                     VirtualizingStackPanel.IsVirtualizing="True"
+                     VirtualizingStackPanel.VirtualizationMode="Recycling">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Focusable" Value="False" />
+                        <Setter Property="IsTabStop" Value="False" />
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource LogListItemBorderStyle}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                            <StackPanel Grid.Row="1"
+                                <TextBlock Text="{Binding Message}"
+                                           Grid.Column="0"
+                                           FontWeight="SemiBold"
+                                           Foreground="{DynamicResource PrimaryForegroundBrush}"
+                                           TextTrimming="CharacterEllipsis"
+                                           Margin="0,0,8,0" />
+
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding Timestamp, StringFormat={}{0:HH:mm:ss}}"
+                                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                                               Opacity="0.6" />
+                                    <TextBlock Text=" • "
+                                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                                               Opacity="0.4"
+                                               Margin="4,0" />
+                                    <TextBlock Text="{Binding Converter={StaticResource LogRecordTypeConverter}}"
+                                               Foreground="{DynamicResource PrimaryForegroundBrush}"
+                                               Opacity="0.7" />
+                                </StackPanel>
+
+                                <Button Grid.Column="1"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Margin="12,0,0,0"
+                                        HorizontalAlignment="Right"
+                                        Content="Copy"
+                                        Style="{StaticResource CopyButtonStyle}"
+                                        Click="CopyLogButton_Click" />
+
+                                <Border x:Name="DetailsContainer"
+                                        Grid.Row="2"
                                         Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Margin="0,2,0,0">
-                                <TextBlock Text="{Binding Timestamp, StringFormat={}{0:HH:mm:ss}}"
-                                           Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                           Opacity="0.6" />
-                                <TextBlock Text=" • "
-                                           Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                           Opacity="0.4"
-                                           Margin="4,0" />
-                                <TextBlock Text="{Binding Converter={StaticResource LogRecordCriticalityConverter}}"
-                                           Foreground="{DynamicResource PrimaryForegroundBrush}"
-                                           Opacity="0.7" />
-                            </StackPanel>
-
-                            <Button Grid.Column="1"
-                                    Grid.Row="0"
-                                    Grid.RowSpan="2"
-                                    Margin="12,0,0,0"
-                                    HorizontalAlignment="Right"
-                                    Content="Copy"
-                                    Style="{StaticResource CopyButtonStyle}"
-                                    Click="CopyLogButton_Click" />
-
-                            <Border x:Name="DetailsContainer"
-                                    Grid.Row="2"
-                                    Grid.Column="0"
-                                    Grid.ColumnSpan="2"
-                                    Margin="0,8,0,0"
-                                    Background="#0D000000"
-                                    CornerRadius="6"
-                                    Padding="10"
-                                    BorderThickness="1"
-                                    BorderBrush="#1A000000">
-                                <Border.Style>
-                                    <Style TargetType="Border">
-                                        <Setter Property="Visibility" Value="Collapsed" />
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
-                                                    <Condition Binding="{Binding HasDetails}" Value="True" />
-                                                </MultiDataTrigger.Conditions>
-                                                <Setter Property="Visibility" Value="Visible" />
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Border.Style>
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplateSelector="{StaticResource LogRecordDetailsTemplateSelector}" />
-                            </Border>
-                        </Grid>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                                        Grid.ColumnSpan="2"
+                                        Margin="0,8,0,0"
+                                        Background="#0D000000"
+                                        CornerRadius="6"
+                                        Padding="10"
+                                        BorderThickness="1"
+                                        BorderBrush="#1A000000">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}" Value="True" />
+                                                        <Condition Binding="{Binding HasDetails}" Value="True" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                    <ContentControl Content="{Binding}"
+                                                    ContentTemplateSelector="{StaticResource LogRecordDetailsTemplateSelector}" />
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Border>
 </UserControl>

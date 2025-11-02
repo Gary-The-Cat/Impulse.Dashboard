@@ -1,6 +1,7 @@
 ﻿namespace Impulse.Framework.Dashboard.Services.Logging.LogWindow;
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,9 @@ using Impulse.SharedFramework.Services.Logging;
 internal class LogWindowViewModel : ToolWindowBase
 {
     private readonly ILogService logService;
+    private readonly List<LogRecordBase> allRecords = new();
     private IDisposable? subscription;
+    private LogSeverityFilterOption selectedSeverity;
 
     public LogWindowViewModel(ILogService logService)
     {
@@ -20,11 +23,39 @@ internal class LogWindowViewModel : ToolWindowBase
 
         Placement = ToolWindowPlacement.Bottom;
         LogRecords = new ObservableCollection<LogRecordBase>();
+        SeverityOptions = new BindableCollection<LogSeverityFilterOption>
+        {
+            new("All", _ => true),
+            new("Info", record => record is InfoLogRecord),
+            new("Warning", record => record is WarningLogRecord),
+            new("Error", record => record is ErrorLogRecord && record is not ExceptionLogRecord),
+            new("Exception", record => record is ExceptionLogRecord),
+        };
+
+        selectedSeverity = SeverityOptions[0];
+        NotifyOfPropertyChange(() => SelectedSeverity);
 
         subscription = logService.Subscribe(new LogRecordObserver(this));
     }
 
     public ObservableCollection<LogRecordBase> LogRecords { get; }
+    public BindableCollection<LogSeverityFilterOption> SeverityOptions { get; }
+
+    public LogSeverityFilterOption SelectedSeverity
+    {
+        get => selectedSeverity;
+        set
+        {
+            if (value == null || Equals(selectedSeverity, value))
+            {
+                return;
+            }
+
+            selectedSeverity = value;
+            NotifyOfPropertyChange(() => SelectedSeverity);
+            ApplyFilter();
+        }
+    }
 
     public override string DisplayName => "Log Viewer";
 
@@ -43,7 +74,42 @@ internal class LogWindowViewModel : ToolWindowBase
     {
         Execute.OnUIThread(() =>
         {
-            LogRecords.Add(record);
+            allRecords.Add(record);
+
+            if (MatchesSelectedFilter(record))
+            {
+                LogRecords.Add(record);
+            }
+        });
+    }
+
+    public void ClearLogs()
+    {
+        Execute.OnUIThread(() =>
+        {
+            allRecords.Clear();
+            LogRecords.Clear();
+        });
+    }
+
+    public IReadOnlyList<LogRecordBase> GetVisibleRecords() => LogRecords;
+
+    private bool MatchesSelectedFilter(LogRecordBase record) =>
+        selectedSeverity?.Predicate(record) ?? true;
+
+    private void ApplyFilter()
+    {
+        Execute.OnUIThread(() =>
+        {
+            LogRecords.Clear();
+
+            foreach (var record in allRecords)
+            {
+                if (MatchesSelectedFilter(record))
+                {
+                    LogRecords.Add(record);
+                }
+            }
         });
     }
 
@@ -70,3 +136,5 @@ internal class LogWindowViewModel : ToolWindowBase
         }
     }
 }
+
+internal sealed record LogSeverityFilterOption(string DisplayName, Func<LogRecordBase, bool> Predicate);

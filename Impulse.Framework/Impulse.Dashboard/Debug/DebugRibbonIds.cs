@@ -35,10 +35,5 @@ public class DebugRibbonIds
 
     public static string Button_LogException => Concatenate(Group_Logging, "Exception");
 
-    // Settings
-    public static string Group_Logs => Concatenate(Tab_Config, "Logs");
-
-    public static string Button_LogSettings => Concatenate(Group_Logs, "Logs");
-
     public static string Concatenate(string a, string b) => $"{a}.{b}";
 }
