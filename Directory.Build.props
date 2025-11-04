@@ -5,4 +5,23 @@
     <NetVersionAndroid>$(NetVersion)-android</NetVersionAndroid>
     <NetVersionIos>$(NetVersion)-ios</NetVersionIos>
   </PropertyGroup>
+
+  <!-- Windows platform min version used for packaging TFM folders -->
+  <PropertyGroup Label="Windows Platform">
+    <WindowsMinVersion>10.0.17763</WindowsMinVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Impulse Versioning">
+    <ImpulseSharedVersion>1.0.7</ImpulseSharedVersion>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(ImpulseSharedVersion).0</AssemblyVersion>
+    <FileVersion Condition="'$(FileVersion)' == ''">$(ImpulseSharedVersion).0</FileVersion>
+    <InformationalVersion Condition="'$(InformationalVersion)' == ''">$(ImpulseSharedVersion)</InformationalVersion>
+    <Version Condition="'$(Version)' == ''">$(ImpulseSharedVersion)</Version>
+  </PropertyGroup>
+
+  <!-- Repo paths -->
+  <PropertyGroup Label="Repo Paths">
+    <RepoRoot>$(MSBuildThisFileDirectory)</RepoRoot>
+    <AssetsDir>$(RepoRoot)assets</AssetsDir>
+  </PropertyGroup>
 </Project>
