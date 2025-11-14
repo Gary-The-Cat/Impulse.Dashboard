@@ -4,7 +4,7 @@ using System;
 
 public abstract record LogRecordBase
 {
-    required public int Id { get; init; }
+    required public Guid Id { get; init; }
 
     required public DateTime Timestamp { get; init; }
 

@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Impulse.Repository.Constants;
 internal static class LocationConstants
 {
     private static string DashboardFolder => "Impulse.Dashboard";
 
-    private static string ConfigFile => "Dashboard.Config.db";
+    private static string LogFile => "Dashboard.Logs.db";
 
     internal static string LocalAppData => Environment.GetEnvironmentVariable("LocalAppData");
 
     internal static string DashboardDataLocation => Path.Combine(LocalAppData, DashboardFolder);
 
-    internal static string DashboardConfigurationDatabase => Path.Combine(DashboardDataLocation, ConfigFile);
+    internal static string DashboardLogDatabase => Path.Combine(DashboardDataLocation, LogFile);
 }

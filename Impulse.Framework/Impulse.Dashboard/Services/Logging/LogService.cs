@@ -7,58 +7,87 @@ namespace Impulse.Framework.Dashboard.Services.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using Impulse.Repository.Models;
+using Impulse.Repository.Persistent;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 using Impulse.SharedFramework.Services.Logging;
-using ErrorLogRecord = Impulse.ErrorReporting.LogRecord;
-using ErrorLogger = Impulse.ErrorReporting.Logger;
-using ErrorCriticality = Impulse.ErrorReporting.Criticality;
 using SharedCriticality = Impulse.SharedFramework.Services.Logging.Criticality;
 
 public class LogService : ILogService
 {
     private readonly WeakReference<IDateTimeProvider> dateTimeProviderReference;
 
-    private readonly ErrorLogger logger = new ErrorLogger();
+    private readonly ILogRecordRepository logRecordRepository;
 
     private readonly List<IObserver<LogRecordBase>> observers = new();
 
     private readonly object observersLock = new();
 
-    private int currentRecordId = -1;
+    private readonly object recordsLock = new();
 
-    // TODO: Rework how this is loaded first time, when the database is enabled, get the last record Id from there.
-    public LogService(IDateTimeProvider dateTimeProvider)
+    private readonly List<LogRecordBase> cachedRecords = new();
+
+    public LogService(IDateTimeProvider dateTimeProvider, ILogRecordRepository logRecordRepository)
     {
+        _ = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
+        this.logRecordRepository = logRecordRepository ?? throw new ArgumentNullException(nameof(logRecordRepository));
         dateTimeProviderReference = new WeakReference<IDateTimeProvider>(dateTimeProvider);
+        SeedFromStore();
     }
 
     private IDateTimeProvider DateTimeProvider => dateTimeProviderReference.Value();
 
     public Task LogException(string message, Exception exception) =>
-        LogMessage(ErrorLogRecord.CreateException(GetNextRecordId(), DateTimeProvider.Now, message, exception));
+        LogMessage(CreateExceptionRecord(message, exception));
 
     public Task LogInfo(string message) =>
-         LogMessage(ErrorLogRecord.CreateInfo(GetNextRecordId(), DateTimeProvider.Now, message));
+         LogMessage(CreateInfoRecord(message));
 
     public Task LogWarning(string message) =>
-        LogMessage(ErrorLogRecord.CreateWarning(GetNextRecordId(), DateTimeProvider.Now, message));
+        LogMessage(CreateWarningRecord(message));
 
     public Task LogError(string message) =>
-        LogMessage(ErrorLogRecord.CreateError(GetNextRecordId(), DateTimeProvider.Now, message));
+        LogMessage(CreateErrorRecord(message));
 
-    public IEnumerable<LogRecordBase> GetLogRecordsForCricicality(SharedCriticality criticality) =>
-        this.logger.GetLogRecordsForCricicality((ErrorCriticality)criticality)
-            .Select(r => r.ToSharedLogRecord());
+    public async Task DeleteRecordsAsync(IEnumerable<Guid> recordIds)
+    {
+        _ = recordIds ?? throw new ArgumentNullException(nameof(recordIds));
+        var ids = recordIds
+            .Where(id => id != Guid.Empty)
+            .Distinct()
+            .ToList();
+
+        if (ids.Count == 0)
+        {
+            return;
+        }
+
+        await logRecordRepository.DeleteRecordsAsync(ids).ConfigureAwait(false);
+        var idSet = new HashSet<Guid>(ids);
+
+        lock (recordsLock)
+        {
+            cachedRecords.RemoveAll(record => idSet.Contains(record.Id));
+        }
+    }
+
+    public IEnumerable<LogRecordBase> GetLogRecordsForCricicality(SharedCriticality criticality)
+    {
+        lock (recordsLock)
+        {
+            return cachedRecords
+                .Where(r => LogRecordCriticality.Get(r) >= criticality)
+                .OrderBy(r => r.Timestamp)
+                .ThenBy(r => r.Id)
+                .ToList();
+        }
+    }
 
     public IDisposable Subscribe(IObserver<LogRecordBase> observer)
     {
-        if (observer == null)
-        {
-            throw new ArgumentNullException(nameof(observer));
-        }
+        _ = observer ?? throw new ArgumentNullException(nameof(observer));
 
         lock (observersLock)
         {
@@ -73,13 +102,17 @@ public class LogService : ILogService
         return new Unsubscriber(observersLock, observers, observer);
     }
 
-    private async Task LogMessage(ErrorLogRecord record)
+    private async Task LogMessage(LogRecordModel record)
     {
-        await logger.LogRecord(record);
-        Publish(record.ToSharedLogRecord());
-    }
+        await logRecordRepository.AddRecordAsync(record).ConfigureAwait(false);
+        var sharedRecord = record.ToSharedLogRecord();
+        lock (recordsLock)
+        {
+            cachedRecords.Add(sharedRecord);
+        }
 
-    private int GetNextRecordId() => Interlocked.Increment(ref currentRecordId);
+        Publish(sharedRecord);
+    }
 
     private void Publish(LogRecordBase record)
     {
@@ -93,6 +126,66 @@ public class LogService : ILogService
         {
             observer.OnNext(record);
         }
+    }
+
+    private void SeedFromStore()
+    {
+        var persistedRecords = logRecordRepository
+            .GetLogRecordsAsync((int)SharedCriticality.Info)
+            .GetAwaiter()
+            .GetResult()
+            .Select(r => r.ToSharedLogRecord())
+            .ToList();
+
+        lock (recordsLock)
+        {
+            cachedRecords.Clear();
+            cachedRecords.AddRange(persistedRecords);
+        }
+    }
+
+    private InfoLogRecordModel CreateInfoRecord(string message) =>
+        new InfoLogRecordModel
+        {
+            Id = Guid.NewGuid(),
+            Message = message,
+            Timestamp = DateTimeProvider.Now,
+            Criticality = (int)SharedCriticality.Info,
+        };
+
+    private WarningLogRecordModel CreateWarningRecord(string message) =>
+        new WarningLogRecordModel
+        {
+            Id = Guid.NewGuid(),
+            Message = message,
+            Timestamp = DateTimeProvider.Now,
+            Criticality = (int)SharedCriticality.Warning,
+        };
+
+    private ErrorLogRecordModel CreateErrorRecord(string message) =>
+        new ErrorLogRecordModel
+        {
+            Id = Guid.NewGuid(),
+            Message = message,
+            Timestamp = DateTimeProvider.Now,
+            Criticality = (int)SharedCriticality.Error,
+        };
+
+    private ExceptionLogRecordModel CreateExceptionRecord(string message, Exception exception)
+    {
+        _ = exception ?? throw new ArgumentNullException(nameof(exception));
+
+        var exceptionType = exception.GetType();
+        return new ExceptionLogRecordModel
+        {
+            Id = Guid.NewGuid(),
+            Message = message,
+            Timestamp = DateTimeProvider.Now,
+            Criticality = (int)SharedCriticality.Error,
+            StackTrace = exception.StackTrace ?? string.Empty,
+            ExceptionMessage = exception.Message ?? string.Empty,
+            ExceptionType = exceptionType.FullName ?? exceptionType.Name,
+        };
     }
 
     private sealed class Unsubscriber : IDisposable

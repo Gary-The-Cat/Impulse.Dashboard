@@ -118,7 +118,11 @@ public static class DebugTabLoader
             EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Results.png",
             DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Results_GS.png",
             IsEnabled = true,
-            Callback = () => _ = logService.LogException($"Debug exception logged at {DateTime.Now:T}", new InvalidOperationException("Debug exception with stack trace"))
+            Callback = () =>
+            {
+                var exception = CreateDebugException();
+                _ = logService.LogException($"Debug exception logged at {DateTime.Now:T}", exception);
+            },
         };
 
         // Testing & Design
@@ -159,6 +163,22 @@ public static class DebugTabLoader
 
         toolWindowService.OpenBottomPaneToolWindow(bottomToolWindow);
     }
+
+    private static Exception CreateDebugException()
+    {
+        try
+        {
+            ThrowDebugException();
+            throw new InvalidOperationException("Unreachable");
+        }
+        catch (Exception exception)
+        {
+            return exception;
+        }
+    }
+
+    private static void ThrowDebugException() =>
+        throw new InvalidOperationException("Debug exception with stack trace");
 
     private static void OpenViewerDemo(IKernel kernel)
     {

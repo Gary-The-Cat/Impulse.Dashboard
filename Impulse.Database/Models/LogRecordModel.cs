@@ -1,21 +1,31 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace Impulse.Repository.Models;
 
 [DataContract]
-public record LogRecordModel
+public abstract record LogRecordModel
 {
-    public int Id { get; init; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 
-    public string Message { get; init; }
+    public string Message { get; set; } = string.Empty;
 
-    public string? StackTrace { get; init; }
+    public int Criticality { get; set; }
 
-    public string? ExceptionType { get; init; }
+    public DateTime Timestamp { get; set; }
+}
 
-    public string? ExceptionMessage { get; init; }
+public record InfoLogRecordModel : LogRecordModel;
 
-    public int Criticality { get; init; }
+public record WarningLogRecordModel : LogRecordModel;
 
-    public long TimeStampTicks { get; init; }
+public record ErrorLogRecordModel : LogRecordModel;
+
+public record ExceptionLogRecordModel : ErrorLogRecordModel
+{
+    public string StackTrace { get; set; } = string.Empty;
+
+    public string ExceptionType { get; set; } = string.Empty;
+
+    public string ExceptionMessage { get; set; } = string.Empty;
 }

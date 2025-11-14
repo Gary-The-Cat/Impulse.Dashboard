@@ -25,7 +25,6 @@ using Impulse.Framework.Dashboard.Providers;
 using Impulse.Framework.Dashboard.Services.Logging;
 using Impulse.Framework.Dashboard.Services.Logging.LogWindow;
 using Impulse.Repository.Persistent;
-using Impulse.Repository.Session;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 using Impulse.SharedFramework.Application;
@@ -106,9 +105,6 @@ public class Bootstrapper : BootstrapperBase
 
     public new void Initialize()
     {
-        // Initialize persistent and transient databases
-        InitializeDatabase();
-
         // Initialize Caliburn Micro
         InitializeCaliburnMicro();
 
@@ -237,8 +233,6 @@ public class Bootstrapper : BootstrapperBase
         return output;
     }
 
-    private void InitializeDatabase() => ConfigurationRepository.Initialize();
-
     private void InitializeCaliburnMicro()
     {
         // Set the viewLocator to use the kernel to initialize the view.
@@ -313,6 +307,7 @@ public class Bootstrapper : BootstrapperBase
         // Bind all services to the kernel
         Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
         Kernel.Bind<IRibbonService>().To<RibbonService>().InSingletonScope();
+        Kernel.Bind<ILogRecordRepository>().To<LogRecordRepository>().InSingletonScope();
         Kernel.Bind<ILogService>().To<LogService>().InSingletonScope()
             .WithConstructorArgument("dateTimeProvider", new DateTimeProvider());
         Kernel.Bind<IDocumentService>().To<DocumentService>().InSingletonScope();

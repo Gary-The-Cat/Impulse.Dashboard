@@ -3,8 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using Caliburn.Micro;
 using Impulse.Shared.Enums;
 using Impulse.SharedFramework.Services.Layout;
@@ -13,7 +16,7 @@ using Impulse.SharedFramework.Services.Logging;
 internal class LogWindowViewModel : ToolWindowBase
 {
     private readonly ILogService logService;
-    private readonly List<LogRecordBase> allRecords = new();
+    private readonly ObservableCollection<LogRecordBase> records = new();
     private IDisposable? subscription;
     private LogSeverityFilterOption selectedSeverity;
 
@@ -22,7 +25,8 @@ internal class LogWindowViewModel : ToolWindowBase
         this.logService = logService;
 
         Placement = ToolWindowPlacement.Bottom;
-        LogRecords = new ObservableCollection<LogRecordBase>();
+        LogRecords = CollectionViewSource.GetDefaultView(records);
+        LogRecords.Filter = FilterRecord;
         SeverityOptions = new BindableCollection<LogSeverityFilterOption>
         {
             new("All", _ => true),
@@ -38,7 +42,7 @@ internal class LogWindowViewModel : ToolWindowBase
         subscription = logService.Subscribe(new LogRecordObserver(this));
     }
 
-    public ObservableCollection<LogRecordBase> LogRecords { get; }
+    public ICollectionView LogRecords { get; }
     public BindableCollection<LogSeverityFilterOption> SeverityOptions { get; }
 
     public LogSeverityFilterOption SelectedSeverity
@@ -72,46 +76,55 @@ internal class LogWindowViewModel : ToolWindowBase
 
     private void OnRecordReceived(LogRecordBase record)
     {
-        Execute.OnUIThread(() =>
-        {
-            allRecords.Add(record);
-
-            if (MatchesSelectedFilter(record))
-            {
-                LogRecords.Add(record);
-            }
-        });
+        Execute.OnUIThread(() => records.Add(record));
     }
 
     public void ClearLogs()
     {
-        Execute.OnUIThread(() =>
-        {
-            allRecords.Clear();
-            LogRecords.Clear();
-        });
+        Execute.OnUIThread(records.Clear);
     }
 
-    public IReadOnlyList<LogRecordBase> GetVisibleRecords() => LogRecords;
-
-    private bool MatchesSelectedFilter(LogRecordBase record) =>
-        selectedSeverity?.Predicate(record) ?? true;
-
-    private void ApplyFilter()
+    public void RemoveRecords(IEnumerable<LogRecordBase> records)
     {
+        if (records == null)
+        {
+            return;
+        }
+
         Execute.OnUIThread(() =>
         {
-            LogRecords.Clear();
-
-            foreach (var record in allRecords)
+            var targets = records.Where(record => record != null).ToList();
+            foreach (var record in targets)
             {
-                if (MatchesSelectedFilter(record))
-                {
-                    LogRecords.Add(record);
-                }
+                this.records.Remove(record);
             }
         });
     }
+
+    public async Task DeleteRecordsAsync(IEnumerable<LogRecordBase> records)
+    {
+        if (records == null)
+        {
+            return;
+        }
+
+        var targets = records.Where(record => record != null).ToList();
+        if (targets.Count == 0)
+        {
+            return;
+        }
+
+        await logService.DeleteRecordsAsync(targets.Select(record => record.Id)).ConfigureAwait(false);
+        RemoveRecords(targets);
+    }
+
+    public IReadOnlyList<LogRecordBase> GetVisibleRecords() =>
+        LogRecords.Cast<LogRecordBase>().ToList();
+
+    private bool FilterRecord(object value) =>
+        value is LogRecordBase record && (selectedSeverity?.Predicate(record) ?? true);
+
+    private void ApplyFilter() => Execute.OnUIThread(LogRecords.Refresh);
 
     private sealed class LogRecordObserver : IObserver<LogRecordBase>
     {

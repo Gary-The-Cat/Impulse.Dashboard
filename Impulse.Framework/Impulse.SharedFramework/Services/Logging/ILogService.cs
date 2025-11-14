@@ -19,4 +19,6 @@ public interface ILogService : IObservable<LogRecordBase>
     Task LogError(string message);
 
     IEnumerable<LogRecordBase> GetLogRecordsForCricicality(Criticality criticality);
+
+    Task DeleteRecordsAsync(IEnumerable<Guid> recordIds);
 }
