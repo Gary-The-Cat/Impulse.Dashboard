@@ -1,16 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
-	<String Id="CompanyName">Tutorials With Gary</String>
+﻿<WixLocalization Culture="en-us" xmlns="http://wixtoolset.org/schemas/v4/wxl">
+	<String Id="CompanyName" Value="Tutorials With Gary" />
 	
-	<String Id="ProductName_x64">Impulse Dashboard (x64)</String>
-	<String Id="ProductName">Impulse Dashboard</String>
+	<String Id="ProductName_x64" Value="Impulse Dashboard (x64)" />
+	<String Id="ProductName" Value="Impulse Dashboard" />
 	
-	<String Id="Language">1033</String>
+	<String Id="Language" Value="1033" />
 	
-	<String Id="Description">A shared dashboard application for all Tutorials With Gary products.</String>
-	<String Id="Comment">Please use responsibly.</String>
-	<String Id="Keywords">Dashboard,Impulse,Tutorials,Gary</String>
+	<String Id="Description" Value="A shared dashboard application for all Tutorials With Gary products." />
+	<String Id="Comment" Value="Please use responsibly." />
+	<String Id="Keywords" Value="Dashboard,Impulse,Tutorials,Gary" />
 	
-	<String Id="DowngradeMessage">A newer version of Impulse Dashboard is already installed.</String>
+	<String Id="DowngradeMessage" Value="A newer version of Impulse Dashboard is already installed." />
 	
 </WixLocalization>

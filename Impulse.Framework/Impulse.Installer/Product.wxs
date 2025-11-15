@@ -1,46 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 	
 	<?define UpgradeCode = {1C2B5971-9F44-49DC-8F5E-A8E9B0DDCABA} ?>
 	
-	<Product
-		Id="{FC105510-DD11-423F-A2C1-224D5238AEFB}"
-		Name="!(loc.ProductName_x64)"
-		Language="!(loc.Language)"
-		Version="$(var.BuildVersion)"
-		Manufacturer="!(loc.CompanyName)"
-		UpgradeCode="$(var.UpgradeCode)">
+	<Package Id="ImpulseDashboardPackage" Name="!(loc.ProductName_x64)" Language="!(loc.Language)" Version="$(var.BuildVersion)" Manufacturer="!(loc.CompanyName)" UpgradeCode="$(var.UpgradeCode)" InstallerVersion="200" ProductCode="{FC105510-DD11-423F-A2C1-224D5238AEFB}">
 		
-		<Package
-			InstallerVersion="200"
-			Compressed="yes"
-			InstallScope="perMachine"
-			Platform="$(var.Platform)"
-			Manufacturer="!(loc.CompanyName)"
-			Description="!(loc.Description)"
-			Comments="!(loc.Comment)"
-			Keywords="!(loc.Keywords)"/>
+		<SummaryInformation Manufacturer="!(loc.CompanyName)" Description="!(loc.Description)" Keywords="!(loc.Keywords)" />
 		
 		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeMessage)" />
 		
 		<!-- Cab file is a zip with the installers contents, not embedding it will produce an msi + cab file. -->
-		<MediaTemplate EmbedCab="yes"/>
+		<MediaTemplate EmbedCab="yes" />
 
-		<Icon Id="icon.ico" SourceFile="$(var.Impulse.Dashboard.ProjectDir)\ImpulseIcon.ico"/>
+		<Icon Id="icon.ico" SourceFile="$(var.Impulse.Dashboard.ProjectDir)\ImpulseIcon.ico" />
 
 		<!-- Set the icon for our product to be the icon we created above. -->
-		<Property Id="ARPPRODUCTICON">icon.ico</Property>
-		<Property Id="ARPURLINFOABOUT">https://www.youtube.com/channel/UCzvWh64GQm_OfkJXyYo7whQ</Property>
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
+		<Property Id="ARPURLINFOABOUT" Value="https://www.youtube.com/channel/UCzvWh64GQm_OfkJXyYo7whQ" />
 
 		<!-- Tell the installer to use the basic UI. -->
-		<UIRef Id="WixUI_Minimal"/>
-		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf"/>
-		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp"/>
-		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp"/>
+		<ui:WixUI Id="WixUI_Minimal" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)\Assets\License.rtf" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)\Assets\Background.bmp" />
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)\Assets\Banner.bmp" />
 		
 		<Feature Id="ProductFeature" Title="ImpulseDashboard" Level="1">
-			<ComponentGroupRef Id="ProductComponents"/>			
-			<ComponentGroupRef Id="PublishedComponents"/>			
+			<ComponentGroupRef Id="ProductComponents" />			
+			<ComponentGroupRef Id="PublishedComponents" />			
 		</Feature>
-	</Product>
+	</Package>
 </Wix>

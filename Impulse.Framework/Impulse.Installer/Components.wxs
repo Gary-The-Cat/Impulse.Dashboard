@@ -1,32 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 	<Fragment>
 		<ComponentGroup Id="ProductComponents">
 			<!-- Shortcut -->
 			<ComponentRef Id="MainAppShortcut" />
 		</ComponentGroup>
 
-		<DirectoryRef Id="INSTALLFOLDER" FileSource="$(var.Impulse.Dashboard.ProjectDir)\bin\Debug\net7.0-windows\win-x64\publish\">
+		<DirectoryRef Id="INSTALLFOLDER" FileSource="$(var.BasePath)\">
 			<Component Id="MainAppShortcut" Guid="{665DE33E-5C29-4B95-B21D-462D085FD184}">
-				<Shortcut
-					Id="MainAppShortcut"
-					Name="!(loc.ProductName)"
-					Target="[INSTALLFOLDER]Impulse.Dashboard.exe"
-					Directory="InstallProgramMenuFolder"
-					WorkingDirectory="INSTALLFOLDER"
-					Icon="icon.ico"/>
+				<Shortcut Id="MainAppShortcut" Name="!(loc.ProductName)" Target="[INSTALLFOLDER]Impulse.Dashboard.exe" Directory="InstallProgramMenuFolder" WorkingDirectory="INSTALLFOLDER" Icon="icon.ico" />
 
-				<RegistryValue
-					Id="RegShortcutKey"
-					Root="HKCU"
-					Type="integer"
-					Value="0"
-					Key="SOFTWARE\!(loc.ProductName)"
-					KeyPath="yes"
-					Name="Shortcut"/>
+				<RegistryValue Id="RegShortcutKey" Root="HKCU" Type="integer" Value="0" Key="SOFTWARE\!(loc.ProductName)" KeyPath="yes" Name="Shortcut" />
 
 				 <!--Remove start menu shortcut--> 
-				<RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall"/>
+				<RemoveFolder Id="RemoveStartMenu" Directory="InstallProgramMenuFolder" On="uninstall" />
 			</Component>
 		</DirectoryRef>
 		
