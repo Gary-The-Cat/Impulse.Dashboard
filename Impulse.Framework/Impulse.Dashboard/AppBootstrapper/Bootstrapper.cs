@@ -52,6 +52,8 @@ public class Bootstrapper : BootstrapperBase
     private const string DebugPluginPath = @"C:\Users\luke.berry\Documents\GitHub\Wordle.Solver\Application\Debug\net7.0-windows";
 
     private IDashboardProvider dashboard;
+    private readonly List<IPlugin> loadedPlugins = new();
+    private string currentThemeName = "Light.Blue";
 
     public Bootstrapper()
     {
@@ -146,6 +148,8 @@ public class Bootstrapper : BootstrapperBase
         var windowManager = Kernel.Get<IWindowManager>();
 
         await windowManager.ShowWindowAsync(shellViewModel);
+        RegisterShellWindowEvents();
+        await NotifyDashboardActivatedAsync();
 
         if (ActiveApplication == null && Applications != null)
         {
@@ -182,6 +186,7 @@ public class Bootstrapper : BootstrapperBase
             await ActiveApplication.Initialize();
             Application.Current.MainWindow.Title = ActiveApplication.DisplayName;
             shellViewModel.ActiveApplication = ActiveApplication;
+            await NotifyActiveApplicationChangedAsync(ActiveApplication);
 
             await ActiveApplication.LaunchApplication();
         }
@@ -194,6 +199,9 @@ public class Bootstrapper : BootstrapperBase
 
     protected override void OnExit(object sender, EventArgs e)
     {
+        NotifyShutdownRequestedAsync().GetAwaiter().GetResult();
+        ClosePlugins().GetAwaiter().GetResult();
+
         if (ActiveApplication != null)
         {
             ActiveApplication.OnClose().GetAwaiter().GetResult();
@@ -259,11 +267,12 @@ public class Bootstrapper : BootstrapperBase
         lightTheme.Source = new Uri("pack://application:,,,/Impulse.SharedFramework;Component/Themes/LightThemeColours.xaml");
 
         Application.Current.Resources.MergedDictionaries.Add(lightTheme);
-        ThemeManager.Current.ChangeTheme(((RibbonService)RibbonService).GetRibbonControl(), "Light.Blue");
+        ThemeManager.Current.ChangeTheme(((RibbonService)RibbonService).GetRibbonControl(), currentThemeName);
 
         var shellViewModel = (ShellViewModel)Kernel.Get<IShellViewModel>();
         shellViewModel.Theme = new DockLightTheme();
         shellViewModel.NotifyOfPropertyChange("Theme");
+        NotifyThemeChangedAsync(currentThemeName).GetAwaiter().GetResult();
     }
 
     private void InitializeApplications()
@@ -299,6 +308,7 @@ public class Bootstrapper : BootstrapperBase
             var instance = (IPlugin)Activator.CreateInstance(plugin.type);
             instance.Dashboard = this.dashboard;
             instance.Initialize();
+            loadedPlugins.Add(instance);
         }
     }
 
@@ -381,5 +391,69 @@ public class Bootstrapper : BootstrapperBase
         DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
 #endif
         ConfigurationRibbon.LoadConfigTab(RibbonService);
+    }
+
+    private void RegisterShellWindowEvents()
+    {
+        var mainWindow = Application.Current.MainWindow;
+        if (mainWindow == null)
+        {
+            return;
+        }
+
+        mainWindow.Activated += MainWindow_Activated;
+        mainWindow.Deactivated += MainWindow_Deactivated;
+    }
+
+    private async void MainWindow_Activated(object sender, EventArgs e)
+    {
+        await NotifyDashboardActivatedAsync();
+    }
+
+    private async void MainWindow_Deactivated(object sender, EventArgs e)
+    {
+        await NotifyDashboardSuspendedAsync();
+    }
+
+    private Task NotifyDashboardActivatedAsync()
+    {
+        return NotifyPluginsAsync<IDashboardActivatablePlugin>(plugin => plugin.OnDashboardActivated());
+    }
+
+    private Task NotifyDashboardSuspendedAsync()
+    {
+        return NotifyPluginsAsync<IDashboardActivatablePlugin>(plugin => plugin.OnDashboardSuspended());
+    }
+
+    private Task NotifyThemeChangedAsync(string themeName)
+    {
+        return NotifyPluginsAsync<IDashboardThemeAwarePlugin>(plugin => plugin.OnThemeChanged(themeName));
+    }
+
+    private Task NotifyActiveApplicationChangedAsync(IApplication application)
+    {
+        return NotifyPluginsAsync<IApplicationAwarePlugin>(plugin => plugin.OnActiveApplicationChanged(application));
+    }
+
+    private Task NotifyShutdownRequestedAsync()
+    {
+        return NotifyPluginsAsync<IDashboardShutdownAwarePlugin>(plugin => plugin.OnShutdownRequested());
+    }
+
+    private Task ClosePlugins()
+    {
+        var closeTasks = loadedPlugins.Select(plugin => plugin.OnClose());
+        return Task.WhenAll(closeTasks);
+    }
+
+    private Task NotifyPluginsAsync<TPlugin>(Func<TPlugin, Task> callback)
+        where TPlugin : class
+    {
+        var tasks = loadedPlugins
+            .OfType<TPlugin>()
+            .Select(callback)
+            .ToList();
+
+        return tasks.Any() ? Task.WhenAll(tasks) : Task.CompletedTask;
     }
 }
