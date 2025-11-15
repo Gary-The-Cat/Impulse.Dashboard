@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(NetVersionWindows)</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Impulse.Framework\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
+    <ProjectReference Include="..\..\Impulse.Framework\Impulse.Shared\Impulse.Shared.csproj" />
+    <ProjectReference Include="..\Impulse.Logging.Contracts\Impulse.Logging.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

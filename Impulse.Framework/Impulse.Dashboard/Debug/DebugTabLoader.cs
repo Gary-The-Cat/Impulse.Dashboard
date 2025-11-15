@@ -9,7 +9,7 @@ using Impulse.Framework.Dashboard.Demonstrations;
 using Impulse.SharedFramework.Ribbon;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
-using Impulse.SharedFramework.Services.Logging;
+using Impulse.Logging.Contracts;
 using Ninject;
 using System;
 using System.Threading.Tasks;

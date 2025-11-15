@@ -4,6 +4,7 @@
 
 using Caliburn.Micro;
 using CSharpFunctionalExtensions;
+using Impulse.Repository.Persistent;
 using Impulse.SharedFramework.Services;
 
 namespace Impulse.SharedFramework.Plugin;
@@ -22,6 +23,8 @@ public interface IDashboardProvider
     public IProjectExplorerService ProjectExplorerService { get; }
 
     public IDialogService DialogService { get; }
+
+    public IPluginDataRepository PluginDataRepository { get; }
 
     public Result RegisterRequiredService<T>();
 

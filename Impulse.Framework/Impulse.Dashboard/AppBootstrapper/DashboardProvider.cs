@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Caliburn.Micro;
 using CSharpFunctionalExtensions;
+using Impulse.Repository.Persistent;
 using Impulse.Shared.Exceptions;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.SharedFramework.Plugin;
@@ -38,6 +39,23 @@ internal class DashboardProvider : IDashboardProvider
     public IProjectExplorerService ProjectExplorerService => this.Kernel.Get<IProjectExplorerService>();
 
     public IDialogService DialogService => this.Kernel.Get<IDialogService>();
+
+    public IPluginDataRepository PluginDataRepository
+    {
+        get
+        {
+            if (!registeredServices.Contains(typeof(IPluginDataRepository)))
+            {
+                var result = RegisterRequiredService<IPluginDataRepository>();
+                if (result.IsFailure)
+                {
+                    throw new InvalidOperationException(result.Error);
+                }
+            }
+
+            return this.Kernel.Get<IPluginDataRepository>();
+        }
+    }
 
     public Result RegisterRequiredService<T>()
     {

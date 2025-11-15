@@ -43,6 +43,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Impulse.Shared.UI\Impulse.Shared.UI.csproj" />
     <ProjectReference Include="..\Impulse.Shared\Impulse.Shared.csproj" />
+    <ProjectReference Include="..\..\Impulse.Database\Impulse.Repository.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,8 +22,11 @@ using Impulse.Dashboard.Themes;
 using Impulse.Framework.Dashboard.AppBootstrapper;
 using Impulse.Framework.Dashboard.Configuration.Ribbon;
 using Impulse.Framework.Dashboard.Providers;
-using Impulse.Framework.Dashboard.Services.Logging;
-using Impulse.Framework.Dashboard.Services.Logging.LogWindow;
+using Impulse.Logging.Contracts;
+using Impulse.Logging.Data.Persistence;
+using Impulse.Logging.Domain.Persistence;
+using Impulse.Logging.Domain.Services;
+using Impulse.Logging.UI.LogWindow;
 using Impulse.Repository.Persistent;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
@@ -31,7 +34,6 @@ using Impulse.SharedFramework.Application;
 using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
-using Impulse.SharedFramework.Services.Logging;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
 using Microsoft.EntityFrameworkCore;
@@ -206,7 +208,13 @@ public class Bootstrapper : BootstrapperBase
         types.AddRange(PluginLoader.GetAllInstances<IPlugin>(PluginPaths));
         types.AddRange(PluginLoader.GetAllInstances<IApplication>(ApplicationPaths));
 
-        return new[] { Assembly.GetExecutingAssembly() }.Concat(types.Select(i => i.assembly)).Distinct();
+        var coreAssemblies = new[]
+        {
+            Assembly.GetExecutingAssembly(),
+            typeof(LogWindowViewModel).Assembly,
+        };
+
+        return coreAssemblies.Concat(types.Select(i => i.assembly)).Distinct();
     }
 
     private IEnumerable<int> GetIndicesForTag(string[] args, string tag)
@@ -308,6 +316,7 @@ public class Bootstrapper : BootstrapperBase
         Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
         Kernel.Bind<IRibbonService>().To<RibbonService>().InSingletonScope();
         Kernel.Bind<ILogRecordRepository>().To<LogRecordRepository>().InSingletonScope();
+        Kernel.Bind<IPluginDataRepository>().To<PluginDataRepository>().InSingletonScope();
         Kernel.Bind<ILogService>().To<LogService>().InSingletonScope()
             .WithConstructorArgument("dateTimeProvider", new DateTimeProvider());
         Kernel.Bind<IDocumentService>().To<DocumentService>().InSingletonScope();
