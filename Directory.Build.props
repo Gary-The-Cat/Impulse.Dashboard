@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Impulse Versioning">
-    <ImpulseSharedVersion>1.0.7</ImpulseSharedVersion>
+    <ImpulseSharedVersion>1.0.8</ImpulseSharedVersion>
     <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">$(ImpulseSharedVersion).0</AssemblyVersion>
     <FileVersion Condition="'$(FileVersion)' == ''">$(ImpulseSharedVersion).0</FileVersion>
     <InformationalVersion Condition="'$(InformationalVersion)' == ''">$(ImpulseSharedVersion)</InformationalVersion>

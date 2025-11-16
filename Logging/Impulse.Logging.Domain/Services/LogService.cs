@@ -6,7 +6,10 @@ namespace Impulse.Logging.Domain.Services;
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Impulse.Logging.Contracts;
 using Impulse.Logging.Domain.Models;
@@ -28,11 +31,16 @@ public class LogService : ILogService
 
     private readonly List<LogRecordBase> cachedRecords = new();
 
+    private readonly string logFilePath;
+
+    private readonly object fileLock = new();
+
     public LogService(IDateTimeProvider dateTimeProvider, ILogRecordRepository logRecordRepository)
     {
         _ = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
         this.logRecordRepository = logRecordRepository ?? throw new ArgumentNullException(nameof(logRecordRepository));
         dateTimeProviderReference = new WeakReference<IDateTimeProvider>(dateTimeProvider);
+        logFilePath = DetermineLogFilePath();
         SeedFromStore();
     }
 
@@ -110,6 +118,7 @@ public class LogService : ILogService
             cachedRecords.Add(sharedRecord);
         }
 
+        AppendToLogFile(sharedRecord);
         Publish(sharedRecord);
     }
 
@@ -141,6 +150,61 @@ public class LogService : ILogService
             cachedRecords.Clear();
             cachedRecords.AddRange(persistedRecords);
         }
+    }
+
+    private void AppendToLogFile(LogRecordBase record)
+    {
+        try
+        {
+            var severity = LogRecordCriticality.Get(record).ToString().ToUpperInvariant();
+            var builder = new StringBuilder()
+                .Append(record.Timestamp.ToString("O", CultureInfo.InvariantCulture))
+                .Append(" [")
+                .Append(severity)
+                .Append("] ")
+                .Append(record.Message ?? string.Empty);
+
+            if (record is ExceptionLogRecord exceptionRecord)
+            {
+                if (!string.IsNullOrWhiteSpace(exceptionRecord.ExceptionType) ||
+                    !string.IsNullOrWhiteSpace(exceptionRecord.ExceptionMessage))
+                {
+                    builder.Append(" (")
+                        .Append(exceptionRecord.ExceptionType ?? "Exception")
+                        .Append(") ")
+                        .Append(exceptionRecord.ExceptionMessage ?? string.Empty);
+                }
+
+                if (!string.IsNullOrWhiteSpace(exceptionRecord.StackTrace))
+                {
+                    builder.AppendLine()
+                        .Append(exceptionRecord.StackTrace);
+                }
+            }
+
+            var entry = builder.ToString();
+            lock (fileLock)
+            {
+                File.AppendAllText(logFilePath, entry + Environment.NewLine);
+            }
+        }
+        catch
+        {
+            // File logging is best-effort; swallow to avoid impacting dashboard execution.
+        }
+    }
+
+    private static string DetermineLogFilePath()
+    {
+        var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        if (string.IsNullOrWhiteSpace(localAppData))
+        {
+            return Path.Combine(AppContext.BaseDirectory, "Impulse.Dashboard.log");
+        }
+
+        var folder = Path.Combine(localAppData, "Impulse.Dashboard");
+        Directory.CreateDirectory(folder);
+        return Path.Combine(folder, "Dashboard.log");
     }
 
     private InfoLogRecordModel CreateInfoRecord(string message) =>

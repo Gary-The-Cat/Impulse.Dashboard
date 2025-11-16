@@ -53,6 +53,7 @@ public class Bootstrapper : BootstrapperBase
 
     private IDashboardProvider dashboard;
     private readonly List<IPlugin> loadedPlugins = new();
+    private ILogService logService;
     private string currentThemeName = "Light.Blue";
 
     public Bootstrapper()
@@ -132,8 +133,8 @@ public class Bootstrapper : BootstrapperBase
 
     protected override void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        var logService = Kernel.Get<ILogService>();
-        logService.LogException($"Unhandled exception captured at {DateTime.Now:T}", e.Exception);
+        logService ??= Kernel.Get<ILogService>();
+        LogError($"Unhandled exception captured at {DateTime.Now:T}", e.Exception);
 
         var dialogService = Kernel.Get<IDialogService>();
         dialogService.ShowException("Unhandled Exception", e.Exception.Message);
@@ -148,11 +149,13 @@ public class Bootstrapper : BootstrapperBase
         var windowManager = Kernel.Get<IWindowManager>();
 
         await windowManager.ShowWindowAsync(shellViewModel);
+        LogInfo("Shell window initialised.");
         RegisterShellWindowEvents();
         await NotifyDashboardActivatedAsync();
 
         if (ActiveApplication == null && Applications != null)
         {
+            LogInfo($"Prompting user to select one of {Applications.Count()} discovered applications.");
             var applicationInstances = new List<IApplication>();
             foreach (var applicationType in Applications)
             {
@@ -164,6 +167,7 @@ public class Bootstrapper : BootstrapperBase
                 }
                 catch (Exception e)
                 {
+                    LogError($"Failed to create application instance for {applicationType.FullName}.", e);
                     continue;
                 }
 
@@ -178,27 +182,48 @@ public class Bootstrapper : BootstrapperBase
             applicationSelectView.ShowDialog();
 
             ActiveApplication = applicationSelectViewModel.SelectedApplication;
+            if (ActiveApplication != null)
+            {
+                LogInfo($"User selected application {ActiveApplication.DisplayName}.");
+            }
+            else
+            {
+                LogWarning("Application selection dialog closed without selecting an application.");
+            }
         }
 
         // If there was an application in the target folder, load it.
         if (ActiveApplication != null)
         {
-            await ActiveApplication.Initialize();
-            Application.Current.MainWindow.Title = ActiveApplication.DisplayName;
-            shellViewModel.ActiveApplication = ActiveApplication;
-            await NotifyActiveApplicationChangedAsync(ActiveApplication);
+            try
+            {
+                LogInfo($"Initialising application {ActiveApplication.DisplayName}.");
+                await ActiveApplication.Initialize();
+                Application.Current.MainWindow.Title = ActiveApplication.DisplayName;
+                shellViewModel.ActiveApplication = ActiveApplication;
+                await NotifyActiveApplicationChangedAsync(ActiveApplication);
 
-            await ActiveApplication.LaunchApplication();
+                LogInfo($"Launching application {ActiveApplication.DisplayName}.");
+                await ActiveApplication.LaunchApplication();
+                LogInfo($"Application {ActiveApplication.DisplayName} launched successfully.");
+            }
+            catch (Exception ex)
+            {
+                LogError($"Application {ActiveApplication.DisplayName} failed during startup.", ex);
+                throw;
+            }
         }
         else
         {
             // We were unable to load an application
             Application.Current.MainWindow.Title = "Dashboard";
+            LogWarning("No active application was launched; dashboard shell will stay idle.");
         }
     }
 
     protected override void OnExit(object sender, EventArgs e)
     {
+        LogInfo("Dashboard shutting down.");
         NotifyShutdownRequestedAsync().GetAwaiter().GetResult();
         ClosePlugins().GetAwaiter().GetResult();
 
@@ -277,38 +302,56 @@ public class Bootstrapper : BootstrapperBase
 
     private void InitializeApplications()
     {
-        // Get the plugins from the local plugin folder
-        var applications = PluginLoader.GetAllInstances<IApplication>(this.ApplicationPaths);
+        var applications = PluginLoader.GetAllInstances<IApplication>(this.ApplicationPaths).ToList();
+        LogInfo($"Application discovery complete. Paths searched: {ApplicationPaths.Count}. Candidates found: {applications.Count}.");
 
-        // Launch without setting the active application
         if (!applications.Any())
         {
+            LogWarning("No applications were discovered in the supplied paths.");
             return;
         }
 
-        // :TODO: Add support for multiple applications within a single dashboard session
-        if (applications.Count() > 1)
+        if (applications.Count > 1)
         {
             Applications = applications.Select(a => a.type).ToList();
+            LogInfo($"Multiple applications available: {string.Join(", ", Applications.Select(t => t.FullName))}");
+            return;
         }
-        else
+
+        var applicationReference = applications.First();
+        try
         {
-            ActiveApplication = (IApplication)Activator.CreateInstance(applications.First().type);
+            LogInfo($"Instantiating application {applicationReference.type.FullName} from {applicationReference.assembly.Location}.");
+            ActiveApplication = (IApplication)Activator.CreateInstance(applicationReference.type);
             ActiveApplication.Dashboard = this.dashboard;
+            LogInfo($"Application {ActiveApplication.DisplayName} instantiated successfully.");
+        }
+        catch (Exception ex)
+        {
+            LogError($"Failed to instantiate application {applicationReference.type.FullName}.", ex);
         }
     }
 
     private void InitializePlugins()
     {
-        // Get the plugins from the local plugin folder
-        var plugins = PluginLoader.GetAllInstances<IPlugin>(this.PluginPaths);
+        var plugins = PluginLoader.GetAllInstances<IPlugin>(this.PluginPaths).ToList();
+        LogInfo($"Plugin discovery complete. Paths searched: {PluginPaths.Count}. Candidates found: {plugins.Count}.");
 
         foreach (var plugin in plugins)
         {
-            var instance = (IPlugin)Activator.CreateInstance(plugin.type);
-            instance.Dashboard = this.dashboard;
-            instance.Initialize();
-            loadedPlugins.Add(instance);
+            try
+            {
+                LogInfo($"Loading plugin {plugin.type.FullName} from {plugin.assembly.Location}.");
+                var instance = (IPlugin)Activator.CreateInstance(plugin.type);
+                instance.Dashboard = this.dashboard;
+                instance.Initialize();
+                loadedPlugins.Add(instance);
+                LogInfo($"Plugin {plugin.type.FullName} initialised.");
+            }
+            catch (Exception ex)
+            {
+                LogError($"Failed to initialise plugin {plugin.type.FullName}.", ex);
+            }
         }
     }
 
@@ -338,6 +381,8 @@ public class Bootstrapper : BootstrapperBase
             .WithConstructorArgument("shell", Kernel.Get<IShellViewModel>());
 
         BindKernelInjectedTypes();
+        logService = Kernel.Get<ILogService>();
+        LogStartupMetadata();
 
         this.dashboard = new DashboardProvider(Kernel);
 
@@ -382,6 +427,33 @@ public class Bootstrapper : BootstrapperBase
 
             config.Dispatcher = Application.Current.Dispatcher;
         });
+    }
+
+    private void LogInfo(string message) =>
+        _ = logService?.LogInfo(message);
+
+    private void LogWarning(string message) =>
+        _ = logService?.LogWarning(message);
+
+    private void LogError(string message, Exception exception) =>
+        _ = logService?.LogException(message, exception);
+
+    private void LogStartupMetadata()
+    {
+        var args = string.Join(' ', Environment.GetCommandLineArgs());
+        LogInfo($"Dashboard starting with arguments: {args}");
+        LogPaths("Application search paths", ApplicationPaths);
+        LogPaths("Plugin search paths", PluginPaths);
+    }
+
+    private void LogPaths(string label, IEnumerable<string> paths)
+    {
+        if (paths == null)
+        {
+            return;
+        }
+
+        LogInfo($"{label}: {string.Join(", ", paths)}");
     }
 
     private void InitializeRibbon()
