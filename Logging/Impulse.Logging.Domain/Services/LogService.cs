@@ -13,15 +13,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Impulse.Logging.Contracts;
 using Impulse.Logging.Domain.Models;
-using Impulse.Logging.Domain.Persistence;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.Shared.Interfaces;
 
 public class LogService : ILogService
 {
     private readonly WeakReference<IDateTimeProvider> dateTimeProviderReference;
-
-    private readonly ILogRecordRepository logRecordRepository;
 
     private readonly List<IObserver<LogRecordBase>> observers = new();
 
@@ -35,13 +32,11 @@ public class LogService : ILogService
 
     private readonly object fileLock = new();
 
-    public LogService(IDateTimeProvider dateTimeProvider, ILogRecordRepository logRecordRepository)
+    public LogService(IDateTimeProvider dateTimeProvider)
     {
         _ = dateTimeProvider ?? throw new ArgumentNullException(nameof(dateTimeProvider));
-        this.logRecordRepository = logRecordRepository ?? throw new ArgumentNullException(nameof(logRecordRepository));
         dateTimeProviderReference = new WeakReference<IDateTimeProvider>(dateTimeProvider);
         logFilePath = DetermineLogFilePath();
-        SeedFromStore();
     }
 
     private IDateTimeProvider DateTimeProvider => dateTimeProviderReference.Value();
@@ -58,7 +53,7 @@ public class LogService : ILogService
     public Task LogError(string message) =>
         LogMessage(CreateErrorRecord(message));
 
-    public async Task DeleteRecordsAsync(IEnumerable<Guid> recordIds)
+    public Task DeleteRecordsAsync(IEnumerable<Guid> recordIds)
     {
         _ = recordIds ?? throw new ArgumentNullException(nameof(recordIds));
         var ids = recordIds
@@ -68,16 +63,17 @@ public class LogService : ILogService
 
         if (ids.Count == 0)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        await logRecordRepository.DeleteRecordsAsync(ids).ConfigureAwait(false);
         var idSet = new HashSet<Guid>(ids);
 
         lock (recordsLock)
         {
             cachedRecords.RemoveAll(record => idSet.Contains(record.Id));
         }
+
+        return Task.CompletedTask;
     }
 
     public IEnumerable<LogRecordBase> GetLogRecordsForCricicality(Criticality criticality)
@@ -109,9 +105,10 @@ public class LogService : ILogService
         return new Unsubscriber(observersLock, observers, observer);
     }
 
-    private async Task LogMessage(LogRecordModel record)
+    private Task LogMessage(LogRecordModel record)
     {
-        await logRecordRepository.AddRecordAsync(record).ConfigureAwait(false);
+        _ = record ?? throw new ArgumentNullException(nameof(record));
+
         var sharedRecord = record.ToSharedLogRecord();
         lock (recordsLock)
         {
@@ -120,6 +117,7 @@ public class LogService : ILogService
 
         AppendToLogFile(sharedRecord);
         Publish(sharedRecord);
+        return Task.CompletedTask;
     }
 
     private void Publish(LogRecordBase record)
@@ -133,22 +131,6 @@ public class LogService : ILogService
         foreach (var observer in snapshot)
         {
             observer.OnNext(record);
-        }
-    }
-
-    private void SeedFromStore()
-    {
-        var persistedRecords = logRecordRepository
-            .GetLogRecordsAsync((int)Criticality.Info)
-            .GetAwaiter()
-            .GetResult()
-            .Select(r => r.ToSharedLogRecord())
-            .ToList();
-
-        lock (recordsLock)
-        {
-            cachedRecords.Clear();
-            cachedRecords.AddRange(persistedRecords);
         }
     }
 

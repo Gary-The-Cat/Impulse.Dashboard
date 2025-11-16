@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -23,8 +24,6 @@ using Impulse.Framework.Dashboard.AppBootstrapper;
 using Impulse.Framework.Dashboard.Configuration.Ribbon;
 using Impulse.Framework.Dashboard.Providers;
 using Impulse.Logging.Contracts;
-using Impulse.Logging.Data.Persistence;
-using Impulse.Logging.Domain.Persistence;
 using Impulse.Logging.Domain.Services;
 using Impulse.Logging.UI.LogWindow;
 using Impulse.Repository.Persistent;
@@ -36,7 +35,6 @@ using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
 using Impulse.SharedFramework.Shell;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32;
 using Ninject;
 using ToastNotifications;
@@ -368,7 +366,6 @@ public class Bootstrapper : BootstrapperBase
         // Bind all services to the kernel
         Kernel.Bind<IWindowManager>().To<WindowManager>().InSingletonScope();
         Kernel.Bind<IRibbonService>().To<RibbonService>().InSingletonScope();
-        Kernel.Bind<ILogRecordRepository>().To<LogRecordRepository>().InSingletonScope();
         Kernel.Bind<IPluginDataRepository>().To<PluginDataRepository>().InSingletonScope();
         Kernel.Bind<ILogService>().To<LogService>().InSingletonScope()
             .WithConstructorArgument("dateTimeProvider", new DateTimeProvider());
@@ -459,9 +456,10 @@ public class Bootstrapper : BootstrapperBase
     private void InitializeRibbon()
     {
         RibbonService = Kernel.Get<IRibbonService>();
-#if DEBUG
-        DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
-#endif
+        if (ShouldLoadDebugRibbon())
+        {
+            DebugTabLoader.LoadDebuggerTab(Kernel, RibbonService);
+        }
         ConfigurationRibbon.LoadConfigTab(RibbonService);
     }
 
@@ -527,5 +525,26 @@ public class Bootstrapper : BootstrapperBase
             .ToList();
 
         return tasks.Any() ? Task.WhenAll(tasks) : Task.CompletedTask;
+    }
+
+    private static bool ShouldLoadDebugRibbon()
+    {
+#if DEBUG
+        return true;
+#else
+        if (Debugger.IsAttached)
+        {
+            return true;
+        }
+
+        var envValue = Environment.GetEnvironmentVariable("IMPULSE_ENABLE_DEBUG_RIBBON");
+        if (string.IsNullOrWhiteSpace(envValue))
+        {
+            return false;
+        }
+
+        return string.Equals(envValue, "1", StringComparison.OrdinalIgnoreCase)
+            || string.Equals(envValue, "true", StringComparison.OrdinalIgnoreCase);
+#endif
     }
 }

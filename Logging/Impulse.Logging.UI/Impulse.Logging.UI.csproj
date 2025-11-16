@@ -10,6 +10,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Impulse.Framework\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
     <ProjectReference Include="..\..\Impulse.Framework\Impulse.Shared\Impulse.Shared.csproj" />
+    <ProjectReference Include="..\..\Impulse.Database\Impulse.Repository.csproj" />
     <ProjectReference Include="..\Impulse.Logging.Contracts\Impulse.Logging.Contracts.csproj" />
   </ItemGroup>
 

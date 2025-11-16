@@ -12,17 +12,20 @@ using Caliburn.Micro;
 using Impulse.Logging.Contracts;
 using Impulse.Shared.Enums;
 using Impulse.SharedFramework.Services.Layout;
+using Impulse.Repository.Persistent;
 
 public sealed class LogWindowViewModel : ToolWindowBase
 {
     private readonly ILogService logService;
+    private readonly IPluginDataRepository pluginDataRepository;
     private readonly ObservableCollection<LogRecordBase> records = new();
     private IDisposable? subscription;
     private LogSeverityFilterOption selectedSeverity;
 
-    public LogWindowViewModel(ILogService logService)
+    public LogWindowViewModel(ILogService logService, IPluginDataRepository pluginDataRepository)
     {
         this.logService = logService;
+        this.pluginDataRepository = pluginDataRepository;
 
         Placement = ToolWindowPlacement.Bottom;
         LogRecords = CollectionViewSource.GetDefaultView(records);
@@ -40,6 +43,7 @@ public sealed class LogWindowViewModel : ToolWindowBase
         NotifyOfPropertyChange(() => SelectedSeverity);
 
         subscription = logService.Subscribe(new LogRecordObserver(this));
+        _ = LoadPreferencesAsync();
     }
 
     public ICollectionView LogRecords { get; }
@@ -58,6 +62,7 @@ public sealed class LogWindowViewModel : ToolWindowBase
             selectedSeverity = value;
             NotifyOfPropertyChange(() => SelectedSeverity);
             ApplyFilter();
+            PersistSelectedSeverity(value);
         }
     }
 
@@ -125,6 +130,63 @@ public sealed class LogWindowViewModel : ToolWindowBase
         value is LogRecordBase record && (selectedSeverity?.Predicate(record) ?? true);
 
     private void ApplyFilter() => Execute.OnUIThread(LogRecords.Refresh);
+
+    private async Task LoadPreferencesAsync()
+    {
+        if (pluginDataRepository == null)
+        {
+            return;
+        }
+
+        try
+        {
+            var preferences = await pluginDataRepository.GetSingletonAsync<LogViewerPreferences>().ConfigureAwait(false);
+            var targetName = preferences?.SelectedSeverity;
+            if (string.IsNullOrWhiteSpace(targetName))
+            {
+                return;
+            }
+
+            var match = SeverityOptions.FirstOrDefault(option =>
+                string.Equals(option.DisplayName, targetName, StringComparison.OrdinalIgnoreCase));
+
+            if (match != null)
+            {
+                Execute.OnUIThread(() => SelectedSeverity = match);
+            }
+        }
+        catch
+        {
+            // Persistence is best-effort for the log viewer.
+        }
+    }
+
+    private void PersistSelectedSeverity(LogSeverityFilterOption option)
+    {
+        if (pluginDataRepository == null || option == null)
+        {
+            return;
+        }
+
+        _ = SavePreferencesAsync(option);
+    }
+
+    private async Task SavePreferencesAsync(LogSeverityFilterOption option)
+    {
+        try
+        {
+            var preferences = new LogViewerPreferences
+            {
+                SelectedSeverity = option.DisplayName,
+            };
+
+            await pluginDataRepository.SaveSingletonAsync(preferences).ConfigureAwait(false);
+        }
+        catch
+        {
+            // Persistence is best-effort for the log viewer.
+        }
+    }
 
     private sealed class LogRecordObserver : IObserver<LogRecordBase>
     {

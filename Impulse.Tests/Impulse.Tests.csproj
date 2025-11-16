@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Logging\Impulse.Logging.Domain\Impulse.Logging.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
