@@ -7,6 +7,7 @@ using Impulse.Shared.Exceptions;
 using Impulse.Shared.ExtensionMethods;
 using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.Services;
+using Impulse.SharedFramework.Services.Llm;
 using Ninject;
 
 namespace Impulse.Framework.Dashboard.AppBootstrapper;
@@ -39,6 +40,8 @@ internal class DashboardProvider : IDashboardProvider
     public IProjectExplorerService ProjectExplorerService => this.Kernel.Get<IProjectExplorerService>();
 
     public IDialogService DialogService => this.Kernel.Get<IDialogService>();
+
+    public ILlmBrokerService LlmBrokerService => this.Kernel.Get<ILlmBrokerService>();
 
     public IPluginDataRepository PluginDataRepository
     {

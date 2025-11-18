@@ -6,6 +6,7 @@ using Caliburn.Micro;
 using CSharpFunctionalExtensions;
 using Impulse.Repository.Persistent;
 using Impulse.SharedFramework.Services;
+using Impulse.SharedFramework.Services.Llm;
 
 namespace Impulse.SharedFramework.Plugin;
 public interface IDashboardProvider
@@ -23,6 +24,8 @@ public interface IDashboardProvider
     public IProjectExplorerService ProjectExplorerService { get; }
 
     public IDialogService DialogService { get; }
+
+    public ILlmBrokerService LlmBrokerService { get; }
 
     public IPluginDataRepository PluginDataRepository { get; }
 

@@ -4,6 +4,7 @@
 
 using Caliburn.Micro;
 using Impulse.Dashboard.Debug.DemoScreens.AsyncBusyDemo;
+using Impulse.Dashboard.Debug.DemoScreens.LlmChat;
 using Impulse.Dashboard.Debug.ToolWindows;
 using Impulse.Framework.Dashboard.Demonstrations;
 using Impulse.SharedFramework.Ribbon;
@@ -28,6 +29,7 @@ public static class DebugTabLoader
         ribbonService.AddGroup(DebugRibbonIds.Group_Demos, "Functionality Demos");
         ribbonService.AddGroup(DebugRibbonIds.Group_ProjectExplorer, "Project Explorer");
         ribbonService.AddGroup(DebugRibbonIds.Group_Logging, "Logging");
+        ribbonService.AddGroup(DebugRibbonIds.Group_Llm, "LLM");
 
         var logService = kernel.Get<ILogService>();
 
@@ -125,6 +127,16 @@ public static class DebugTabLoader
             },
         };
 
+        var llmChatButton = new RibbonButtonViewModel()
+        {
+            Title = "LLM Chat",
+            Id = DebugRibbonIds.Button_LlmChat,
+            EnabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Configuration.png",
+            DisabledIcon = "pack://application:,,,/Impulse.Dashboard;Component/Icons/Export/Configuration_GS.png",
+            IsEnabled = true,
+            Callback = () => OpenLlmChat(kernel)
+        };
+
         // Testing & Design
         ribbonService.AddButton(bottomToolWindowButton);
         ribbonService.AddButton(exceptionDemo);
@@ -143,6 +155,9 @@ public static class DebugTabLoader
         ribbonService.AddButton(warningLogButton);
         ribbonService.AddButton(errorLogButton);
         ribbonService.AddButton(exceptionLogButton);
+
+        // LLM Tools
+        ribbonService.AddButton(llmChatButton);
     }
 
     private static void OpenAsyncBusyDemo(IKernel kernel)
@@ -154,6 +169,8 @@ public static class DebugTabLoader
     }
 
     private static BottomToolWindowViewModel? bottomToolWindow;
+
+    private static LlmChatViewModel? llmChatViewModel;
 
     private static void OpenBottomToolWindow(IKernel kernel)
     {
@@ -186,6 +203,13 @@ public static class DebugTabLoader
         var documentService = kernel.Get<IDocumentService>();
 
         documentService.OpenDocument(asyncBusyDemo);
+    }
+
+    private static void OpenLlmChat(IKernel kernel)
+    {
+        var documentService = kernel.Get<IDocumentService>();
+        llmChatViewModel ??= kernel.Get<LlmChatViewModel>();
+        documentService.OpenDocument(llmChatViewModel);
     }
 
     private static async Task SeedProjectExplorerAsync(IKernel kernel)

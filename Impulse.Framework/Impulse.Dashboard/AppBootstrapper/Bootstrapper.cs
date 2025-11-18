@@ -23,6 +23,11 @@ using Impulse.Dashboard.Themes;
 using Impulse.Framework.Dashboard.AppBootstrapper;
 using Impulse.Framework.Dashboard.Configuration.Ribbon;
 using Impulse.Framework.Dashboard.Providers;
+using Impulse.Llm.Broker;
+using Impulse.Llm.Configuration;
+using Impulse.Llm.Providers;
+using Impulse.Llm.Providers.Anthropic;
+using Impulse.Llm.Providers.OpenAi;
 using Impulse.Logging.Contracts;
 using Impulse.Logging.Domain.Services;
 using Impulse.Logging.UI.LogWindow;
@@ -34,6 +39,7 @@ using Impulse.SharedFramework.Plugin;
 using Impulse.SharedFramework.ProjectExplorer;
 using Impulse.SharedFramework.Services;
 using Impulse.SharedFramework.Services.Layout;
+using Impulse.SharedFramework.Services.Llm;
 using Impulse.SharedFramework.Shell;
 using Microsoft.Win32;
 using Ninject;
@@ -376,6 +382,11 @@ public class Bootstrapper : BootstrapperBase
         Kernel.Bind<IDialogService>().To<DialogService>().InSingletonScope()
             .WithConstructorArgument("notifier", CreateDefaultNotifier())
             .WithConstructorArgument("shell", Kernel.Get<IShellViewModel>());
+        Kernel.Bind<ILlmSettingsService>().To<FileSystemLlmSettingsService>().InSingletonScope();
+        Kernel.Bind<ILlmSessionStore>().To<FileSystemLlmSessionStore>().InSingletonScope();
+        Kernel.Bind<ILlmProviderClient>().To<OpenAiChatClient>().InSingletonScope();
+        Kernel.Bind<ILlmProviderClient>().To<AnthropicChatClient>().InSingletonScope();
+        Kernel.Bind<ILlmBrokerService>().To<LlmBrokerService>().InSingletonScope();
 
         BindKernelInjectedTypes();
         logService = Kernel.Get<ILogService>();

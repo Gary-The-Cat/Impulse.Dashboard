@@ -172,6 +172,7 @@
     <ProjectReference Include="..\..\Logging\Impulse.Logging.Domain\Impulse.Logging.Domain.csproj" />
     <ProjectReference Include="..\..\Logging\Impulse.Logging.UI\Impulse.Logging.UI.csproj" />
     <ProjectReference Include="..\..\Impulse.Shared.UI\Impulse.Shared.UI.csproj" />
+    <ProjectReference Include="..\Impulse.Llm\Impulse.Llm.csproj" />
     <ProjectReference Include="..\Impulse.SharedFramework\Impulse.SharedFramework.csproj" />
     <ProjectReference Include="..\Impulse.Shared\Impulse.Shared.csproj" />
     <ProjectReference Include="..\Impulse.Viewer.Mono\Impulse.Viewer.Mono.csproj" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11201.2 d18.0
+VisualStudioVersion = 18.0.11201.2
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Impulse.Dashboard", "Impulse.Framework\Impulse.Dashboard\Impulse.Dashboard.csproj", "{F3F3E6FA-59BC-4DB9-B389-E463DC080571}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Impulse.Logging.Domain", "Logging\Impulse.Logging.Domain\Impulse.Logging.Domain.csproj", "{A777638B-7801-6B7F-1B3E-5DDBA7C654F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Impulse.Logging.UI", "Logging\Impulse.Logging.UI\Impulse.Logging.UI.csproj", "{6EE4DA49-DC68-C56B-DEF1-A453640C8474}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Impulse.Llm", "Impulse.Framework\Impulse.Llm\Impulse.Llm.csproj", "{852F795D-68F2-46A3-89FE-DFC4AEC494A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,6 +193,18 @@ Global
 		{6EE4DA49-DC68-C56B-DEF1-A453640C8474}.Release|x64.Build.0 = Release|Any CPU
 		{6EE4DA49-DC68-C56B-DEF1-A453640C8474}.Release|x86.ActiveCfg = Release|Any CPU
 		{6EE4DA49-DC68-C56B-DEF1-A453640C8474}.Release|x86.Build.0 = Release|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Debug|x64.Build.0 = Debug|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Debug|x86.Build.0 = Debug|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Release|x64.ActiveCfg = Release|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Release|x64.Build.0 = Release|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Release|x86.ActiveCfg = Release|Any CPU
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -210,6 +224,7 @@ Global
 		{59652B18-270E-A303-446E-53C7D5F447DA} = {8A15B7F3-0D27-4702-B2B5-2ADAE33CD7F1}
 		{A777638B-7801-6B7F-1B3E-5DDBA7C654F4} = {8A15B7F3-0D27-4702-B2B5-2ADAE33CD7F1}
 		{6EE4DA49-DC68-C56B-DEF1-A453640C8474} = {8A15B7F3-0D27-4702-B2B5-2ADAE33CD7F1}
+		{852F795D-68F2-46A3-89FE-DFC4AEC494A9} = {18C25CB3-5FBF-4D9A-8DB2-A7C5B1EB2350}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C67C9990-FD06-44D4-83D7-05382B2C12DA}

@@ -19,6 +19,8 @@ public class DebugRibbonIds
 
     public static string Group_ProjectExplorer => Concatenate(Tab_Debug, "ProjectExplorer");
 
+    public static string Group_Llm => Concatenate(Tab_Debug, "LLM");
+
     public static string Button_Exception => Concatenate(Group_Test, "Exception");
 
     public static string Button_SeedProjectExplorer => Concatenate(Group_ProjectExplorer, "Seed");
@@ -28,6 +30,8 @@ public class DebugRibbonIds
     public static string Button_MonoDemo => Concatenate(Group_Demos, "MonoDemo");
 
     public static string Button_OpenBottomToolWindow => Concatenate(Group_Test, "BottomToolWindow");
+
+    public static string Button_LlmChat => Concatenate(Group_Llm, "Chat");
 
     public static string Group_Logging => Concatenate(Tab_Debug, "Logging");
 
